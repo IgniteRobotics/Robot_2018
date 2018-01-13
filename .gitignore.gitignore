@@ -1,0 +1,18 @@
+# WPILib
+bin/
+build/
+dist/
+sysProps.xml
+workbench.xmi
+
+# IDE
+*.ipr
+*.iml
+*.iws
+out/
+tmp/
+.settings/
+.loadpath
+.project
+/.idea
+.classpath
