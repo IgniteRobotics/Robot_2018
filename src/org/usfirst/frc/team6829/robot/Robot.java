@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
+import team6829.common.transforms.DummyTransform;
+import team6829.common.transforms.ITransform;
+import team6829.common.transforms.SquaredInputTransform;
 
 
 /**
@@ -30,6 +33,7 @@ public class Robot extends TimedRobot {
 	public static RobotMap robotMap = new RobotMap();
 	
 	public static DriveTrain driveTrain;
+	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
 
 	Command m_autonomousCommand;
@@ -128,7 +132,9 @@ public class Robot extends TimedRobot {
 	
 	private void initializeAll() {
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
-		arcadeDrive = new ArcadeDrive(oi.driverJoystick, driveTrain, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
+		arcadeDriveTransform = new SquaredInputTransform();
+		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
 	}
 	

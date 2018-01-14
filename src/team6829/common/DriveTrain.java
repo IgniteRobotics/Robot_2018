@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
+import team6829.common.transforms.ITransform;
 
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -51,24 +52,13 @@ public class DriveTrain extends Subsystem {
 		setDefaultCommand(this.defaultCommand);
 	}
 
-	public void arcadeDrive(double throttlePower, double turnPower, boolean squaredInputs) {
-
-		double deadband = 0.1;
-		
-		throttlePower = limit(throttlePower);
-		throttlePower = applyDeadband(throttlePower, deadband); //set throttle deadband here
-
-		turnPower = limit(turnPower);
-		turnPower = applyDeadband(turnPower, deadband); //set rotate deadband here
-
-		if (squaredInputs) {
-			throttlePower = Math.copySign(throttlePower * throttlePower, throttlePower);
-			turnPower = Math.copySign(turnPower * turnPower, turnPower);
-		}
-
+	public void arcadeDrive(double throttlePower, double turnPower, double deadband, ITransform transform) {
 		double leftMotorOutput;
 		double rightMotorOutput;
-
+		
+		throttlePower = transform.transform(throttlePower);
+		turnPower = transform.transform(turnPower);
+		
 		double maxInput = Math.copySign(Math.max(Math.abs(throttlePower), Math.abs(turnPower)), throttlePower);
 
 		if (throttlePower >= 0.0) {
@@ -90,13 +80,32 @@ public class DriveTrain extends Subsystem {
 				rightMotorOutput = throttlePower - turnPower;
 			}
 		}
+		
+		throttlePower = limit(throttlePower);
+		throttlePower = applyDeadband(throttlePower, deadband); //set throttle deadband here
 
-		leftMaster.set(ControlMode.PercentOutput, limit(leftMotorOutput));
-		rightMaster.set(ControlMode.PercentOutput, -limit(rightMotorOutput));
+		turnPower = limit(turnPower);
+		turnPower = applyDeadband(turnPower, deadband); //set rotate deadband here
+
+		leftMaster.set(ControlMode.PercentOutput, leftMotorOutput);
+		rightMaster.set(ControlMode.PercentOutput, -rightMotorOutput);
 
 	}
 
-	public double limit(double value) {
+	public void setLeftDrivePower(double power) {
+		leftMaster.set(ControlMode.PercentOutput, limit(power));
+	}
+	
+	public void setRightDrivePower(double power) {
+		rightMaster.set(ControlMode.PercentOutput, limit(power));
+	}
+	
+	public void stop() {
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+	}
+	
+	private double limit(double value) {
 		if (value > 1.0) {
 			return 1.0;
 		}
@@ -106,7 +115,7 @@ public class DriveTrain extends Subsystem {
 		return value;
 	}
 
-	public double applyDeadband(double value, double deadband) {
+	private double applyDeadband(double value, double deadband) {
 		if (Math.abs(value) > deadband) {
 			if (value > 0.0) {
 				return (value - deadband) / (1.0 - deadband);
@@ -118,8 +127,5 @@ public class DriveTrain extends Subsystem {
 		}
 	}
 
-	public void stop() {
-		leftMaster.setNeutralMode(NeutralMode.Brake);
-		rightMaster.setNeutralMode(NeutralMode.Brake);
-	}
+
 }

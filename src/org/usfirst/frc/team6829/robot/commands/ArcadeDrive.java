@@ -3,6 +3,7 @@ package org.usfirst.frc.team6829.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import team6829.common.*;
+import team6829.common.transforms.ITransform;
 
 /**
  *
@@ -12,15 +13,19 @@ public class ArcadeDrive extends Command {
 	private final int THROTTLE_AXIS;
 	private final int TURN_AXIS;
 	private final int SLOW_BUTTON;
+	private final double DEADBAND = 0.1;
+	
 	private DriveTrain driveTrain;
 	private Joystick driverJoystick;
+	private final ITransform transform;
 
-	public ArcadeDrive(Joystick driverJoystick, DriveTrain driveTrain, int throttleId, int turnId, int slowId) {
+	public ArcadeDrive(DriveTrain driveTrain, ITransform transform, Joystick driverJoystick,  int throttleId, int turnId, int slowId) {
 		this.THROTTLE_AXIS = throttleId;
 		this.TURN_AXIS = turnId;
 		this.SLOW_BUTTON = slowId;
 		this.driveTrain = driveTrain;
 		this.driverJoystick = driverJoystick;
+		this.transform = transform;
 
 		requires(this.driveTrain);
 
@@ -45,7 +50,7 @@ public class ArcadeDrive extends Command {
 			turnPower = turnPower * 0.75;
 		}
 
-		driveTrain.arcadeDrive(throttlePower, -turnPower, false);
+		driveTrain.arcadeDrive(throttlePower, -turnPower, DEADBAND, transform);
 
 	}
 
