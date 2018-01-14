@@ -53,11 +53,13 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double throttlePower, double turnPower, boolean squaredInputs) {
 
+		double deadband = 0.1;
+		
 		throttlePower = limit(throttlePower);
-		throttlePower = applyDeadband(throttlePower, 0.0); //set throttle deadband here
+		throttlePower = applyDeadband(throttlePower, deadband); //set throttle deadband here
 
 		turnPower = limit(turnPower);
-		turnPower = applyDeadband(turnPower, 0.0); //set rotate deadband here
+		turnPower = applyDeadband(turnPower, deadband); //set rotate deadband here
 
 		if (squaredInputs) {
 			throttlePower = Math.copySign(throttlePower * throttlePower, throttlePower);
