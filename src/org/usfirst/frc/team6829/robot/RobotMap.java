@@ -15,6 +15,8 @@ package org.usfirst.frc.team6829.robot;
  */
 public class RobotMap {
 	
+	//Set hardware IDs
+	
 	public int leftFrontMotor = 1;
 	public int leftRearMotor = 2;	
 	public int rightFrontMotor = 4;
