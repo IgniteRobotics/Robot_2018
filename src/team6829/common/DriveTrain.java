@@ -105,6 +105,14 @@ public class DriveTrain extends Subsystem {
 		rightMaster.setNeutralMode(NeutralMode.Brake);
 	}
 	
+	public TalonSRX getRightMaster() {
+		return rightMaster;
+	}
+	
+	public TalonSRX getLeftMaster() {
+		return leftMaster;
+	}
+	
 	private double limit(double value) {
 		if (value > 1.0) {
 			return 1.0;
@@ -126,6 +134,5 @@ public class DriveTrain extends Subsystem {
 			return 0.0;
 		}
 	}
-
 
 }
