@@ -4,14 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import team6829.common.transforms.DummyTransform;
 
-class DummyTransformTest{
-	
+import team6829.common.transforms.ZeroTransform;
+
+class ZeroTransformTest {
+
 	@ParameterizedTest
-	@CsvSource({"1, 1", "-1, -1", "10, 10", "-10, -10"})
+	@CsvSource({"0, 1", "0, -1", "0, 10", "0, -10"})
 	void TransformReturnsExpectedValues(double expectedVal, double inputVal) {
-		DummyTransform dummyTransform = new DummyTransform();
-		assertEquals(expectedVal, dummyTransform.transform(inputVal));
+		ZeroTransform zeroTransform = new ZeroTransform();
+		assertEquals(expectedVal, zeroTransform.transform(inputVal));
 	}
+
 }

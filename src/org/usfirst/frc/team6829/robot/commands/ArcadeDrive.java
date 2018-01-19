@@ -51,7 +51,6 @@ public class ArcadeDrive extends Command {
 		}
 
 		driveTrain.arcadeDrive(throttlePower, -turnPower, DEADBAND, transform);
-
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
