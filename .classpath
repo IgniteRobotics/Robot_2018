@@ -16,5 +16,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="var" path="Pathfinder"/>
 	<classpathentry kind="var" path="navX"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/Pathfinder-Java.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
