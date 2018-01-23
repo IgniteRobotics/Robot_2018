@@ -1,0 +1,17 @@
+package team6829.motion_profiling.trajectories;
+
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
+
+public class GoStraightPath {
+	
+	public int numberOfPoints = points.length;
+	
+	public static Waypoint[] points = new Waypoint[] {
+
+			new Waypoint(-4, -1, Pathfinder.d2r(-45)), // Waypoint @ x=-4, y=-1, exitangle=-45 degrees
+			new Waypoint(-2, -2, 0), // Waypoint @ x=-2, y=-2, exit angle=0 radians
+			new Waypoint(0, 0, 0) // Waypoint @ x=0, y=0, exit angle=0 radians
+	};
+
+}

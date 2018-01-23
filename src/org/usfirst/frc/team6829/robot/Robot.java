@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
-import team6829.common.transforms.DummyTransform;
 import team6829.common.transforms.ITransform;
 import org.usfirst.frc.team6829.robot.commands.*;
 import team6829.common.transforms.SquaredInputTransform;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
-	public static Command GoStraightAuto;
+	public static Command GoStraightAuton;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -47,7 +46,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Go Straight", GoStraightAuto);
+		m_chooser.addDefault("Go Straight", new GoStraightAuton());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		
@@ -137,7 +136,7 @@ public class Robot extends TimedRobot {
 		arcadeDriveTransform = new SquaredInputTransform();
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
-		GoStraightAuto = new GoStraightAuto(driveTrain);
+		GoStraightAuton = new GoStraightAuton();
 		driveTrain.setCommandDefault(arcadeDrive);
 	}
 	

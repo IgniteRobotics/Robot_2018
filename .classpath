@@ -14,5 +14,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="var" path="Pathfinder"/>
+	<classpathentry kind="var" path="navX"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
