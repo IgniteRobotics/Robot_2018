@@ -18,6 +18,7 @@ import team6829.common.DriveTrain;
 import team6829.common.transforms.ITransform;
 import org.usfirst.frc.team6829.robot.commands.*;
 import team6829.common.transforms.SquaredInputTransform;
+import team6829.motion_profiling.TrajectoryController;
 
 
 /**
@@ -35,7 +36,8 @@ public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
-	public static Command GoStraightAuton;
+	public static Command goStraightAuton;
+	public static TrajectoryController trajectoryController;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -46,7 +48,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Go Straight", new GoStraightAuton());
+		m_chooser.addDefault("Go Straight", new GoStraightAuton(trajectoryController, driveTrain));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		
@@ -132,12 +134,17 @@ public class Robot extends TimedRobot {
 	}
 	
 	private void initializeAll() {
+		
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
+		driveTrain.setCommandDefault(arcadeDrive);
+
 		arcadeDriveTransform = new SquaredInputTransform();
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
-		GoStraightAuton = new GoStraightAuton();
-		driveTrain.setCommandDefault(arcadeDrive);
+		
+		goStraightAuton = new GoStraightAuton(trajectoryController, driveTrain);
+		
+		trajectoryController = new TrajectoryController(driveTrain);
 	}
 	
 }

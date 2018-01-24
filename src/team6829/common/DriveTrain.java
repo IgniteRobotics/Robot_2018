@@ -125,6 +125,12 @@ public class DriveTrain extends Subsystem {
 		return leftMaster;
 	}
 	
+	public void zeroEncoders() {
+		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
+		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
+
+	}
+	
 	public double getAngle() {
 		return navX.getAngle();
 	}

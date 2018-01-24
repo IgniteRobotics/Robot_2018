@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
+import team6829.common.DriveTrain;
 import team6829.motion_profiling.TrajectoryController;
 import team6829.motion_profiling.trajectories.GoStraightPath;
 
@@ -12,22 +13,33 @@ import team6829.motion_profiling.trajectories.GoStraightPath;
  */
 public class GoStraightAuton extends Command {
 
-	EncoderFollower left;
-	EncoderFollower right;
+	private EncoderFollower left;
+	private EncoderFollower right;
+	
+	private TrajectoryController trajectoryController;
+	
+	private DriveTrain driveTrain;
 
-	public GoStraightAuton() {
-
+	public GoStraightAuton(TrajectoryController trajectoryController, DriveTrain driveTrain) {
+		
+		this.trajectoryController = trajectoryController;
+		this.driveTrain = driveTrain;
+		
+//		requires(this.driveTrain);
+		
 	}
 
 	protected void initialize() {
+		driveTrain.zeroEncoders();
+		driveTrain.zeroAngle();
 
-		TankModifier trajectory = TrajectoryController.generateTankTrajectory(GoStraightPath.points, TrajectoryController.defaultConfig);
-		TrajectoryController.configureFollow(left, right, trajectory);
+		TankModifier trajectory = trajectoryController.generateTankTrajectory(GoStraightPath.points, TrajectoryController.defaultConfig);
+		trajectoryController.configureFollow(left, right, trajectory);
 	}
 
 	protected void execute() {
 		
-		TrajectoryController.followTrajectory(left, right);
+		trajectoryController.followTrajectory(left, right);
 		System.out.println("Is executing");
 		
 	}
