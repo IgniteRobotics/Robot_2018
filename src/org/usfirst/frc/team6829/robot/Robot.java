@@ -9,6 +9,7 @@ package org.usfirst.frc.team6829.robot;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -39,15 +40,24 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+	boolean LeftPositionAuto;
+	boolean MiddlePositionAuto;
+	boolean RightPositionAuto;
+	
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Default Auto", null);
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		//m_chooser.addDefault("Left Position Auto", null);
+		//m_chooser.addObject("Right Position Auto", null);
+		//SmartDashboard.putData("Auto mode", m_chooser);
+			
+		SmartDashboard.putBoolean("Left Position Auto", false);
+		SmartDashboard.putBoolean("Middle Position Auto", false);
+		SmartDashboard.putBoolean("Right Position Auto", false);
 		
 		initializeAll();
 		
@@ -81,8 +91,57 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		//m_autonomousCommand = m_chooser.getSelected();
 
+		LeftPositionAuto = SmartDashboard.getBoolean("Left Position Auto", false);
+		MiddlePositionAuto = SmartDashboard.getBoolean("Middle Position Auto", false);
+		RightPositionAuto = SmartDashboard.getBoolean("Right Position Auto", false);
+		
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println(gameData);
+		
+		if (LeftPositionAuto) {
+			System.out.println("Left Auto");  
+		}
+		if (MiddlePositionAuto) {
+			System.out.println("Middle Auto");  
+		} 
+		if (RightPositionAuto) {
+			System.out.println("Right Auto");  
+		}
+		
+		if(gameData.charAt(0) == 'L') {
+			System.out.println("Left");
+		} else {
+			System.out.println("Right");
+		}
+		
+		// Left Switch && Positioned Left 
+		if(gameData.charAt(0) == 'L' && LeftPositionAuto) {
+			 	// TODO: Put left-switch auto code here
+			System.out.println("Forwards (s-left)");
+		}
+		
+		// Right Switch && Positioned Left
+		if (gameData.charAt(0) == 'R' && LeftPositionAuto) { 
+			 	// TODO: Put right-switch auto code here
+			System.out.println("Either Turn and go forwards or Loop around switch (s-right)");
+		}
+		
+		// Left Switch && Positioned Right
+		if (gameData.charAt(0) == 'L' && RightPositionAuto) {
+			 	// TODO: Put right-switch auto code here
+			System.out.println("Either Turn and go forwards or Loop around switch (s-left)");
+		}
+		
+		// Right Switch && Positioned Right
+		if (gameData.charAt(0) == 'R' && RightPositionAuto) {
+			// TODO: Put right-switch auto code here
+			System.out.println("Forwards (s-right)");
+		}
+
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -90,10 +149,10 @@ public class Robot extends TimedRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
+		/* schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
-		}
+		} */
 	}
 
 	/**
