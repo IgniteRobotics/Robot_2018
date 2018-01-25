@@ -5,7 +5,9 @@ import team6829.common.transforms.ITransform;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,32 +21,45 @@ public class DriveTrain extends Subsystem {
 
 	private Command defaultCommand;
 
-	private TalonSRX leftMaster;
-	private TalonSRX leftFollower;
-	private TalonSRX rightMaster;
-	private TalonSRX rightFollower;
+	private WPI_TalonSRX leftMaster;
+	private WPI_TalonSRX leftFollower;
+	private WPI_TalonSRX rightMaster;
+	private WPI_TalonSRX rightFollower;
 	private AHRS navX;
+	
+	int leftEncoderStatus = leftMaster.getSensorCollection().getPulseWidthRiseToRiseUs();
+	int rightEncoderStatus = rightMaster.getSensorCollection().getPulseWidthRiseToRiseUs();
 
 	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId) {
 
-		leftMaster = new TalonSRX(leftMasterCanId);
-		leftFollower = new TalonSRX(leftFollowerCanId);
-		rightMaster = new TalonSRX(rightMasterCanId);
-		rightFollower = new TalonSRX(rightFollowerCanId);
+		leftMaster = new WPI_TalonSRX(leftMasterCanId);
+		leftFollower = new WPI_TalonSRX(leftFollowerCanId);
+		rightMaster = new WPI_TalonSRX(rightMasterCanId);
+		rightFollower = new WPI_TalonSRX(rightFollowerCanId);
 
 		leftMaster.setInverted(true);
 		leftFollower.setInverted(true);
 		rightMaster.setInverted(true);
 		rightFollower.setInverted(true);
-
+		
 		leftFollower.set(ControlMode.Follower, leftMasterCanId);
 		rightFollower.set(ControlMode.Follower, rightMasterCanId);
-
-		try {
-			navX = new AHRS(SPI.Port.kMXP);
-		} catch (RuntimeException ex) {
-			DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
+		
+		leftMaster.setSensorPhase(false);
+		rightMaster.setSensorPhase(true);
+		
+		if (leftEncoderStatus == 0) {
+			 DriverStation.reportError("!!!!! LEFT ENCODER NOT DETECTED !!!!!", true);
 		}
+		if (rightEncoderStatus == 0) {
+			 DriverStation.reportError("!!!!! RIGHT ENCODER NOT DETECTED !!!!!", true);
+
+		}
+			
+		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+		
+		navX = new AHRS(SPI.Port.kMXP);
 
 	}
 
@@ -132,11 +147,19 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public double getAngle() {
-		return navX.getAngle();
+		return navX.getFusedHeading();
 	}
 	
 	public void zeroAngle() {
 		navX.zeroYaw();
+	}
+	
+	public boolean isCalibrating() {
+		return navX.isCalibrating();
+	}
+	
+	public boolean isConnected() {
+		return navX.isConnected();
 	}
 
 	private double limit(double value) {

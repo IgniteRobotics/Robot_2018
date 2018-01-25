@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 	public static Command arcadeDrive;
 	public static Command goStraightAuton;
 	public static TrajectoryController trajectoryController;
+	public static SmartDashboardInteractions smartDashboardInteractions;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -51,8 +52,9 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Go Straight", new GoStraightAuton(trajectoryController, driveTrain));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		
+		checknavXStatus(); 
 		initializeAll();
+
 		
 	}
 
@@ -63,12 +65,16 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		
+		checknavXStatus();
 
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		checknavXStatus();
+
 	}
 
 	/**
@@ -97,6 +103,7 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
+		checknavXStatus();
 	}
 
 	/**
@@ -105,6 +112,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		checknavXStatus();
 	}
 
 	@Override
@@ -116,6 +124,7 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		checknavXStatus();
 	}
 
 	/**
@@ -124,6 +133,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		checknavXStatus();
 	}
 
 	/**
@@ -131,6 +141,12 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		checknavXStatus(); 
+	}
+	
+	private void checknavXStatus() {
+		smartDashboardInteractions.isCalibrating();
+		smartDashboardInteractions.isConnected();
 	}
 	
 	private void initializeAll() {
@@ -146,5 +162,6 @@ public class Robot extends TimedRobot {
 		
 		trajectoryController = new TrajectoryController(driveTrain);
 	}
+	
 	
 }

@@ -1,6 +1,5 @@
 package team6829.motion_profiling;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -26,10 +25,10 @@ public class TrajectoryController {
 	private static final double RIGHT_KD = 0;
 	private static final double RIGHT_KA = 0; // acceleration gain
 
-	private static final double TIME_STEP = 0.05;
-	private static final double MAXIMUM_VELOCITY = 0.0;
-	private static final double MAXIMUM_ACCELERATION = 0.0;
-	private static final double MAXIMUM_JERK = 0.0;
+	private static final double TIME_STEP = 0.02;
+	private static final double MAXIMUM_VELOCITY = 0.0; //placeholder
+	private static final double MAXIMUM_ACCELERATION = 0.0; //placeholder
+	private static final double MAXIMUM_JERK = 0.0; //placeholder
 	
 	public TrajectoryController (DriveTrain driveTrain) {
 		
