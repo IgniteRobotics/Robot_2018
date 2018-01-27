@@ -7,7 +7,11 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import org.usfirst.frc.team6829.robot.commands.DumpCube;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,5 +47,15 @@ public class OI {
 	public final int AXIS_RIGHT_STICK_Y = 5;
 	
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
+	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 
+	
+	// Code for a Dumper Button, commented out for safety
+	/*
+	public Button dumperButton = new JoystickButton(manipulatorJoystick, BUTTON_A);  //TODO button can change at driver's preference
+	
+	public OI() {
+		dumperButton.whileHeld(new DumpCube());   
+	}
+	 */
 }

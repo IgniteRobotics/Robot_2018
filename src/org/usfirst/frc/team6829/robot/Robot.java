@@ -8,6 +8,9 @@
 package org.usfirst.frc.team6829.robot;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.subsystems.Dumper;
+import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -30,8 +33,13 @@ import team6829.common.transforms.SquaredInputTransform;
  */
 public class Robot extends TimedRobot {
 
+	
 	public static OI oi = new OI();
 	public static RobotMap robotMap = new RobotMap();
+	
+	public static Dumper dumper = new Dumper();
+	public static Shooter shooter = new Shooter();
+	public static Intake intake = new Intake();
 	
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
