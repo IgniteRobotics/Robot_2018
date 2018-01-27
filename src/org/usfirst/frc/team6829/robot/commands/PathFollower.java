@@ -11,36 +11,31 @@ import team6829.motion_profiling.trajectories.GoStraightPath;
 /**
  *
  */
-public class GoStraightAuton extends Command {
+public class PathFollower extends Command {
 
-	private EncoderFollower left;
-	private EncoderFollower right;
-	
 	private TrajectoryController trajectoryController;
 	
 	private DriveTrain driveTrain;
 
-	public GoStraightAuton(TrajectoryController trajectoryController, DriveTrain driveTrain) {
+	public PathFollower(TrajectoryController trajectoryController, DriveTrain driveTrain) {
 		
 		this.trajectoryController = trajectoryController;
 		this.driveTrain = driveTrain;
-		
-//		requires(this.driveTrain);
-		
+				
 	}
 
 	protected void initialize() {
+		
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
 
 		TankModifier trajectory = trajectoryController.generateTankTrajectory(GoStraightPath.points, TrajectoryController.defaultConfig);
-		trajectoryController.configureFollow(left, right, trajectory);
+		trajectoryController.configureFollow(trajectory);
 	}
 
 	protected void execute() {
 		
-		trajectoryController.followTrajectory(left, right);
-		System.out.println("Is executing");
+		trajectoryController.followTrajectory();
 		
 	}
 

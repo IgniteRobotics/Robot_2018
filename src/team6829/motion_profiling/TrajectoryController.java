@@ -26,9 +26,12 @@ public class TrajectoryController {
 	private static final double RIGHT_KA = 0; // acceleration gain
 
 	private static final double TIME_STEP = 0.02;
-	private static final double MAXIMUM_VELOCITY = 0.0; //placeholder
-	private static final double MAXIMUM_ACCELERATION = 0.0; //placeholder
-	private static final double MAXIMUM_JERK = 0.0; //placeholder
+	private static final double MAXIMUM_VELOCITY = 12; //placeholder
+	private static final double MAXIMUM_ACCELERATION = 3; //placeholder
+	private static final double MAXIMUM_JERK = 60; //placeholder
+	
+	private EncoderFollower left;
+	private EncoderFollower right;
 	
 	public TrajectoryController (DriveTrain driveTrain) {
 		
@@ -42,6 +45,14 @@ public class TrajectoryController {
 	public TankModifier generateTankTrajectory(Waypoint[] waypoints, Trajectory.Config config) {
 
 		Trajectory t = Pathfinder.generate(waypoints, config);
+		
+		for (int i = 0; i < t.length(); i++) {
+		    Trajectory.Segment seg = t.get(i);
+		    
+		    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
+		        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
+		            seg.acceleration, seg.jerk, seg.heading);
+		}
 
 		TankModifier modifier = new TankModifier(t);
 		modifier.modify(WHEELBASE_WIDTH);
@@ -50,7 +61,7 @@ public class TrajectoryController {
 
 	}
 
-	public void configureFollow(EncoderFollower left, EncoderFollower right, TankModifier trajectory) {
+	public void configureFollow(TankModifier trajectory) {
 
 		left = new EncoderFollower(trajectory.getLeftTrajectory());
 		right = new EncoderFollower(trajectory.getRightTrajectory());
@@ -61,24 +72,23 @@ public class TrajectoryController {
 
 		left.configurePIDVA(LEFT_KP, LEFT_KI, LEFT_KD, 1 / MAXIMUM_VELOCITY, LEFT_KA);
 		right.configurePIDVA(RIGHT_KP, RIGHT_KI, RIGHT_KD, 1 / MAXIMUM_VELOCITY, RIGHT_KA);
+		
 
 	}
 
-	public void followTrajectory(EncoderFollower left, EncoderFollower right) {
+	public void followTrajectory() {
 
 		double l = left.calculate(driveTrain.readLeftEncoderPosition());
 		double r = right.calculate(driveTrain.readRightEncoderPosition());
 
 		double currentHeading = driveTrain.getAngle();
-		
-		System.out.println(currentHeading);
-
+				
 		double desiredHeading = Pathfinder.r2d(left.getHeading());
 
 		double angleError = Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);
 		double turn = 0.8 * (-1.0 / 80.0) * angleError;
 
-		driveTrain.setLeftDrivePower(l + turn);
+		driveTrain.setLeftDrivePower(-(l + turn));
 		driveTrain.setRightDrivePower(r - turn);
 
 	}

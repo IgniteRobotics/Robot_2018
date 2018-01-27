@@ -8,7 +8,6 @@
 package org.usfirst.frc.team6829.robot;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,7 +37,6 @@ public class Robot extends TimedRobot {
 	public static Command arcadeDrive;
 	public static Command goStraightAuton;
 	public static TrajectoryController trajectoryController;
-	public static SmartDashboardInteractions smartDashboardInteractions;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -49,10 +47,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Go Straight", new GoStraightAuton(trajectoryController, driveTrain));
+		m_chooser.addDefault("Go Straight", new PathFollower(trajectoryController, driveTrain));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		checknavXStatus(); 
+		
 		initializeAll();
 
 		
@@ -66,44 +64,25 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		
-		checknavXStatus();
+
 
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-		checknavXStatus();
+
 
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
-		checknavXStatus();
+
 	}
 
 	/**
@@ -112,7 +91,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		checknavXStatus();
+
 	}
 
 	@Override
@@ -123,8 +102,9 @@ public class Robot extends TimedRobot {
 		// this line or comment it out.
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
+					
 		}
-		checknavXStatus();
+
 	}
 
 	/**
@@ -133,7 +113,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		checknavXStatus();
+
 	}
 
 	/**
@@ -141,26 +121,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		checknavXStatus(); 
+		
 	}
 	
-	private void checknavXStatus() {
-		smartDashboardInteractions.isCalibrating();
-		smartDashboardInteractions.isConnected();
-	}
 	
 	private void initializeAll() {
 		
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
-		driveTrain.setCommandDefault(arcadeDrive);
-
 		arcadeDriveTransform = new SquaredInputTransform();
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
-		
-		goStraightAuton = new GoStraightAuton(trajectoryController, driveTrain);
-		
+		driveTrain.setCommandDefault(arcadeDrive);
 		trajectoryController = new TrajectoryController(driveTrain);
+		goStraightAuton = new PathFollower(trajectoryController, driveTrain);
+
 	}
 	
 	

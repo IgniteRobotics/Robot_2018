@@ -27,9 +27,6 @@ public class DriveTrain extends Subsystem {
 	private WPI_TalonSRX rightFollower;
 	private AHRS navX;
 	
-	int leftEncoderStatus = leftMaster.getSensorCollection().getPulseWidthRiseToRiseUs();
-	int rightEncoderStatus = rightMaster.getSensorCollection().getPulseWidthRiseToRiseUs();
-
 	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId) {
 
 		leftMaster = new WPI_TalonSRX(leftMasterCanId);
@@ -47,15 +44,7 @@ public class DriveTrain extends Subsystem {
 		
 		leftMaster.setSensorPhase(false);
 		rightMaster.setSensorPhase(true);
-		
-		if (leftEncoderStatus == 0) {
-			 DriverStation.reportError("!!!!! LEFT ENCODER NOT DETECTED !!!!!", true);
-		}
-		if (rightEncoderStatus == 0) {
-			 DriverStation.reportError("!!!!! RIGHT ENCODER NOT DETECTED !!!!!", true);
 
-		}
-			
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		
