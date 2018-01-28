@@ -29,7 +29,7 @@ import team6829.motion_profiling.TrajectoryController;
  * project.
  */
 public class Robot extends TimedRobot {
-
+	
 	public static OI oi = new OI();
 	public static RobotMap robotMap = new RobotMap();
 	
@@ -43,7 +43,6 @@ public class Robot extends TimedRobot {
 	
 	private static File csvLeft = new File("LGoStraightPath.csv");
 	private static File csvRight = new File("RGoStraightPath.csv");
-
 
 	/**
 	 * This function is run when the robot is first started up and should be
