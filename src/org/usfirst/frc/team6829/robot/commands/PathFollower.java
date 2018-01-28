@@ -1,5 +1,7 @@
 package org.usfirst.frc.team6829.robot.commands;
 
+import java.io.File;
+
 import org.usfirst.frc.team6829.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,13 +17,15 @@ public class PathFollower extends Command {
 
 	private TrajectoryController trajectoryController;
 	private DriveTrain driveTrain;
-	private Waypoint[] points;
-
-	public PathFollower(TrajectoryController trajectoryController, DriveTrain driveTrain, Waypoint[] points) {
+	private File csvLeft;
+	private File csvRight;
+	
+	public PathFollower(TrajectoryController trajectoryController, DriveTrain driveTrain, File csvLeft, File csvRight) {
 		
 		this.trajectoryController = trajectoryController;
 		this.driveTrain = driveTrain;
-		this.points = points;
+		this.csvLeft = csvLeft;
+		this.csvRight = csvRight;
 				
 	}
 
@@ -31,8 +35,8 @@ public class PathFollower extends Command {
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
 
-		TankModifier trajectory = trajectoryController.generateTankTrajectory(points, TrajectoryController.defaultConfig);
-		trajectoryController.configureFollow(trajectory);
+//		TankModifier trajectory = trajectoryController.generateTankTrajectory(points, TrajectoryController.defaultConfig);
+		trajectoryController.configureFollow(csvLeft, csvRight);
 	}
 
 	protected void execute() {

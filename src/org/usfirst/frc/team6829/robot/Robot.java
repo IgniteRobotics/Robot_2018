@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import team6829.common.DriveTrain;
 import team6829.common.transforms.ITransform;
+
+import java.io.File;
+
 import org.usfirst.frc.team6829.robot.commands.*;
 import team6829.common.transforms.SquaredInputTransform;
 import team6829.motion_profiling.TrajectoryController;
-import team6829.motion_profiling.trajectories.GoStraightPath;
 
 
 /**
@@ -38,6 +40,10 @@ public class Robot extends TimedRobot {
 	public static Command goStraightAuton;
 	public static Command intake;
 	public static TrajectoryController trajectoryController;
+	
+	private static File csvLeft = new File("LGoStraightPath.csv");
+	private static File csvRight = new File("RGoStraightPath.csv");
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -121,7 +127,8 @@ public class Robot extends TimedRobot {
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
 		trajectoryController = new TrajectoryController(driveTrain);
-		goStraightAuton = new PathFollower(trajectoryController, driveTrain, GoStraightPath.points);
+		goStraightAuton = new PathFollower(trajectoryController, driveTrain, csvLeft, csvRight);
+		
 		
 	}
 }

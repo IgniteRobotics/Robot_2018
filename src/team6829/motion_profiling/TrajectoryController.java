@@ -1,5 +1,7 @@
 package team6829.motion_profiling;
 
+import java.io.File;
+
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -39,32 +41,35 @@ public class TrajectoryController {
 		
 	}
 
-	public static Trajectory.Config defaultConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-			Trajectory.Config.SAMPLES_HIGH, TIME_STEP, MAXIMUM_VELOCITY, MAXIMUM_ACCELERATION, MAXIMUM_JERK);
+//	public static Trajectory.Config defaultConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+//			Trajectory.Config.SAMPLES_HIGH, TIME_STEP, MAXIMUM_VELOCITY, MAXIMUM_ACCELERATION, MAXIMUM_JERK);
 
-	public TankModifier generateTankTrajectory(Waypoint[] waypoints, Trajectory.Config config) {
+//	public TankModifier generateTankTrajectory(Waypoint[] waypoints, Trajectory.Config config) {
+//
+//		Trajectory t = Pathfinder.generate(waypoints, config);
+//		
+//		for (int i = 0; i < t.length(); i++) {
+//		    Trajectory.Segment seg = t.get(i);
+//		    
+//		    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
+//		        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
+//		            seg.acceleration, seg.jerk, seg.heading);
+//		}
+//
+//		TankModifier modifier = new TankModifier(t);
+//		modifier.modify(WHEELBASE_WIDTH);
+//
+//		return modifier;
+//
+//	}
 
-		Trajectory t = Pathfinder.generate(waypoints, config);
+	public void configureFollow(File csvLeft, File csvRight) {
 		
-		for (int i = 0; i < t.length(); i++) {
-		    Trajectory.Segment seg = t.get(i);
-		    
-		    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
-		        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
-		            seg.acceleration, seg.jerk, seg.heading);
-		}
+		Trajectory leftTrajectory = Pathfinder.readFromFile(csvLeft);
+		Trajectory rightTrajectory = Pathfinder.readFromCSV(csvRight);
 
-		TankModifier modifier = new TankModifier(t);
-		modifier.modify(WHEELBASE_WIDTH);
-
-		return modifier;
-
-	}
-
-	public void configureFollow(TankModifier trajectory) {
-
-		left = new EncoderFollower(trajectory.getLeftTrajectory());
-		right = new EncoderFollower(trajectory.getRightTrajectory());
+		left = new EncoderFollower(leftTrajectory);
+		right = new EncoderFollower(rightTrajectory);
 
 		left.configureEncoder(driveTrain.readLeftEncoderPosition(), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
 
