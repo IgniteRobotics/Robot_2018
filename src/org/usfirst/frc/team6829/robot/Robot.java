@@ -11,13 +11,12 @@ import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 import team6829.common.transforms.ITransform;
 import org.usfirst.frc.team6829.robot.commands.*;
 import team6829.common.transforms.SquaredInputTransform;
 import team6829.motion_profiling.TrajectoryController;
+import team6829.motion_profiling.trajectories.GoStraightPath;
 
 
 /**
@@ -35,25 +34,21 @@ public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
+	public static Command pathFollower;
 	public static Command goStraightAuton;
+	public static Command intake;
 	public static TrajectoryController trajectoryController;
-
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
+	
 	@Override
 	public void robotInit() {
-		m_chooser.addDefault("Go Straight", new PathFollower(trajectoryController, driveTrain));
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-		
+
 		initializeAll();
 
-		
 	}
 
 	/**
@@ -65,26 +60,19 @@ public class Robot extends TimedRobot {
 	public void disabledInit() {
 		
 
-
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 
-
 	}
 
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
-
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
-
+		goStraightAuton.start();
+		
 	}
-
 	/**
 	 * This function is called periodically during autonomous.
 	 */
@@ -100,8 +88,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (goStraightAuton != null) {
+			goStraightAuton.cancel();
 					
 		}
 
@@ -133,9 +121,7 @@ public class Robot extends TimedRobot {
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
 		trajectoryController = new TrajectoryController(driveTrain);
-		goStraightAuton = new PathFollower(trajectoryController, driveTrain);
-
+		goStraightAuton = new PathFollower(trajectoryController, driveTrain, GoStraightPath.points);
+		
 	}
-	
-	
 }

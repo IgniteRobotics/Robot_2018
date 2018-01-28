@@ -22,4 +22,7 @@ public class RobotMap {
 	public int rightFrontMotor = 4;
 	public int rightRearMotor = 5;
 	
+	public int intakeLeft = 3;
+	public int intakeRight = 6;
+	
 }

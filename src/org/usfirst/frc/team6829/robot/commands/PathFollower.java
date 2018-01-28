@@ -1,12 +1,12 @@
 package org.usfirst.frc.team6829.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team6829.robot.Robot;
 
-import jaci.pathfinder.followers.EncoderFollower;
+import edu.wpi.first.wpilibj.command.Command;
+import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 import team6829.common.DriveTrain;
 import team6829.motion_profiling.TrajectoryController;
-import team6829.motion_profiling.trajectories.GoStraightPath;
 
 /**
  *
@@ -14,22 +14,24 @@ import team6829.motion_profiling.trajectories.GoStraightPath;
 public class PathFollower extends Command {
 
 	private TrajectoryController trajectoryController;
-	
 	private DriveTrain driveTrain;
+	private Waypoint[] points;
 
-	public PathFollower(TrajectoryController trajectoryController, DriveTrain driveTrain) {
+	public PathFollower(TrajectoryController trajectoryController, DriveTrain driveTrain, Waypoint[] points) {
 		
 		this.trajectoryController = trajectoryController;
 		this.driveTrain = driveTrain;
+		this.points = points;
 				
 	}
+
 
 	protected void initialize() {
 		
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
 
-		TankModifier trajectory = trajectoryController.generateTankTrajectory(GoStraightPath.points, TrajectoryController.defaultConfig);
+		TankModifier trajectory = trajectoryController.generateTankTrajectory(points, TrajectoryController.defaultConfig);
 		trajectoryController.configureFollow(trajectory);
 	}
 

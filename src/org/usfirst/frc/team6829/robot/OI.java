@@ -43,5 +43,6 @@ public class OI {
 	public final int AXIS_RIGHT_STICK_Y = 5;
 	
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
+	public Joystick operatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 
 }
