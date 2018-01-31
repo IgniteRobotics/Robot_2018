@@ -5,6 +5,7 @@ import java.io.File;
 import org.usfirst.frc.team6829.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 import team6829.common.DriveTrain;
@@ -35,13 +36,19 @@ public class PathFollower extends Command {
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
 
-//		TankModifier trajectory = trajectoryController.generateTankTrajectory(points, TrajectoryController.defaultConfig);
 		trajectoryController.configureFollow(csvLeft, csvRight);
+		
 	}
 
 	protected void execute() {
-		
 		trajectoryController.followTrajectory();
+		
+		int encoderPositionRight = driveTrain.readRightEncoderPosition();
+		int encoderPositionLeft = driveTrain.readLeftEncoderPosition();
+		double gyroHeading = driveTrain.getAngle();
+		
+		System.out.println("RightEnc: " + encoderPositionRight + "LeftEnc: " + encoderPositionLeft + "heading: " + gyroHeading);
+		
 		
 	}
 

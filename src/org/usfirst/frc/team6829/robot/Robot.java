@@ -41,8 +41,10 @@ public class Robot extends TimedRobot {
 	public static Command intake;
 	public static TrajectoryController trajectoryController;
 	
-	private static File csvLeft = new File("LGoStraightPath.csv");
-	private static File csvRight = new File("RGoStraightPath.csv");
+	private static File csvRight = new File("/home/lvuser/right_detailed.csv");
+	private static File csvLeft = new File("/home/lvuser/left_detailed.csv");
+	
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -75,6 +77,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		System.out.println("Starting autonomous");
 		goStraightAuton.start();
 		
 	}
@@ -119,15 +122,22 @@ public class Robot extends TimedRobot {
 	
 	
 	private void initializeAll() {
-		
+
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
 		arcadeDriveTransform = new SquaredInputTransform();
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
 		trajectoryController = new TrajectoryController(driveTrain);
-		goStraightAuton = new PathFollower(trajectoryController, driveTrain, csvLeft, csvRight);
 		
-		
+		if (csvLeft.exists() && csvRight.exists()) {
+			
+			goStraightAuton = new PathFollower(trajectoryController, driveTrain, csvLeft, csvRight);
+
+		} else {
+			
+			System.out.println("CSV files don't exist!");
+			
+		}	
 	}
 }
