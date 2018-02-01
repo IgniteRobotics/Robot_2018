@@ -13,8 +13,8 @@ public class TrajectoryController {
 	
 	private DriveTrain driveTrain;
 
-	private static final int TICKS_PER_REVOLUTION = 4096; // need to verify
-	private static final int WHEEL_DIAMETER = 4; // need to verify
+	private static final int TICKS_PER_REVOLUTION = 4096; // need to verify, may be 2048
+	private static final int WHEEL_DIAMETER = 6; // need to determine empirically
 
 	private static final double LEFT_KP = 0;
 	private static final double LEFT_KI = 0; // not used
@@ -71,5 +71,15 @@ public class TrajectoryController {
 		driveTrain.setRightDrivePower(r - turn);
 
 	}
-
+	
+	public void resetFollowers() {
+		
+		left.reset();
+		right.reset();
+	}
+	
+	public boolean isTrajectoryDone() {
+		return left.isFinished();
+	}
+	
 }

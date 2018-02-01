@@ -53,11 +53,18 @@ public class PathFollower extends Command {
 	}
 
 	protected boolean isFinished() {
-		return false; //command needs an ending condition
+		return trajectoryController.isTrajectoryDone();
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		
+		driveTrain.stop();
+		
+		trajectoryController.resetFollowers();
+		driveTrain.zeroEncoders();
+		driveTrain.zeroAngle();
+		
 	}
 
 	// Called when another command which requires one or more of the same

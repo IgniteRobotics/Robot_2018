@@ -44,8 +44,6 @@ public class Robot extends TimedRobot {
 	private static File csvRight = new File("/home/lvuser/right_detailed.csv");
 	private static File csvLeft = new File("/home/lvuser/left_detailed.csv");
 	
-	
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -68,7 +66,7 @@ public class Robot extends TimedRobot {
 		
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-		
+		trajectoryController.resetFollowers();
 	}
 
 	@Override
