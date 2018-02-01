@@ -53,7 +53,7 @@ public class PathFollower extends Command {
 	}
 
 	protected boolean isFinished() {
-		return false;
+		return false; //command needs an ending condition
 	}
 
 	// Called once after isFinished returns true

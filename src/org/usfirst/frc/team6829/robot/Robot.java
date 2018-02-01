@@ -66,7 +66,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		
-
+		driveTrain.zeroEncoders();
+		driveTrain.zeroAngle();
+		
 	}
 
 	@Override
