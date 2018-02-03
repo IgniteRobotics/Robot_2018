@@ -7,19 +7,17 @@
 
 package org.usfirst.frc.team6829.robot;
 
-import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
-import org.usfirst.frc.team6829.robot.subsystems.Dumper;
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
-import org.usfirst.frc.team6829.robot.subsystems.Shooter;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.subsystems.*;
+
 import team6829.common.DriveTrain;
-import team6829.common.transforms.DummyTransform;
 import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SquaredInputTransform;
 
@@ -34,12 +32,12 @@ import team6829.common.transforms.SquaredInputTransform;
 public class Robot extends TimedRobot {
 
 	
-	public static OI oi = new OI();
+	public static OI oi;
 	public static RobotMap robotMap = new RobotMap();
 	
-	public static Dumper dumper = new Dumper();
-	public static Shooter shooter = new Shooter();
-	public static Intake intake = new Intake();
+	public static Dumper dumper;
+	public static Intake intake;
+	public static Shooter shooter;
 	
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
@@ -203,6 +201,15 @@ public class Robot extends TimedRobot {
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
+		
+		dumper = new Dumper(robotMap.dumperMotor);
+		
+		shooter = new Shooter(robotMap.shooterID);
+		
+		intake = new Intake(robotMap.intakeID);
+		
+		oi = new OI(driveTrain, dumper, intake, shooter);
+		
 	}
 	
 }

@@ -1,17 +1,23 @@
-package org.usfirst.frc.team6829.robot.commands;
+package org.usfirst.frc.team6829.robot.commands.dumper;
 
 import org.usfirst.frc.team6829.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team6829.robot.subsystems.*;
 
 /**
  *
  */
-public class ShootCube extends Command {
-
-    public ShootCube() {
+public class DumpCube extends Command {
+	// TODO When actually testing, check to see if motor spins the proper way 
+	public static final double POWER = 0.1; // 10% for safety testing
+	private Dumper dumper;
+	
+	
+    public DumpCube(Dumper dumper) {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooter);
+    	this.dumper = dumper;
+        requires(this.dumper);
     }
 
     // Called just before this Command runs the first time
@@ -20,8 +26,8 @@ public class ShootCube extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//TODO Write executable code
-    	
+    	// Simple executable code for the dumper
+    	dumper.setDumperMotorPower(POWER);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +37,7 @@ public class ShootCube extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.stop();   //TODO Write stop method, it's empty
+    	Robot.dumper.stop();
     }
 
     // Called when another command which requires one or more of the same

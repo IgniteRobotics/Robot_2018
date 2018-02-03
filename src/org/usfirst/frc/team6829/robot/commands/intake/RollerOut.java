@@ -1,17 +1,20 @@
-package org.usfirst.frc.team6829.robot.commands;
+package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.Robot;
+import org.usfirst.frc.team6829.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class IntakeCube extends Command {
+public class RollerOut extends Command {
 
-    public IntakeCube() {
+	private Intake intake;
+    public RollerOut(Intake intake) {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.intake);
+        // eg. requires(chassis);
+    	this.intake = intake;
+    	requires(this.intake);
     }
 
     // Called just before this Command runs the first time
@@ -20,8 +23,7 @@ public class IntakeCube extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	// TODO Complete simple executable IntakeCube code 
-    	
+    	intake.rollOut();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,7 +33,7 @@ public class IntakeCube extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intake.stop();
+    	intake.stopRollers();
     }
 
     // Called when another command which requires one or more of the same

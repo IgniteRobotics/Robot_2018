@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team6829.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -24,13 +22,9 @@ public class RobotMap {
 	public int rightFrontMotor = 4;
 	public int rightRearMotor = 5;
 	
-	public static TalonSRX dumperMotor;
-
-	// TODO add intake motors 
-	
-	public static void init() {
-		
-		dumperMotor = new TalonSRX(6);              // TODO Check if proper motor
-	}
+	// TODO: Set actual ports and stuff
+	public int dumperMotor = 6;
+	public int shooterID = 0; 
+	public int intakeID = 0;
 		
 }
