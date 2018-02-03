@@ -26,8 +26,8 @@ public class TrajectoryLoader {
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
 
-		R_GoStraightAuton = new File("/home/lvuser/right_detailed.csv");
-		L_GoStraightAuton = new File("/home/lvuser/left_detailed.csv");
+		R_GoStraightAuton = new File("/home/lvuser/GoStraight_right_detailed.csv");
+		L_GoStraightAuton = new File("/home/lvuser/GoStraight_left_detailed.csv");
 
 	}
 

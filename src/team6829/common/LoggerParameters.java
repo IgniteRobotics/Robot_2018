@@ -11,10 +11,10 @@ public class LoggerParameters {
 	}
 
 	public String[] data_fields = {"left enc val", "right enc val",
-			"left enc vel", "right enc vel"};
+			"left enc vel", "right enc vel", "heading"};
 
 	public String[] units_fields = {"ticks", "ticks",
-			"ticks per decisecond", "ticks per decisecond"};
+			"ticks per decisecond", "ticks per decisecond", "degrees"};
 
 	public double[] returnValues() {
 
@@ -22,8 +22,9 @@ public class LoggerParameters {
 		double rightEnc = (double) driveTrain.getRightEncoderPosition();
 		double leftVel = (double) driveTrain.getLeftEncoderVelocity();
 		double rightVel = (double) driveTrain.getRightEncoderVelocity();
+		double heading = driveTrain.getAngle();
 
-		double[] values = {leftEnc, rightEnc, leftVel, rightVel};
+		double[] values = {leftEnc, rightEnc, leftVel, rightVel, heading};
 		
 		return values;
 
