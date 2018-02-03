@@ -16,6 +16,13 @@ public class LoggerParameters {
 	public String[] units_fields = {"ticks", "ticks",
 			"ticks per decisecond", "ticks per decisecond"};
 
+	public double boolToDouble(boolean val) {
+		if (val) {
+			return 1.0;
+		}
+		return 0.0;
+	}
+	
 	public double[] returnValues() {
 
 		double leftEnc = (double) driveTrain.getLeftEncoderPosition();
