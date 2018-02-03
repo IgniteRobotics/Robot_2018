@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Dumper extends Subsystem {
 
-
 	private Command defaultCommand;
 	private TalonSRX dumperMotor;
 	
@@ -29,6 +28,7 @@ public class Dumper extends Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(this.defaultCommand);
 	}
+    
     
     public void setDumperMotorPower(double power) {
     	// TODO: Double check if PercentOutput is correct

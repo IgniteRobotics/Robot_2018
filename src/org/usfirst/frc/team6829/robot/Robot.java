@@ -209,7 +209,6 @@ public class Robot extends TimedRobot {
 		intake = new Intake(robotMap.intakeID);
 		
 		oi = new OI(driveTrain, dumper, intake, shooter);
-		
 	}
 	
 }
