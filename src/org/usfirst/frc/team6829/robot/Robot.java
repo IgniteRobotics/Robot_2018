@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -75,7 +77,11 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		
 		autonCommand = gameStateReader.gameStateReader(autonMap());
-		autonCommand.start();
+		try {
+			autonCommand.start();	
+		} catch (NullPointerException e) {
+			DriverStation.reportError("No Autonomous selected" + e.getMessage(), true);
+		}
 		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
