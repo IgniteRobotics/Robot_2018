@@ -12,13 +12,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import team6829.common.DriveTrain;
+import team6829.common.LoggerParameters;
+import team6829.common.Logger;
 import team6829.common.transforms.ITransform;
 
-import java.io.File;
-
-import org.usfirst.frc.team6829.robot.commands.*;
 import team6829.common.transforms.SquaredInputTransform;
-import team6829.motion_profiling.TrajectoryController;
+import team6829.motion_profiling.TrajectoryLoader;
 
 
 /**
@@ -29,26 +28,19 @@ import team6829.motion_profiling.TrajectoryController;
  * project.
  */
 public class Robot extends TimedRobot {
-	
+
 	public static OI oi = new OI();
 	public static RobotMap robotMap = new RobotMap();
-	
+
 	public static DriveTrain driveTrain;
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
-	public static Command pathFollower;
-	public static Command goStraightAuton;
-	public static Command intake;
-	public static TrajectoryController trajectoryController;
-	
-	private static File csvRight = new File("/home/lvuser/right_detailed.csv");
-	private static File csvLeft = new File("/home/lvuser/left_detailed.csv");
-	
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	
+	public static TrajectoryLoader trajectoryLoader;
+
+	public static Logger logger;
+	public static LoggerParameters loggerParameters;
+
+
 	@Override
 	public void robotInit() {
 
@@ -56,21 +48,17 @@ public class Robot extends TimedRobot {
 
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
-		
+
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-//		trajectoryController.resetFollowers();
+		logger.close();
 	}
 
 	@Override
 	public void disabledPeriodic() {
+		
 		Scheduler.getInstance().run();
 
 	}
@@ -78,27 +66,32 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		System.out.println("Starting autonomous");
-		goStraightAuton.start();
+
+		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 		
+		trajectoryLoader.goStraightAuton.start();
+
 	}
 	/**
 	 * This function is called periodically during autonomous.
 	 */
 	@Override
 	public void autonomousPeriodic() {
+
+		logger.writeData(loggerParameters.returnValues());
+		
 		Scheduler.getInstance().run();
 
 	}
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (goStraightAuton != null) {
-			goStraightAuton.cancel();
-					
+		
+		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
+
+		if (trajectoryLoader.goStraightAuton != null) {
+			trajectoryLoader.goStraightAuton.cancel();
+
 		}
 
 	}
@@ -108,7 +101,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
 		Scheduler.getInstance().run();
+		
+		logger.writeData(loggerParameters.returnValues());
+
 
 	}
 
@@ -117,10 +114,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		
+
 	}
-	
-	
+
+
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
@@ -128,16 +125,11 @@ public class Robot extends TimedRobot {
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
-		trajectoryController = new TrajectoryController(driveTrain);
 		
-		if (csvLeft.exists() && csvRight.exists()) {
-			
-			goStraightAuton = new PathFollower(trajectoryController, driveTrain, csvLeft, csvRight);
+		loggerParameters = new LoggerParameters(driveTrain);
+		logger = new Logger();
 
-		} else {
-			
-			System.out.println("CSV files don't exist!");
-			
-		}	
+		trajectoryLoader = new TrajectoryLoader(driveTrain);
+		trajectoryLoader.intializePathCommands();
 	}
 }

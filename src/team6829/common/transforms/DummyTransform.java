@@ -2,7 +2,7 @@ package team6829.common.transforms;
 
 public class DummyTransform implements ITransform {
 
-	
+
 	/**
 	 * Returns 0
 	 */

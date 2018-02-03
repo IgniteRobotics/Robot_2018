@@ -14,15 +14,15 @@ package org.usfirst.frc.team6829.robot;
  * floating around.
  */
 public class RobotMap {
-	
+
 	//Set hardware IDs
-	
+
 	public int leftFrontMotor = 1;
 	public int leftRearMotor = 2;	
 	public int rightFrontMotor = 4;
 	public int rightRearMotor = 5;
-	
+
 	public int intakeLeft = 3;
 	public int intakeRight = 6;
-	
+
 }

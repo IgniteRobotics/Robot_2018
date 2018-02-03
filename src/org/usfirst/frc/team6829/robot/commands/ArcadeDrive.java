@@ -14,13 +14,13 @@ public class ArcadeDrive extends Command {
 	private final int TURN_AXIS;
 	private final int SLOW_BUTTON;
 	private final double DEADBAND = 0.1;
-	
+
 	private DriveTrain driveTrain;
 	private Joystick driverJoystick;
 	private final ITransform transform;
 
 	public ArcadeDrive(DriveTrain driveTrain, ITransform transform, Joystick driverJoystick,  int throttleId, int turnId, int slowId) {
-		
+
 		this.THROTTLE_AXIS = throttleId;
 		this.TURN_AXIS = turnId;
 		this.SLOW_BUTTON = slowId;
@@ -44,7 +44,7 @@ public class ArcadeDrive extends Command {
 		double driverJoystickTurnAxis = driverJoystick.getRawAxis(TURN_AXIS);
 		double throttlePower = driverJoystickThrottleAxis; // no transforms yet
 		double turnPower = driverJoystickTurnAxis;
-	
+
 		//only temporary
 		if (driverJoystick.getRawButton(SLOW_BUTTON)) {
 			throttlePower = throttlePower * 0.75;

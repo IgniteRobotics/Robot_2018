@@ -14,16 +14,16 @@ import edu.wpi.first.wpilibj.Joystick;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	
+
 	/**
 	 * 
 	 * TODO Some of these mappings are incorrect or misleading
 	 * 
 	 */
-	
+
 	private final int DRIVER_JOYSTICK = 0;
 	private final int MANIPULATOR_JOYSTICK = 1;
-	
+
 	public final int BUTTON_A = 1;
 	public final int BUTTON_B = 2;
 	public final int BUTTON_X = 3;
@@ -41,7 +41,7 @@ public class OI {
 	public final int AXIS_RIGHT_TRIGGER = 3;
 	public final int AXIS_RIGHT_STICK_X = 4;
 	public final int AXIS_RIGHT_STICK_Y = 5;
-	
+
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
 	public Joystick operatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 

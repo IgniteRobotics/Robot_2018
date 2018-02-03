@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -108,14 +107,22 @@ public class DriveTrain extends Subsystem {
 		rightMaster.set(ControlMode.PercentOutput, limit(power));
 	}
 	
-	public int readLeftEncoderPosition() {
+	public int getLeftEncoderPosition() {
 		return leftMaster.getSensorCollection().getQuadraturePosition();
 	}
 
-	public int readRightEncoderPosition() {
+	public int getRightEncoderPosition() {
 		return rightMaster.getSensorCollection().getQuadraturePosition();
 	}
+	
+	public int getLeftEncoderVelocity() {
+		return leftMaster.getSensorCollection().getQuadratureVelocity();
+	}
 
+	public int getRightEncoderVelocity() {
+		return rightMaster.getSensorCollection().getQuadratureVelocity();
+	}
+	
 	public void stop() {
 		leftMaster.setNeutralMode(NeutralMode.Brake);
 		rightMaster.setNeutralMode(NeutralMode.Brake);
