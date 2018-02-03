@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
 	public static TrajectoryLoader trajectoryLoader;
+	
+	public static Command goStraightAuton;
 
 	public static Logger logger;
 	public static LoggerParameters loggerParameters;
@@ -69,7 +71,7 @@ public class Robot extends TimedRobot {
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 		
-		trajectoryLoader.goStraightAuton.start();
+		goStraightAuton.start();
 
 	}
 	/**
@@ -89,8 +91,8 @@ public class Robot extends TimedRobot {
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
-		if (trajectoryLoader.goStraightAuton != null) {
-			trajectoryLoader.goStraightAuton.cancel();
+		if (goStraightAuton != null) {
+			goStraightAuton.cancel();
 
 		}
 

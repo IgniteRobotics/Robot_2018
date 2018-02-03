@@ -34,10 +34,10 @@ public class PathFollower extends Command {
 	protected void execute() {
 		trajectoryController.followTrajectory();
 
-		int encoderPositionRight = driveTrain.getRightEncoderPosition();
-		int encoderPositionLeft = driveTrain.getLeftEncoderPosition();
-		double gyroHeading = driveTrain.getAngle();
-
+//		int encoderPositionRight = driveTrain.getRightEncoderPosition();
+//		int encoderPositionLeft = driveTrain.getLeftEncoderPosition();
+//		double gyroHeading = driveTrain.getAngle();
+//
 //		System.out.println("RightEnc: " + encoderPositionRight + "LeftEnc: " + encoderPositionLeft + "heading: " + gyroHeading);
 
 	}
