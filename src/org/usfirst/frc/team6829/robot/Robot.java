@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 	public static OI oi = new OI();
 	public static RobotMap robotMap = new RobotMap();
 	
-	public static Dumper dumper = new Dumper();
+	public static Dumper dumper;
 	public static Shooter shooter = new Shooter();
 	public static Intake intake = new Intake();
 	
@@ -203,6 +203,7 @@ public class Robot extends TimedRobot {
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
+		dumper = new Dumper(robotMap.dumperMotor);
 	}
 	
 }

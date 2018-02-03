@@ -24,13 +24,9 @@ public class RobotMap {
 	public int rightFrontMotor = 4;
 	public int rightRearMotor = 5;
 	
-	public static TalonSRX dumperMotor;
+	public int dumperMotor = 3; // TODO get proper CAN ID
 
 	// TODO add intake motors 
-	
-	public static void init() {
-		
-		dumperMotor = new TalonSRX(6);              // TODO Check if proper motor
-	}
+
 		
 }

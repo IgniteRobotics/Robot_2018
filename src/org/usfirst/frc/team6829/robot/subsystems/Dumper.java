@@ -13,18 +13,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Dumper extends Subsystem {
 
-	TalonSRX dumperMotor = RobotMap.dumperMotor;
+	private TalonSRX dumperMotor;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+	public Dumper(int dumperMotorID) {
+		dumperMotor = new TalonSRX(dumperMotorID);
+	}
+	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new DumpCube());
     }
     
     public void setDumperMotorPower(double power) {
-    	dumperMotor.set(ControlMode.PercentOutput,Math.abs(power));                            //TODO: Double check if PercentOutput is correct
+    	dumperMotor.set(ControlMode.PercentOutput,Math.abs(power));                            // TODO: Double check if PercentOutput is correct
     }
     
     public TalonSRX getDumperMotor() {
