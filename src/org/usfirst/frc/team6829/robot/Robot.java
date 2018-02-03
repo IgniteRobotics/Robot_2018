@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -36,18 +39,21 @@ public class Robot extends TimedRobot {
 	public static ITransform arcadeDriveTransform;
 	public static Command arcadeDrive;
 	public static TrajectoryLoader trajectoryLoader;
+	public static GameStateReader gameStateReader;
 	
 	public static Command goStraightAuton;
-
+	public static Command autonCommand;
+	
 	public static Logger logger;
 	public static LoggerParameters loggerParameters;
-
 
 	@Override
 	public void robotInit() {
 
 		initializeAll();
-
+		
+		gameStateReader.setRobotPosition();
+		
 	}
 
 	@Override
@@ -67,12 +73,13 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		
+		autonCommand = gameStateReader.gameStateReader(autonMap());
+		autonCommand.start();
 		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 		
-		goStraightAuton.start();
-
 	}
 	/**
 	 * This function is called periodically during autonomous.
@@ -91,8 +98,8 @@ public class Robot extends TimedRobot {
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
-		if (goStraightAuton != null) {
-			goStraightAuton.cancel();
+		if (autonCommand != null) {
+			autonCommand.cancel();
 
 		}
 
@@ -133,5 +140,19 @@ public class Robot extends TimedRobot {
 
 		trajectoryLoader = new TrajectoryLoader(driveTrain);
 		trajectoryLoader.intializePathCommands();
+		
+		gameStateReader = new GameStateReader();
+		
+	}
+	
+	
+	public static Map<String, Command> autonMap() {
+		
+		Map<String, Command> autonCommands = new HashMap<String, Command>();
+		
+		autonCommands.put("Go Straight", goStraightAuton);
+		
+		return autonCommands;
+
 	}
 }
