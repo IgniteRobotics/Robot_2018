@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
 		
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-		trajectoryController.resetFollowers();
+//		trajectoryController.resetFollowers();
 	}
 
 	@Override

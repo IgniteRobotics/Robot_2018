@@ -35,6 +35,7 @@ public class PathFollower extends Command {
 		
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
+		//trajectoryController.resetFollowers();
 
 		trajectoryController.configureFollow(csvLeft, csvRight);
 		
@@ -70,5 +71,8 @@ public class PathFollower extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-	}
+		
+		end();
+		
+}
 }

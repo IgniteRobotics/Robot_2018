@@ -36,8 +36,8 @@ public class DriveTrain extends Subsystem {
 
 		leftMaster.setInverted(true);
 		leftFollower.setInverted(true);
-		rightMaster.setInverted(true);
-		rightFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
 		
 		leftFollower.set(ControlMode.Follower, leftMasterCanId);
 		rightFollower.set(ControlMode.Follower, rightMasterCanId);
@@ -96,7 +96,7 @@ public class DriveTrain extends Subsystem {
 		turnPower = applyDeadband(turnPower, deadband); // set rotate deadband here
 
 		leftMaster.set(ControlMode.PercentOutput, leftMotorOutput);
-		rightMaster.set(ControlMode.PercentOutput, -rightMotorOutput);
+		rightMaster.set(ControlMode.PercentOutput, rightMotorOutput);
 
 	}
 
@@ -136,7 +136,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public double getAngle() {
-		return navX.getFusedHeading();
+		return navX.getAngle();
 	}
 	
 	public void zeroAngle() {

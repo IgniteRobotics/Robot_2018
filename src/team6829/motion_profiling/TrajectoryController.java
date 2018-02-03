@@ -13,7 +13,7 @@ public class TrajectoryController {
 	
 	private DriveTrain driveTrain;
 
-	private static final int TICKS_PER_REVOLUTION = 4096; // need to verify, may be 2048
+	private static final int TICKS_PER_REVOLUTION = 2048; // need to verify, may be 2048
 	private static final int WHEEL_DIAMETER = 6; // need to determine empirically
 
 	private static final double LEFT_KP = 0;
@@ -67,7 +67,7 @@ public class TrajectoryController {
 		double angleError = Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);
 		double turn = 0.8 * (-1.0 / 80.0) * angleError;
 
-		driveTrain.setLeftDrivePower(-(l + turn));
+		driveTrain.setLeftDrivePower(l + turn);
 		driveTrain.setRightDrivePower(r - turn);
 
 	}
