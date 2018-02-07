@@ -20,8 +20,8 @@ import team6829.common.DriveTrain;
 import team6829.common.LoggerParameters;
 import team6829.common.Logger;
 import team6829.common.transforms.ITransform;
-
 import team6829.common.transforms.SquaredInputTransform;
+import team6829.common.transforms.ZeroTransform;
 import team6829.motion_profiling.TrajectoryLoader;
 
 
@@ -121,7 +121,6 @@ public class Robot extends TimedRobot {
 		
 		logger.writeData(loggerParameters.returnValues());
 
-
 	}
 
 	/**
@@ -136,7 +135,7 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
-		arcadeDriveTransform = new SquaredInputTransform();
+		arcadeDriveTransform = new ZeroTransform();//SquaredInputTransform();
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
 		driveTrain.setCommandDefault(arcadeDrive);
