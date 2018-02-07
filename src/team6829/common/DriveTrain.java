@@ -44,8 +44,8 @@ public class DriveTrain extends Subsystem {
 		leftMaster.setSensorPhase(false);
 		rightMaster.setSensorPhase(true);
 
-//		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
-//		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		
 		navX = new AHRS(SPI.Port.kMXP);
 
@@ -107,6 +107,11 @@ public class DriveTrain extends Subsystem {
 		rightMaster.set(ControlMode.PercentOutput, limit(power));
 	}
 	
+	public void setLeftRightDrivePower(double leftPower, double rightPower) {
+		setLeftDrivePower(leftPower);
+		setRightDrivePower(rightPower);
+	}
+	
 	public int getLeftEncoderPosition() {
 		return leftMaster.getSensorCollection().getQuadraturePosition() / 4;
 	}
@@ -121,6 +126,14 @@ public class DriveTrain extends Subsystem {
 
 	public int getRightEncoderVelocity() {
 		return rightMaster.getSensorCollection().getQuadratureVelocity() / 4;
+	}
+	
+	public double getLeftVoltage() {
+		return leftMaster.getMotorOutputVoltage();
+	}
+	
+	public double getRightVoltage() {
+		return rightMaster.getMotorOutputVoltage();
 	}
 	
 	public void stop() {

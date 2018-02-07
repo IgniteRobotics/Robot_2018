@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization;
+import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization.TestMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -42,7 +44,9 @@ public class Robot extends TimedRobot {
 	public static TrajectoryLoader trajectoryLoader;
 	public static GameStateReader gameStateReader;
 	
+	public static Command driveTrainCharacterization;
 	public static Command goStraightAuton;
+	
 	public static Command autonCommand;
 	
 	public static Logger logger;
@@ -147,6 +151,7 @@ public class Robot extends TimedRobot {
 		
 		gameStateReader = new GameStateReader();
 		
+		driveTrainCharacterization = new DrivetrainCharacterization(TestMode.STEP_VOLTAGE, 10, driveTrain);
 	}
 	
 	
