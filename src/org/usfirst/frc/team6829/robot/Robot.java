@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 	public static Command arcadeDrive;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	boolean LeftPositionAuto;
 	boolean MiddlePositionAuto;
@@ -57,13 +57,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		//m_chooser.addDefault("Left Position Auto", null);
-		//m_chooser.addObject("Right Position Auto", null);
-		//SmartDashboard.putData("Auto mode", m_chooser);
+		m_chooser.addDefault("Left Position Auto", "Left Position");
+		m_chooser.addObject("Middle Position Auto", "Middle Position");		
+		m_chooser.addObject("Right Position Auto", "Right Position");
+		SmartDashboard.putData("Auto mode", m_chooser);
 			
-		SmartDashboard.putBoolean("Left Position Auto", false);
-		SmartDashboard.putBoolean("Middle Position Auto", false);
-		SmartDashboard.putBoolean("Right Position Auto", false);
+//		SmartDashboard.putBoolean("Left Position Auto", false);
+//		SmartDashboard.putBoolean("Middle Position Auto", false);
+//		SmartDashboard.putBoolean("Right Position Auto", false);
 		
 		initializeAll();
 		
@@ -97,23 +98,23 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//m_autonomousCommand = m_chooser.getSelected();
+		String selectedAuto = m_chooser.getSelected();
 
-		LeftPositionAuto = SmartDashboard.getBoolean("Left Position Auto", false);
-		MiddlePositionAuto = SmartDashboard.getBoolean("Middle Position Auto", false);
-		RightPositionAuto = SmartDashboard.getBoolean("Right Position Auto", false);
+//		LeftPositionAuto = SmartDashboard.getBoolean("Left Position Auto", false);
+//		MiddlePositionAuto = SmartDashboard.getBoolean("Middle Position Auto", false);
+//		RightPositionAuto = SmartDashboard.getBoolean("Right Position Auto", false);
 		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println(gameData);
 		
-		if (LeftPositionAuto) {
+		if (m_chooser.getSelected() == ("Left Position")) {
 			System.out.println("Left Auto");  
 		}
-		if (MiddlePositionAuto) {
+		if (m_chooser.getSelected() == ("Middle Position")) {
 			System.out.println("Middle Auto");  
 		} 
-		if (RightPositionAuto) {
+		if (m_chooser.getSelected() == ("Right Position")) {
 			System.out.println("Right Auto");  
 		}
 		
@@ -124,25 +125,25 @@ public class Robot extends TimedRobot {
 		}
 		
 		// Left Switch && Positioned Left 
-		if(gameData.charAt(0) == 'L' && LeftPositionAuto) {
+		if(gameData.charAt(0) == 'L' && m_chooser.getSelected() == ("Left Position")) {
 			 	// TODO: Put left-switch auto code here
 			System.out.println("Forwards (s-left)");
 		}
 		
 		// Right Switch && Positioned Left
-		if (gameData.charAt(0) == 'R' && LeftPositionAuto) { 
+		if (gameData.charAt(0) == 'R' && m_chooser.getSelected() == ("Left Position")) { 
 			 	// TODO: Put right-switch auto code here
 			System.out.println("Either Turn and go forwards or Loop around switch (s-right)");
 		}
 		
 		// Left Switch && Positioned Right
-		if (gameData.charAt(0) == 'L' && RightPositionAuto) {
+		if (gameData.charAt(0) == 'L' && m_chooser.getSelected() == ("Right Position")) {
 			 	// TODO: Put right-switch auto code here
 			System.out.println("Either Turn and go forwards or Loop around switch (s-left)");
 		}
 		
 		// Right Switch && Positioned Right
-		if (gameData.charAt(0) == 'R' && RightPositionAuto) {
+		if (gameData.charAt(0) == 'R' && m_chooser.getSelected() == ("Right Position")) {
 			// TODO: Put right-switch auto code here
 			System.out.println("Forwards (s-right)");
 		}
