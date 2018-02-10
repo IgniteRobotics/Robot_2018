@@ -30,12 +30,7 @@ public class RobotMap {
 		
 	// TODO: Double check wiring/channels (they often change)
 	// Pneumatics
-	public static int solenoid_0 = 0;
-	public static int solenoid_1 = 1; // Intake
-	public static int solenoid_2 = 2;
-	public static int solenoid_3 = 3;
-	public static int solenoid_4 = 4; 
-	public static int solenoid_5 = 5;
-	public static int solenoid_6 = 6;
-	public static int solenoid_7 = 7;
+	public int[] solenoidIDs = new int[] {0, 1, 2, 3, 4, 5, 6, 7};
+	//public static int solenoid_1 = 1; // Intake
+	
 }

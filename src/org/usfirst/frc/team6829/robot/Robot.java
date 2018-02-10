@@ -204,7 +204,7 @@ public class Robot extends TimedRobot {
 		
 		dumper = new Dumper(robotMap.dumperMotor);
 		
-		shooter = new Shooter(robotMap.shooterID);
+		shooter = new Shooter(robotMap.shooterID, robotMap.solenoidIDs);
 		
 		intake = new Intake(robotMap.intakeID);
 		

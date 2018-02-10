@@ -33,16 +33,16 @@ public class Shooter extends Subsystem {
 	
 	private Command defaultCommand;
 
-	public Shooter(int pdpID) {
+	public Shooter(int pdpID, int[] solenoidIDs) {
 		
-		solenoid_0 = new Solenoid(pdpID, RobotMap.solenoid_0);
+		solenoid_0 = new Solenoid(pdpID, solenoidIDs[0]);
 		//solenoid_1 = new Solenoid(actuatorID, RobotMap.solenoid_1);
-		solenoid_2 = new Solenoid(pdpID, RobotMap.solenoid_2);
-		solenoid_3 = new Solenoid(pdpID, RobotMap.solenoid_3);
-		solenoid_4 = new Solenoid(pdpID, RobotMap.solenoid_4);
-		solenoid_5 = new Solenoid(pdpID, RobotMap.solenoid_5);
-		solenoid_6 = new Solenoid(pdpID, RobotMap.solenoid_6);
-		solenoid_7 = new Solenoid(pdpID, RobotMap.solenoid_7);
+		solenoid_2 = new Solenoid(pdpID, solenoidIDs[2]);
+		solenoid_3 = new Solenoid(pdpID, solenoidIDs[3]);
+		solenoid_4 = new Solenoid(pdpID, solenoidIDs[4]);
+		solenoid_5 = new Solenoid(pdpID, solenoidIDs[5]);
+		solenoid_6 = new Solenoid(pdpID, solenoidIDs[6]);
+		solenoid_7 = new Solenoid(pdpID, solenoidIDs[7]);
 		
 		solenoid_0Enabled = solenoid_0.get();
 		//solenoid_1Enabled = solenoid_1.get();

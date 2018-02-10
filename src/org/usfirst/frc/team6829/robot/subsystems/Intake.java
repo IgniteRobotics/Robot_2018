@@ -16,12 +16,11 @@ public class Intake extends Subsystem {
 
 	private Command defaultCommand;
 	
-	//private Solenoid solenoid_1;
-	//public boolean solenoid_1Enabled;
+	
 	
 	
 	public Intake(int intakeID) {
-		//solenoid_1 = new Solenoid(RobotMap.shooterID, RobotMap.solenoid_1);
+		
 	}
 	
 	public void setDefaultCommand(Command command) {
