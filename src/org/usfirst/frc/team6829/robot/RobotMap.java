@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6829.robot;
 
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -27,4 +28,14 @@ public class RobotMap {
 	public int shooterID = 0; 
 	public int intakeID = 0;
 		
+	// TODO: Double check wiring/channels (they often change)
+	// Pneumatics
+	public static int solenoid_0 = 0;
+	public static int solenoid_1 = 1; // Intake
+	public static int solenoid_2 = 2;
+	public static int solenoid_3 = 3;
+	public static int solenoid_4 = 4; 
+	public static int solenoid_5 = 5;
+	public static int solenoid_6 = 6;
+	public static int solenoid_7 = 7;
 }

@@ -1,5 +1,8 @@
 package org.usfirst.frc.team6829.robot.subsystems;
 
+import org.usfirst.frc.team6829.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -13,8 +16,12 @@ public class Intake extends Subsystem {
 
 	private Command defaultCommand;
 	
+	//private Solenoid solenoid_1;
+	//public boolean solenoid_1Enabled;
+	
+	
 	public Intake(int intakeID) {
-		
+		//solenoid_1 = new Solenoid(RobotMap.shooterID, RobotMap.solenoid_1);
 	}
 	
 	public void setDefaultCommand(Command command) {
@@ -58,6 +65,7 @@ public class Intake extends Subsystem {
     }
     
     public void stopAll() {
+    	//solenoid_1.set(false);
     	stopRollers();
     	stopClaw();
     	stopHinge();
