@@ -108,13 +108,13 @@ public class Robot extends TimedRobot {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println(gameData);
 		
-		if (m_chooser.getSelected() == ("Left Position")) {
+		if (selectedAuto == ("Left Position")) {
 			System.out.println("Left Auto");  
 		}
-		if (m_chooser.getSelected() == ("Middle Position")) {
+		if (selectedAuto == ("Middle Position")) {
 			System.out.println("Middle Auto");  
 		} 
-		if (m_chooser.getSelected() == ("Right Position")) {
+		if (selectedAuto == ("Right Position")) {
 			System.out.println("Right Auto");  
 		}
 		
@@ -125,26 +125,26 @@ public class Robot extends TimedRobot {
 		}
 		
 		// Left Switch && Positioned Left 
-		if(gameData.charAt(0) == 'L' && m_chooser.getSelected() == ("Left Position")) {
+		if(gameData.charAt(0) == 'L' && selectedAuto == ("Left Position")) {
 			 	// TODO: Put left-switch auto code here
 			System.out.println("Forwards (s-left)");
 		}
 		
 		// Right Switch && Positioned Left
-		if (gameData.charAt(0) == 'R' && m_chooser.getSelected() == ("Left Position")) { 
+		if (gameData.charAt(0) == 'R' && selectedAuto == ("Left Position")) { 
 			 	// TODO: Put right-switch auto code here
 			System.out.println("Either Turn and go forwards or Loop around switch (s-right)");
 		}
 		
 		// Left Switch && Positioned Right
-		if (gameData.charAt(0) == 'L' && m_chooser.getSelected() == ("Right Position")) {
+		if (gameData.charAt(0) == 'L' && selectedAuto == ("Right Position")) {
 			 	// TODO: Put right-switch auto code here
 			System.out.println("Either Turn and go forwards or Loop around switch (s-left)");
 		}
 		
 		// Right Switch && Positioned Right
-		if (gameData.charAt(0) == 'R' && m_chooser.getSelected() == ("Right Position")) {
-			// TODO: Put right-switch auto code here
+		if (gameData.charAt(0) == 'R' && selectedAuto == ("Right Position")) {
+				// TODO: Put right-switch auto code here
 			System.out.println("Forwards (s-right)");
 		}
 
