@@ -26,8 +26,9 @@ public class DumpCube extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	// Simple executable code for the dumper
-    	dumper.setDumperMotorPower(POWER);
+
+    	dumper.setPercentOutput(POWER);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
