@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
 import java.io.BufferedWriter;
 
 
@@ -28,7 +29,7 @@ public class Logger {
 	 * @return 0 on successful log open, -1 on failure
 	 */
 	public int init(String[] data_fields, String[] units_fields) {
-
+		
 		if (log_open) {
 			System.out.println("Warning - log is already open!");
 			return 0;
@@ -176,7 +177,7 @@ public class Logger {
 
 	private String getDateTimeString() {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
-		df.setTimeZone(TimeZone.getTimeZone("US/Central"));
+		df.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return df.format(new Date());
 	}
 

@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import team6829.common.transforms.ITransform;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -21,32 +21,33 @@ public class DriveTrain extends Subsystem {
 	private Command defaultCommand;
 
 	private WPI_TalonSRX leftMaster;
-	private WPI_TalonSRX leftFollower;
+	private WPI_VictorSPX leftFollower;
 	private WPI_TalonSRX rightMaster;
-	private WPI_TalonSRX rightFollower;
+	private WPI_VictorSPX rightFollower;
+
 	private AHRS navX;
-	
+
 	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId) {
 
 		leftMaster = new WPI_TalonSRX(leftMasterCanId);
-		leftFollower = new WPI_TalonSRX(leftFollowerCanId);
+		leftFollower = new WPI_VictorSPX(leftFollowerCanId);
 		rightMaster = new WPI_TalonSRX(rightMasterCanId);
-		rightFollower = new WPI_TalonSRX(rightFollowerCanId);
+		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
 
 		leftMaster.setInverted(true);
 		leftFollower.setInverted(true);
 		rightMaster.setInverted(false);
 		rightFollower.setInverted(false);
-		
-		leftFollower.set(ControlMode.Follower, leftMasterCanId);
-		rightFollower.set(ControlMode.Follower, rightMasterCanId);
-		
+
+		leftFollower.follow(leftMaster);
+		rightFollower.follow(rightMaster);
+
 		leftMaster.setSensorPhase(false);
 		rightMaster.setSensorPhase(true);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
-		
+
 		navX = new AHRS(SPI.Port.kMXP);
 
 	}
@@ -106,12 +107,12 @@ public class DriveTrain extends Subsystem {
 	public void setRightDrivePower(double power) {
 		rightMaster.set(ControlMode.PercentOutput, limit(power));
 	}
-	
+
 	public void setLeftRightDrivePower(double leftPower, double rightPower) {
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}
-	
+
 	public int getLeftEncoderPosition() {
 		return leftMaster.getSensorCollection().getQuadraturePosition() / 4;
 	}
@@ -119,7 +120,7 @@ public class DriveTrain extends Subsystem {
 	public int getRightEncoderPosition() {
 		return rightMaster.getSensorCollection().getQuadraturePosition() / 4;
 	}
-	
+
 	public int getLeftEncoderVelocity() {
 		return leftMaster.getSensorCollection().getQuadratureVelocity() / 4;
 	}
@@ -127,18 +128,20 @@ public class DriveTrain extends Subsystem {
 	public int getRightEncoderVelocity() {
 		return rightMaster.getSensorCollection().getQuadratureVelocity() / 4;
 	}
-	
+
 	public double getLeftVoltage() {
 		return leftMaster.getMotorOutputVoltage();
 	}
-	
+
 	public double getRightVoltage() {
 		return rightMaster.getMotorOutputVoltage();
 	}
-	
+
 	public void stop() {
-		leftMaster.setNeutralMode(NeutralMode.Brake);
-		rightMaster.setNeutralMode(NeutralMode.Brake);
+
+		leftMaster.stopMotor();
+		rightMaster.stopMotor();
+
 	}
 
 	public TalonSRX getRightMaster() {
@@ -148,25 +151,25 @@ public class DriveTrain extends Subsystem {
 	public TalonSRX getLeftMaster() {
 		return leftMaster;
 	}
-	
+
 	public void zeroEncoders() {
 		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
 		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
 
 	}
-	
+
 	public double getAngle() {
 		return navX.getAngle();
 	}
-	
+
 	public void zeroAngle() {
 		navX.zeroYaw();
 	}
-	
+
 	public boolean isCalibrating() {
 		return navX.isCalibrating();
 	}
-	
+
 	public boolean isConnected() {
 		return navX.isConnected();
 	}

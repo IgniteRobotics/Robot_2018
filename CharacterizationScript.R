@@ -5,9 +5,9 @@ smoothDerivative <- function(value, timeMillis, n){
   return(c(rep(0, ceiling(n/2)), smoothed, rep(0, floor(n/2))));
 }
 
-characterize <- function(velFile, accelFile, smoothing = 2){
-  vel <- read.csv(file="insert path here", header=TRUE, sep=",")
-  accel <- read.csv(file="insert path here", header=TRUE, sep=",")
+characterize <- function(smoothing = 2){
+  vel <- read.csv(file="c:\vel", header=TRUE, sep=",")
+  accel <- read.csv(file="c:\accel", header=TRUE, sep=",")
   goodVel <- subset(vel, abs(Drive.left_vel) > 0.1 & Drive.left_voltage!=0 & abs(Drive.right_vel) > 0.1 & Drive.right_voltage!=0)
   goodVel$left_accel <- smoothDerivative(goodVel$Drive.left_vel, goodVel$time, smoothing)
   goodVel$right_accel <- smoothDerivative(goodVel$Drive.right_vel, goodVel$time, smoothing)
@@ -31,4 +31,7 @@ characterize <- function(velFile, accelFile, smoothing = 2){
   print(summary(rightModel))
 }
 
-characterize()
+f <- characterize()
+
+f
+

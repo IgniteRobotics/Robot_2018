@@ -7,23 +7,27 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization;
+import org.usfirst.frc.team6829.robot.commands.PathFollower;
 import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization.TestMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 import team6829.common.LoggerParameters;
 import team6829.common.Logger;
 import team6829.common.transforms.ITransform;
+import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
-import team6829.motion_profiling.TrajectoryLoader;
 
 
 /**
@@ -39,30 +43,35 @@ public class Robot extends TimedRobot {
 	public static RobotMap robotMap = new RobotMap();
 
 	public static DriveTrain driveTrain;
+
 	public static ITransform arcadeDriveTransform;
+	public static ITransform slowTransform;
+
 	public static Command arcadeDrive;
-	public static TrajectoryLoader trajectoryLoader;
-	public static GameStateReader gameStateReader;
-	
 	public static Command driveTrainCharacterization;
 	public static Command goStraightAuton;
-	
-	public static Command autonCommand;
-	
+
+	public static Command autonCommandToRun;
+
+	public static GameStateReader gameStateReader;
+
 	public static Logger logger;
 	public static LoggerParameters loggerParameters;
+
 
 	@Override
 	public void robotInit() {
 
 		initializeAll();
-		
+		checkNavX();
+
 		gameStateReader.setRobotPosition();
-		
+
 	}
 
 	@Override
 	public void disabledInit() {
+		checkNavX();
 
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
@@ -71,24 +80,26 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		
+		checkNavX();
+
 		Scheduler.getInstance().run();
 
 	}
 
 	@Override
 	public void autonomousInit() {
-		
-		autonCommand = gameStateReader.gameStateReader(autonMap());
+		checkNavX();
+
+		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		try {
-			autonCommand.start();	
+			autonCommandToRun.start();	
 		} catch (NullPointerException e) {
-			DriverStation.reportError("No Autonomous selected" + e.getMessage(), true);
+			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
 		}
 		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-		
+
 	}
 	/**
 	 * This function is called periodically during autonomous.
@@ -96,19 +107,23 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
+		checkNavX();
+
 		logger.writeData(loggerParameters.returnValues());
-		
+
 		Scheduler.getInstance().run();
 
 	}
 
 	@Override
 	public void teleopInit() {
-		
+
+		checkNavX();
+
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
-		if (autonCommand != null) {
-			autonCommand.cancel();
+		if (autonCommandToRun != null) {
+			autonCommandToRun.cancel();
 
 		}
 
@@ -119,10 +134,12 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
+
 		Scheduler.getInstance().run();
-		
+
 		logger.writeData(loggerParameters.returnValues());
+
+		checkNavX();
 
 	}
 
@@ -138,30 +155,69 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
+
 		arcadeDriveTransform = new SquaredInputTransform();
+		slowTransform = new SlowTransform();
+
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER);
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
-		
+
 		loggerParameters = new LoggerParameters(driveTrain);
 		logger = new Logger();
 
-		trajectoryLoader = new TrajectoryLoader(driveTrain);
-		trajectoryLoader.intializePathCommands();
-		
+		intializePathCommands();
+
 		gameStateReader = new GameStateReader();
-		
+
 		driveTrainCharacterization = new DrivetrainCharacterization(TestMode.STEP_VOLTAGE, 10, driveTrain);
 	}
-	
-	
+
+
+
 	public static Map<String, Command> autonMap() {
-		
+
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
-		
+
 		autonCommands.put("Go Straight", goStraightAuton);
-		
+
 		return autonCommands;
 
 	}
+
+	private File R_GoStraightAuton;
+	private File L_GoStraightAuton;	
+
+	//Import all of our trajectories from the RoboRIO
+	private void importTrajectories() throws FileNotFoundException {
+
+		R_GoStraightAuton = new File("/home/lvuser/GoStraight_right_detailed.csv");
+		L_GoStraightAuton = new File("/home/lvuser/GoStraight_left_detailed.csv");
+
+	}
+
+	private void checkNavX() {
+		boolean isNavXCalibrating = driveTrain.isCalibrating();
+		boolean isNavXConnected = driveTrain.isConnected();
+
+		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
+		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
+	}
+
+	public void intializePathCommands(){
+
+		try {
+
+			importTrajectories();
+
+			//assign paths to commands here
+			goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton);
+
+		} catch (FileNotFoundException e) {
+
+			DriverStation.reportError("Could not find trajectory!!! " + e.getMessage(), true);
+
+		}
+	}
+
 }

@@ -11,8 +11,8 @@ public class TrajectoryController {
 
 	private DriveTrain driveTrain;
 
-	private static final int TICKS_PER_REVOLUTION = 2048; // need to verify, may be 2048
-	private static final int WHEEL_DIAMETER = 6; // need to determine empirically
+	private static final int TICKS_PER_REVOLUTION = 2048; 
+	private static final double WHEEL_DIAMETER = 0.5; //in feet
 
 	private static final double LEFT_KP = 0;
 	private static final double LEFT_KI = 0; // not used
