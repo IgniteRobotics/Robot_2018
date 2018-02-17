@@ -39,7 +39,7 @@ import team6829.common.transforms.SquaredInputTransform;
  */
 public class Robot extends TimedRobot {
 
-	public static OI oi = new OI();
+	public static OI oi;
 	public static RobotMap robotMap = new RobotMap();
 
 	public static DriveTrain driveTrain;
@@ -58,10 +58,11 @@ public class Robot extends TimedRobot {
 	public static Logger logger;
 	public static LoggerParameters loggerParameters;
 
+	Command m_autonomousCommand;
+	SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
-
 		initializeAll();
 		checkNavX();
 
@@ -171,6 +172,16 @@ public class Robot extends TimedRobot {
 		gameStateReader = new GameStateReader();
 
 		driveTrainCharacterization = new DrivetrainCharacterization(TestMode.STEP_VOLTAGE, 10, driveTrain);
+		
+		
+		dumper = new Dumper(robotMap.dumperMotor);
+		
+		shooter = new Shooter(robotMap.shooterID, robotMap.solenoidIDs);
+		
+		intake = new Intake(robotMap.intakeID);
+		
+		oi = new OI(driveTrain, dumper, intake, shooter);
+		
 	}
 
 
