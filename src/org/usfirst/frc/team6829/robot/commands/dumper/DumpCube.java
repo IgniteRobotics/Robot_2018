@@ -1,7 +1,5 @@
 package org.usfirst.frc.team6829.robot.commands.dumper;
 
-import org.usfirst.frc.team6829.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team6829.robot.subsystems.*;
 
@@ -9,11 +7,14 @@ import org.usfirst.frc.team6829.robot.subsystems.*;
  *
  */
 public class DumpCube extends Command {
-	// TODO When actually testing, check to see if motor spins the proper way 
-	public static final double POWER = 0.1; // 10% for safety testing
+	
 	private Dumper dumper;
 	
-	
+	private static final double POWER = .75;
+	private static final double SETPOINT = 1000;
+	private static final double HOME_SETPOINT = 0;
+	private static final double TOLERANCE = 10;
+
     public DumpCube(Dumper dumper) {
         // Use requires() here to declare subsystem dependencies
     	this.dumper = dumper;
@@ -22,12 +23,14 @@ public class DumpCube extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	
+    	dumper.moveToEncoderSetpoint(POWER, SETPOINT, TOLERANCE);
+    	dumper.moveToEncoderSetpoint(POWER, HOME_SETPOINT, TOLERANCE);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
-    	dumper.setPercentOutput(POWER);
     	
     }
 
@@ -38,7 +41,7 @@ public class DumpCube extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.dumper.stop();
+    	dumper.stop();
     }
 
     // Called when another command which requires one or more of the same
