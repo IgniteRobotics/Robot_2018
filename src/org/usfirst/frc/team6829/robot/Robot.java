@@ -166,9 +166,12 @@ public class Robot extends TimedRobot {
 		
 		dumper = new Dumper(robotMap.dumperMotor);
 		
-		shooter = new Shooter(robotMap.shooterPCMID, robotMap.solenoidIDs);
+		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new Intake(robotMap.intakeLiftMotor);
+		intake = new Intake(robotMap.PCMID, robotMap.leftIntakeArmForward, robotMap.leftIntakeArmReverse,
+				robotMap.rightIntakeArmForward, robotMap.rightIntakeArmReverse,
+				robotMap.intakeLiftMotor,
+				robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		
 		oi = new OI(driveTrain, dumper, intake, shooter);
 		
