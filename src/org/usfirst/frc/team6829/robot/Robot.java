@@ -168,8 +168,7 @@ public class Robot extends TimedRobot {
 		
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new Intake(robotMap.PCMID, robotMap.leftIntakeArmForward, robotMap.leftIntakeArmReverse,
-				robotMap.rightIntakeArmForward, robotMap.rightIntakeArmReverse,
+		intake = new Intake(robotMap.PCMID, robotMap.intakeArm,
 				robotMap.intakeLiftMotor,
 				robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		

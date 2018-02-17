@@ -7,23 +7,27 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CloseIntake extends Command {
+public class raiseIntakeLift extends Command {
 
+	
 	private Intake intake;
-    public CloseIntake(Intake intake) {
+	private double power = 0.3;
+	
+	public raiseIntakeLift(Intake intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this.intake = intake;
-    	requires(this.intake);
+		
+		this.intake = intake;
+		requires(this.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	intake.closeClaw();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	intake.setLiftPower(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,7 +37,7 @@ public class CloseIntake extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	intake.stopClaw();
+    	intake.stopLift();
     }
 
     // Called when another command which requires one or more of the same

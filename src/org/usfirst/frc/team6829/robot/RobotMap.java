@@ -20,24 +20,20 @@ public class RobotMap {
 
 	// TODO: Set actual ports and stuff
 	public int leftFrontMotor = 5;
-	public int leftRearMotor = 1;	
+	public int leftRearMotor = 1;
 	public int rightFrontMotor = 7;
 	public int rightRearMotor = 3;
 
 	public int intakeLeftRoller = 6;
 	public int intakeRightRoller = 8;
 
-	public int intakeLiftMotor = 4;
+	public int intakeLiftMotor = 2;
 	
-	public int leftIntakeArmForward = 4;
-	public int leftIntakeArmReverse = 5;
-	
-	public int rightIntakeArmForward = 6;
-	public int rightIntakeArmReverse = 7;
+	public int intakeArm = 4;
 	
 	// TODO: Set actual ports and stuff
-	public int dumperMotor = 2;
-	public int PCMID = 0; 
+	public int dumperMotor = 4;
+	public int PCMID = 15; 
 	
 	
 		

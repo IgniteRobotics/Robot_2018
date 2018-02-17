@@ -21,8 +21,7 @@ public class Intake extends Subsystem {
 
 	private Command defaultCommand;
 	
-	private DoubleSolenoid leftArm;
-	private DoubleSolenoid rightArm;
+	private Solenoid intakeArm;
 	
 	private WPI_TalonSRX intakeLift;
 	
@@ -41,11 +40,10 @@ public class Intake extends Subsystem {
 	
 	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
 	
-	public Intake(int pdpID, int leftArmForward, int leftArmReverse, int rightArmForward, int rightArmReverse, int intakeLiftID,
+	public Intake(int pcmID, int intakeArmID, int intakeLiftID,
 			int leftRollerID, int rightRollerID) {
 		
-		leftArm = new DoubleSolenoid(pdpID, leftArmForward, leftArmReverse);
-		rightArm = new DoubleSolenoid(pdpID, rightArmForward, rightArmReverse);
+		intakeArm = new Solenoid(pcmID, intakeArmID);
 		
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
 		leftRoller = new WPI_VictorSPX(leftRollerID);
@@ -60,7 +58,7 @@ public class Intake extends Subsystem {
 		intakeLift.configNominalOutputReverse(0, 10);
 		
 		intakeLift.configPeakOutputForward(1, 10);
-		intakeLift.configPeakOutputReverse(1, 10);
+		intakeLift.configPeakOutputReverse(-1, 10);
 		
 		intakeLift.selectProfileSlot(0, 0);
 		intakeLift.config_kF(0, kF, 10);
@@ -88,22 +86,20 @@ public class Intake extends Subsystem {
     }
     
     public void openClaw() {
-    	leftArm.set(DoubleSolenoid.Value.kForward);
-    	rightArm.set(DoubleSolenoid.Value.kForward);
+    	intakeArm.set(true);
     }
     
     public void closeClaw() {
-    	leftArm.set(DoubleSolenoid.Value.kReverse);
-    	rightArm.set(DoubleSolenoid.Value.kReverse);
+    	intakeArm.set(false);
     }
     
     public void rollIn() {
-    	leftRoller.set(ControlMode.PercentOutput, flywheelSpeed);
+    	leftRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
     	rightRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
     }
     
     public void rollOut() {
-    	leftRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
+    	leftRoller.set(ControlMode.PercentOutput, flywheelSpeed);
     	rightRoller.set(ControlMode.PercentOutput, flywheelSpeed);
     }
     
@@ -113,8 +109,15 @@ public class Intake extends Subsystem {
     }
     
     public void stopClaw() {
-    	leftArm.set(DoubleSolenoid.Value.kOff);
-    	rightArm.set(DoubleSolenoid.Value.kOff);
+    	intakeArm.set(false);
+    }
+    
+    public void setLiftPower(double power) {
+    	intakeLift.set(ControlMode.PercentOutput, power);
+    }
+    
+    public void stopLift() {
+    	intakeLift.stopMotor();
     }
     
     public void moveIntakeLiftToSetpoint(double position) {
