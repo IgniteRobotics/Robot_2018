@@ -1,44 +1,47 @@
-package org.usfirst.frc.team6829.robot.commands.dumper;
+package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Dumper;
+import org.usfirst.frc.team6829.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ResetPosition extends Command {
-	
-	private Dumper dumper;
-	
-	public ResetPosition(Dumper dumper) {
-		this.dumper = dumper;
-		requires(this.dumper);
-	}
+public class RollerInTime extends Command {
 
+	private Intake intake;
+	
+    public RollerInTime(Intake intake, double timeOut) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	
+    	this.intake = intake;
+    	requires(this.intake);
+    	setTimeout(timeOut);
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
-    	
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	intake.rollIn();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	intake.stopRollers();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

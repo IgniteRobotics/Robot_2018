@@ -10,6 +10,7 @@ package org.usfirst.frc.team6829.robot;
 import org.usfirst.frc.team6829.robot.commands.dumper.DumpCube;
 import org.usfirst.frc.team6829.robot.commands.shooter.ResetShooter;
 import org.usfirst.frc.team6829.robot.commands.shooter.ShootCube;
+import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
 
 import org.usfirst.frc.team6829.robot.subsystems.*;
 
@@ -58,12 +59,13 @@ public class OI {
 	public Button dumperButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
 	public Button shootButton = new JoystickButton(manipulatorJoystick, BUTTON_B);
 	public Button intakeButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
-	
+	public Button burpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, Intake intake, Shooter shooter) {
 		dumperButton.whileHeld(new DumpCube(dumper));   
 		shootButton.whenPressed(new ShootCube(shooter));
 		shootButton.whenReleased(new ResetShooter(shooter));
+		burpButton.whenPressed(new BurpCube(dumper));
 		
 	}
 }

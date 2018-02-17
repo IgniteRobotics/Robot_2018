@@ -16,9 +16,7 @@ import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.Intake;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
-import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization;
 import org.usfirst.frc.team6829.robot.commands.PathFollower;
-import org.usfirst.frc.team6829.robot.commands.DrivetrainCharacterization.TestMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -55,9 +53,8 @@ public class Robot extends TimedRobot {
 	public static ITransform slowTransform;
 
 	public static Command arcadeDrive;
-	public static Command driveTrainCharacterization;
 	public static Command goStraightAuton;
-
+	
 	public static Command autonCommandToRun;
 
 	public static GameStateReader gameStateReader;
@@ -165,10 +162,7 @@ public class Robot extends TimedRobot {
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
 		intializePathCommands();
 
-		gameStateReader = new GameStateReader();
-
-		driveTrainCharacterization = new DrivetrainCharacterization(TestMode.STEP_VOLTAGE, 10, driveTrain);
-		
+		gameStateReader = new GameStateReader();		
 		
 		dumper = new Dumper(robotMap.dumperMotor);
 		
