@@ -24,18 +24,27 @@ public class RobotMap {
 	public int rightFrontMotor = 7;
 	public int rightRearMotor = 3;
 
-	public int intakeLeft = 6;
-	public int intakeRight = 8;
+	public int intakeLeftRoller = 6;
+	public int intakeRightRoller = 8;
 
+	public int intakeLiftMotor = 4;
+	
+	public int leftIntakeArmForward = 4;
+	public int leftIntakeArmReverse = 5;
+	
+	public int rightIntakeArmForward = 6;
+	public int rightIntakeArmReverse = 7;
 	
 	// TODO: Set actual ports and stuff
 	public int dumperMotor = 2;
-	public int shooterPCMID = 0; 
-	public int intakeLiftMotor = 4;
+	public int PCMID = 0; 
+	
+	
 		
 	// TODO: Double check wiring/channels (they often change)
 	// Pneumatics
-	public int[] solenoidIDs = new int[] {0, 1, 2, 3, 4, 5, 6, 7};
-	//public static int solenoid_1 = 1; // Intake
+	public int[] solenoidIDs = new int[] {0, 1, 2, 3};
+	
+	
 	
 }
