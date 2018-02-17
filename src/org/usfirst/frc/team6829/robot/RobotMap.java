@@ -19,19 +19,19 @@ public class RobotMap {
 	//Set hardware IDs
 
 	// TODO: Set actual ports and stuff
-	public int leftFrontMotor = 1;
-	public int leftRearMotor = 2;	
-	public int rightFrontMotor = 4;
-	public int rightRearMotor = 5;
+	public int leftFrontMotor = 5;
+	public int leftRearMotor = 1;	
+	public int rightFrontMotor = 7;
+	public int rightRearMotor = 3;
 
-	public int intakeLeft = 3;
-	public int intakeRight = 6;
+	public int intakeLeft = 6;
+	public int intakeRight = 8;
 
 	
 	// TODO: Set actual ports and stuff
-	public int dumperMotor = 6;
-	public int shooterID = 0; 
-	public int intakeID = 0;
+	public int dumperMotor = 2;
+	public int shooterPCMID = 0; 
+	public int intakeLiftMotor = 4;
 		
 	// TODO: Double check wiring/channels (they often change)
 	// Pneumatics

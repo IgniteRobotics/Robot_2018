@@ -17,13 +17,11 @@ public class Intake extends Subsystem {
 	private Command defaultCommand;
 	
 	
-	
-	
 	public Intake(int intakeID) {
 		
 	}
 	
-	public void setDefaultCommand(Command command) {
+	public void setCommandDefault(Command command) {
 		this.defaultCommand = command;
 		initDefaultCommand();
 	}

@@ -162,18 +162,7 @@ public class Robot extends TimedRobot {
 
 	private void initializeAll() {
 
-		driveTrain = new DriveTrain(robotMap.leftFrontMotor, robotMap.leftRearMotor, robotMap.rightFrontMotor, robotMap.rightRearMotor);
-
-		arcadeDriveTransform = new SquaredInputTransform();
-		slowTransform = new SlowTransform();
-
-		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, slowTransform);
-		driveTrain.setCommandDefault(arcadeDrive);
-
-		loggerParameters = new LoggerParameters(driveTrain);
-		logger = new Logger();
-
+		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
 		intializePathCommands();
 
 		gameStateReader = new GameStateReader();
@@ -183,12 +172,23 @@ public class Robot extends TimedRobot {
 		
 		dumper = new Dumper(robotMap.dumperMotor);
 		
-		shooter = new Shooter(robotMap.shooterID, robotMap.solenoidIDs);
+		shooter = new Shooter(robotMap.shooterPCMID, robotMap.solenoidIDs);
 		
-		intake = new Intake(robotMap.intakeID);
+		intake = new Intake(robotMap.intakeLiftMotor);
 		
 		oi = new OI(driveTrain, dumper, intake, shooter);
 		
+		
+		arcadeDriveTransform = new SquaredInputTransform();
+		slowTransform = new SlowTransform();
+
+
+		loggerParameters = new LoggerParameters(driveTrain);
+		logger = new Logger();
+		
+		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, slowTransform);
+		driveTrain.setCommandDefault(arcadeDrive);
 	}
 
 
@@ -221,7 +221,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
-
+ 
 	public void intializePathCommands(){
 
 		try {

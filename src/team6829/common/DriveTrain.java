@@ -54,6 +54,7 @@ public class DriveTrain extends Subsystem {
 
 	public void setCommandDefault(Command defaultCommand) {
 		this.defaultCommand = defaultCommand;
+		initDefaultCommand();
 	}
 
 	public void initDefaultCommand() {
