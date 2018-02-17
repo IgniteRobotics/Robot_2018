@@ -18,7 +18,6 @@ public class RobotMap {
 
 	//Set hardware IDs
 
-	// TODO: Set actual ports and stuff
 	public int leftFrontMotor = 5;
 	public int leftRearMotor = 1;
 	public int rightFrontMotor = 7;
@@ -26,18 +25,12 @@ public class RobotMap {
 
 	public int intakeLeftRoller = 6;
 	public int intakeRightRoller = 8;
-
 	public int intakeLiftMotor = 2;
-	
 	public int intakeArm = 4;
 	
-	// TODO: Set actual ports and stuff
 	public int dumperMotor = 4;
 	public int PCMID = 15; 
 	
-	
-		
-	// TODO: Double check wiring/channels (they often change)
 	// Pneumatics
 	public int[] solenoidIDs = new int[] {0, 1, 2, 3};
 	

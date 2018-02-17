@@ -42,6 +42,7 @@ import team6829.common.transforms.SquaredInputTransform;
 public class Robot extends TimedRobot {
 
 	public static OI oi;
+	public static SmartdashboardOut display;
 	public static RobotMap robotMap = new RobotMap();
 
 	public static DriveTrain driveTrain;
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
 		logger.writeData(loggerParameters.returnValues());
 
 		checkNavX();
-
+		
 	}
 
 	/**
@@ -171,8 +172,10 @@ public class Robot extends TimedRobot {
 		intake = new Intake(robotMap.PCMID, robotMap.intakeArm,
 				robotMap.intakeLiftMotor,
 				robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
-		
+		display = new SmartdashboardOut(intake);
 		oi = new OI(driveTrain, dumper, intake, shooter);
+		
+		
 		
 		
 		arcadeDriveTransform = new SquaredInputTransform();

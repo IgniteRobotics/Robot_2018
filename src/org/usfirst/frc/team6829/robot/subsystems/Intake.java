@@ -132,6 +132,10 @@ public class Intake extends Subsystem {
     	intakeLift.set(ControlMode.MotionMagic, defaultPosition);
     }
     
+    public double getIntakePosition() {
+    	return intakeLift.getSensorCollection().getQuadraturePosition() / 4;
+    }
+    
     public void stopAll() {
     	stopRollers();
     	stopClaw();

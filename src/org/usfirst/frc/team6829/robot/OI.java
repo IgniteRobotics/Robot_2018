@@ -12,8 +12,8 @@ import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerOut;
-import org.usfirst.frc.team6829.robot.commands.intake.lowerIntakeLift;
-import org.usfirst.frc.team6829.robot.commands.intake.raiseIntakeLift;
+import org.usfirst.frc.team6829.robot.commands.intake.LowerIntakeLift;
+import org.usfirst.frc.team6829.robot.commands.intake.RaiseIntakeLift;
 import org.usfirst.frc.team6829.robot.commands.shooter.ResetShooter;
 import org.usfirst.frc.team6829.robot.commands.shooter.ShootCube;
 import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
@@ -79,10 +79,6 @@ public class OI {
 	
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, Intake intake, Shooter shooter) {
-//		dumperButton.whileHeld(new DumpCube(dumper));   
-//		shootButton.whenPressed(new ShootCube(shooter));
-//		shootButton.whenReleased(new ResetShooter(shooter));
-//		burpButton.whenPressed(new BurpCube(dumper));
 		
 		flywheelInButton.whileHeld(new RollerIn(intake));
 		flywheelOutButton.whileHeld(new RollerOut(intake));
@@ -92,8 +88,8 @@ public class OI {
 
 		shootButton.whenPressed(new ShootCube(shooter));
 
-		raiseLiftButton.whileHeld(new raiseIntakeLift(intake));
-		lowerLiftButton.whileHeld(new lowerIntakeLift(intake));
+		raiseLiftButton.whileHeld(new RaiseIntakeLift(intake));
+		lowerLiftButton.whileHeld(new LowerIntakeLift(intake));
 		
 	}
 }

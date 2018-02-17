@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class lowerIntakeLift extends Command {
+public class RaiseIntakeLift extends Command {
 
 	
 	private Intake intake;
-	private double power = -0.3;
+	private double power = 0.3;
 	
-	public lowerIntakeLift(Intake intake) {
+	public RaiseIntakeLift(Intake intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 		
