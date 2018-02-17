@@ -39,6 +39,8 @@ public class Intake extends Subsystem {
 	
 	private double flywheelSpeed = 1.0;
 	
+	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
+	
 	public Intake(int pdpID, int leftArmForward, int leftArmReverse, int rightArmForward, int rightArmReverse, int intakeLiftID,
 			int leftRollerID, int rightRollerID) {
 		
@@ -115,19 +117,22 @@ public class Intake extends Subsystem {
     	rightArm.set(DoubleSolenoid.Value.kOff);
     }
     
-    public void moveIntakeToSetpoint(double position) {
+    public void moveIntakeLiftToSetpoint(double position) {
     	intakeLift.set(ControlMode.MotionMagic, position);
     }
     
+    public double getIntakeLiftPosition() {
+    	return intakeLift.getActiveTrajectoryPosition();
+    }
     
-    public void stopLift() {
-    	
+    public void resetLift() {
+    	intakeLift.set(ControlMode.MotionMagic, defaultPosition);
     }
     
     public void stopAll() {
     	stopRollers();
     	stopClaw();
-    	stopLift();
+    	resetLift();
     }
 }
 
