@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.Intake;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
@@ -55,6 +56,8 @@ public class Robot extends TimedRobot {
 
 	public static Command arcadeDrive;
 	public static Command goStraightAuton;
+	
+	public static Command joystickLift;
 	
 	public static Command autonCommandToRun;
 
@@ -172,6 +175,8 @@ public class Robot extends TimedRobot {
 		intake = new Intake(robotMap.PCMID, robotMap.intakeArm,
 				robotMap.intakeLiftMotor,
 				robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
+		
+		
 		display = new SmartdashboardOut(intake);
 		oi = new OI(driveTrain, dumper, intake, shooter);
 		
@@ -188,6 +193,9 @@ public class Robot extends TimedRobot {
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
+		
+		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
+		
 	}
 
 
