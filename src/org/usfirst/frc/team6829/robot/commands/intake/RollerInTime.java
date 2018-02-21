@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RollerInTime extends Command {
 
-	private Intake intake;
+	private IntakeFlywheel intake;
 	
-    public RollerInTime(Intake intake, double timeOut) {
+    public RollerInTime(IntakeFlywheel intake, double timeOut) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	

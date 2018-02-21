@@ -16,7 +16,7 @@ public class Logger {
 
 	long log_write_index;
 	String log_name = null;
-	String output_dir = "/U/data_captures/"; // USB drive is mounted to /U on roboRIO
+	String output_dir = "/home/lvuser/data_captures/"; // USB drive is mounted to /U on roboRIO
 	BufferedWriter log_file = null;
 	boolean log_open = false;
 

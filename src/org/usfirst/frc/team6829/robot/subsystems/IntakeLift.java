@@ -14,19 +14,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Intake extends Subsystem {
+public class IntakeLift extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
 	private Command defaultCommand;
 	
-	private Solenoid intakeArm;
-	
 	private WPI_TalonSRX intakeLift;
-	
-	private WPI_VictorSPX leftRoller;
-	private WPI_VictorSPX rightRoller;
 
 	private static final double kF  = 0;
 	private static final double kP = 0;
@@ -36,19 +31,14 @@ public class Intake extends Subsystem {
 	private static final int CRUISE_VELOCITY = 0;
 	private static final int MAX_ACCELERATION = 0;
 	
-	private double flywheelSpeed = 1.0;
 	
 	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
 	
-	public Intake(int pcmID, int intakeArmID, int intakeLiftID,
-			int leftRollerID, int rightRollerID) {
+	public IntakeLift(int intakeLiftID) {
 		
-		intakeArm = new Solenoid(pcmID, intakeArmID);
 		
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
-		leftRoller = new WPI_VictorSPX(leftRollerID);
-		rightRoller = new WPI_VictorSPX(rightRollerID);
-	
+		
 		intakeLift.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
 		intakeLift.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 		
@@ -84,34 +74,7 @@ public class Intake extends Subsystem {
         // Set the default command for a subsystem here.
         setDefaultCommand(this.defaultCommand);
     }
-    
-    public void openClaw() {
-    	intakeArm.set(true);
-    }
-    
-    public void closeClaw() {
-    	intakeArm.set(false);
-    }
-    
-    public void rollIn() {
-    	leftRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
-    	rightRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
-    }
-    
-    public void rollOut() {
-    	leftRoller.set(ControlMode.PercentOutput, flywheelSpeed);
-    	rightRoller.set(ControlMode.PercentOutput, flywheelSpeed);
-    }
-    
-    public void stopRollers() {
-    	leftRoller.stopMotor();
-    	rightRoller.stopMotor();
-    }
-    
-    public void stopClaw() {
-    	intakeArm.set(false);
-    }
-    
+
     public void setLiftPower(double power) {
     	intakeLift.set(ControlMode.PercentOutput, power);
     }
@@ -134,12 +97,6 @@ public class Intake extends Subsystem {
     
     public double getIntakePosition() {
     	return intakeLift.getSensorCollection().getQuadraturePosition() / 4;
-    }
-    
-    public void stopAll() {
-    	stopRollers();
-    	stopClaw();
-    	resetLift();
     }
 }
 

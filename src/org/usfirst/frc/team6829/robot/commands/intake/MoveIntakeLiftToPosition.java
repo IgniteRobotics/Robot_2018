@@ -1,6 +1,6 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class MoveIntakeLiftToPosition extends Command {
 
-	private Intake intake;
+	private IntakeLift intake;
 	private double position;
 	private double tolerance = 0.1;
 	
-    public MoveIntakeLiftToPosition(Intake intake, double pos) {
+    public MoveIntakeLiftToPosition(IntakeLift intake, double pos) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	

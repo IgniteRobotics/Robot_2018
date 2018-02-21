@@ -1,6 +1,6 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,14 +12,14 @@ public class JoystickIntakeLift extends Command {
 
 
 	
-	private Intake intake;
+	private IntakeLift intake;
 	private double maxPow = 0.5;
 	
 
 	private final int ARM_AXIS;
 	private Joystick manipulatorJoystick;
 	
-    public JoystickIntakeLift(Intake intake, Joystick mJoystick,  int armID) {
+    public JoystickIntakeLift(IntakeLift intake, Joystick mJoystick,  int armID) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 		
@@ -35,7 +35,7 @@ public class JoystickIntakeLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	intake.setLiftPower(maxPow * manipulatorJoystick.getRawAxis(ARM_AXIS));
+    	intake.setLiftPower(-maxPow * manipulatorJoystick.getRawAxis(ARM_AXIS));
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LowerIntakeLift extends Command {
 
 	
-	private Intake intake;
-	private double power = -0.3;
+	private IntakeLift intake;
+	private double power = -0.15;
 	
-	public LowerIntakeLift(Intake intake) {
+	public LowerIntakeLift(IntakeLift intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 		

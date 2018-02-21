@@ -68,28 +68,24 @@ public class OI {
 	//public Button burpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
 	
 
-	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
-	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_B);
+	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
+	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
 	
-	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
-	public Button shootButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
-	
-	public Button raiseLiftButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
-	public Button lowerLiftButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
+	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
+	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 	
 	
-	public OI(DriveTrain driveTrain, Dumper dumper, Intake intake, Shooter shooter) {
+	
+	public OI(DriveTrain driveTrain, Dumper dumper, IntakeLift intake, Shooter shooter, 
+			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw) {
 		
-		flywheelInButton.whileHeld(new RollerIn(intake));
-		flywheelOutButton.whileHeld(new RollerOut(intake));
+		flywheelInButton.whileHeld(new RollerIn(intakeFlywheel));
+		flywheelOutButton.whileHeld(new RollerOut(intakeFlywheel));
 		
-		openIntakeButton.whenPressed(new OpenIntake(intake));
-		openIntakeButton.whenReleased(new CloseIntake(intake));
+		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
+		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));
 
 		shootButton.whenPressed(new ShootCube(shooter));
-
-		raiseLiftButton.whileHeld(new RaiseIntakeLift(intake));
-		lowerLiftButton.whileHeld(new LowerIntakeLift(intake));
 		
 	}
 }

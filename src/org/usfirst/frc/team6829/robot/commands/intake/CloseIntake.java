@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CloseIntake extends Command {
 
-	private Intake intake;
-    public CloseIntake(Intake intake) {
+	private IntakeClaw intake;
+    public CloseIntake(IntakeClaw intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.intake = intake;

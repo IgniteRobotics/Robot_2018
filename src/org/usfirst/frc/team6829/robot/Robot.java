@@ -15,7 +15,9 @@ import java.util.Map;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
-import org.usfirst.frc.team6829.robot.subsystems.Intake;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 import org.usfirst.frc.team6829.robot.commands.PathFollower;
 
@@ -48,9 +50,12 @@ public class Robot extends TimedRobot {
 
 	public static DriveTrain driveTrain;
 	public static Dumper dumper;
-	public static Intake intake;
 	public static Shooter shooter;
 
+	public static IntakeLift intake;
+	public static IntakeFlywheel intakeFlywheel;
+	public static IntakeClaw intakeClaw;
+	
 	public static ITransform arcadeDriveTransform;
 	public static ITransform slowTransform;
 
@@ -149,6 +154,8 @@ public class Robot extends TimedRobot {
 		logger.writeData(loggerParameters.returnValues());
 
 		checkNavX();
+		display.displaySmartDashboard();
+		
 		
 	}
 
@@ -172,13 +179,12 @@ public class Robot extends TimedRobot {
 		
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new Intake(robotMap.PCMID, robotMap.intakeArm,
-				robotMap.intakeLiftMotor,
-				robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
+		intake = new IntakeLift(robotMap.intakeLiftMotor);
 		
-		
+		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
+		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
 		display = new SmartdashboardOut(intake);
-		oi = new OI(driveTrain, dumper, intake, shooter);
+		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
 		
 		
 		
@@ -195,6 +201,7 @@ public class Robot extends TimedRobot {
 		driveTrain.setCommandDefault(arcadeDrive);
 		
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
+		intake.setCommandDefault(joystickLift);
 		
 	}
 
