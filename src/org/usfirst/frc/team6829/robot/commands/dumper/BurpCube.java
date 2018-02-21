@@ -11,13 +11,18 @@ public class BurpCube extends CommandGroup {
 
 	private Dumper dumper;
 	
+	private double home_setpoint = 0;
+	private double setpoint = 0;
+	private double tolerance = 0;
+	private double power = 0;
+	
     public BurpCube(Dumper dumper) {
     
     	this.dumper = dumper;
     	requires(this.dumper);
     	
-    	addSequential(new BurpUp(dumper));
-    	addSequential(new BurpDown(dumper));
+    	addSequential(new MoveToEncoderSetpoint(dumper, power, setpoint, tolerance));
+    	addSequential(new MoveToEncoderSetpoint(dumper, power, home_setpoint, tolerance));
       
     }
 }

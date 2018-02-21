@@ -1,52 +1,28 @@
 package org.usfirst.frc.team6829.robot.commands.dumper;
 
-import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team6829.robot.subsystems.*;
+import org.usfirst.frc.team6829.robot.subsystems.Dumper;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class DumpCube extends Command {
-	
+public class DumpCube extends CommandGroup {
+
 	private Dumper dumper;
-	
-	private static final double POWER = .75;
-	private static final double SETPOINT = 1000;
-	private static final double HOME_SETPOINT = 0;
-	private static final double TOLERANCE = 10;
 
-    public DumpCube(Dumper dumper) {
-        // Use requires() here to declare subsystem dependencies
-    	this.dumper = dumper;
-        requires(this.dumper);
-    }
+	private double home_setpoint = 0;
+	private double setpoint = 0;
+	private double tolerance = 0;
+	private double power = 0;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    	dumper.moveToEncoderSetpoint(POWER, SETPOINT, TOLERANCE);
-    	dumper.moveToEncoderSetpoint(POWER, HOME_SETPOINT, TOLERANCE);
+	public DumpCube(Dumper dumper) {
 
-    }
+		this.dumper = dumper;
+		requires(this.dumper);
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	
-    }
+		addSequential(new MoveToEncoderSetpoint(dumper, power, setpoint, tolerance));
+		addSequential(new MoveToEncoderSetpoint(dumper, power, home_setpoint, tolerance));
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    	dumper.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+	}
 }

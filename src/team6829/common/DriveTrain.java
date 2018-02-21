@@ -1,8 +1,5 @@
 package team6829.common;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import team6829.common.transforms.ITransform;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -12,6 +9,8 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import team6829.common.transforms.ITransform;
 
 /**
  *
@@ -113,9 +112,22 @@ public class DriveTrain extends Subsystem {
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}
-
+	
 	public int getLeftEncoderPosition() {
 		return leftMaster.getSensorCollection().getQuadraturePosition() / 4;
+	}
+	
+	public void driveToEncoderSetpoint(double power, double setpoint, double tolerance) {
+
+		double currentEncoderPosition = getLeftEncoderPosition();
+		if (currentEncoderPosition < setpoint) {
+			setLeftRightDrivePower(power, power);
+		} else if (currentEncoderPosition > setpoint){
+			setLeftRightDrivePower(-power, -power); 
+		} else if (Math.abs(currentEncoderPosition-setpoint) <= tolerance) {
+			stop();
+		}
+
 	}
 
 	public int getRightEncoderPosition() {

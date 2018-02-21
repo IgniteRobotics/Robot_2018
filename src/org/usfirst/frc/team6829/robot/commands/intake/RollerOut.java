@@ -1,6 +1,5 @@
 package org.usfirst.frc.team6829.robot.commands.intake;
 
-import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
 
 import edu.wpi.first.wpilibj.command.Command;

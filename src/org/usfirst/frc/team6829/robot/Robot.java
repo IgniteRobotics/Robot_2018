@@ -12,24 +12,23 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team6829.robot.commands.PathFollower;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
-import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
-import org.usfirst.frc.team6829.robot.commands.PathFollower;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
-import team6829.common.LoggerParameters;
 import team6829.common.Logger;
+import team6829.common.LoggerParameters;
 import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
@@ -70,9 +69,6 @@ public class Robot extends TimedRobot {
 
 	public static Logger logger;
 	public static LoggerParameters loggerParameters;
-
-	Command m_autonomousCommand;
-	SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	@Override
 	public void robotInit() {
@@ -185,9 +181,6 @@ public class Robot extends TimedRobot {
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
 		display = new SmartdashboardOut(intake);
 		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
-		
-		
-		
 		
 		arcadeDriveTransform = new SquaredInputTransform();
 		slowTransform = new SlowTransform();

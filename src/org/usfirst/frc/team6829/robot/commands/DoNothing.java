@@ -1,22 +1,16 @@
-package org.usfirst.frc.team6829.robot.commands.intake;
-
-import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
+package org.usfirst.frc.team6829.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RollerIn extends Command {
-	
-	private IntakeFlywheel intake;
+public class DoNothing extends Command {
 
-    public RollerIn(IntakeFlywheel intake) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public DoNothing(double duration) {
     	
-    	this.intake = intake;
-    	requires(this.intake);
+    	setTimeout(duration);
+    	
     }
 
     // Called just before this Command runs the first time
@@ -25,17 +19,15 @@ public class RollerIn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	intake.rollIn();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	intake.stopRollers();
     }
 
     // Called when another command which requires one or more of the same

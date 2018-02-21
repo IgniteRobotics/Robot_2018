@@ -7,35 +7,27 @@
 
 package org.usfirst.frc.team6829.robot;
 
-import org.usfirst.frc.team6829.robot.commands.dumper.DumpCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerOut;
-import org.usfirst.frc.team6829.robot.commands.intake.LowerIntakeLift;
-import org.usfirst.frc.team6829.robot.commands.intake.RaiseIntakeLift;
-import org.usfirst.frc.team6829.robot.commands.shooter.ResetShooter;
 import org.usfirst.frc.team6829.robot.commands.shooter.ShootCube;
-import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
-
-import org.usfirst.frc.team6829.robot.subsystems.*;
+import org.usfirst.frc.team6829.robot.subsystems.Dumper;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
+import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
+import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import team6829.common.*;
+import team6829.common.DriveTrain;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
-	/**
-	 * 
-	 * TODO Some of these mappings are incorrect or misleading
-	 * 
-	 */
 
 	private final int DRIVER_JOYSTICK = 0;
 	private final int MANIPULATOR_JOYSTICK = 1;
@@ -61,20 +53,13 @@ public class OI {
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
 	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 	
-	// TODO: button can change at driver's preference
-	//public Button dumperButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
-	//public Button shootButton = new JoystickButton(manipulatorJoystick, BUTTON_B);
-	//public Button intakeButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
-	//public Button burpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
-	
-
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
 	
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 	
-	
+//	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, IntakeLift intake, Shooter shooter, 
 			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw) {
@@ -86,6 +71,7 @@ public class OI {
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));
 
 		shootButton.whenPressed(new ShootCube(shooter));
+//		shootWhileMove.whenPressed(new ShootWhileMoving(driveTrain, shooter));
 		
 	}
 }

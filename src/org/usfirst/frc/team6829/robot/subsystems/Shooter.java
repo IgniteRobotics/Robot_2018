@@ -1,8 +1,8 @@
 package org.usfirst.frc.team6829.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Solenoid;
 /**
  *
  */
