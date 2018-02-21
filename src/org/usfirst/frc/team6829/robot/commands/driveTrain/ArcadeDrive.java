@@ -13,23 +13,25 @@ public class ArcadeDrive extends Command {
 	private final int THROTTLE_AXIS;
 	private final int TURN_AXIS;
 	private final int SLOW_BUTTON;
+	private final int FAST_BUTTON;
 	private final double DEADBAND = 0.1;
 
 	private DriveTrain driveTrain;
 	private Joystick driverJoystick;
 	private final ITransform squaredTransform;
 	private final ITransform slowTransform;
-
-	public ArcadeDrive(DriveTrain driveTrain, ITransform squaredTransform, Joystick driverJoystick,  int throttleId, int turnId, int slowId, ITransform slowTransform) {
+	
+	public ArcadeDrive(DriveTrain driveTrain, ITransform squaredTransform, Joystick driverJoystick,  int throttleId, int turnId, int slowId, int fastId, ITransform slowTransform) {
 
 		this.THROTTLE_AXIS = throttleId;
 		this.TURN_AXIS = turnId;
 		this.SLOW_BUTTON = slowId;
+		this.FAST_BUTTON = fastId;
 		this.driveTrain = driveTrain;
 		this.driverJoystick = driverJoystick;
 		this.squaredTransform = squaredTransform;
 		this.slowTransform = slowTransform;
-
+		
 		requires(this.driveTrain);
 
 	}
@@ -52,6 +54,13 @@ public class ArcadeDrive extends Command {
 			
 			throttlePower = slowTransform.transform(throttlePower);
 			turnPower = slowTransform.transform(turnPower);
+		}
+		
+		if (!driverJoystick.getRawButton(FAST_BUTTON)) {
+			
+			throttlePower = slowTransform.transform(throttlePower);
+			turnPower = slowTransform.transform(turnPower);
+			
 		}
 
 		driveTrain.arcadeDrive(throttlePower, turnPower, DEADBAND, squaredTransform);

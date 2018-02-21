@@ -190,7 +190,7 @@ public class Robot extends TimedRobot {
 		logger = new Logger();
 		
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, slowTransform);
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, oi.BUTTON_LEFT_BUMPER ,slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
 		
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
