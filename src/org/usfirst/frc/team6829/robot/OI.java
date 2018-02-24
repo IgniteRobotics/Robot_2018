@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
+import org.usfirst.frc.team6829.robot.commands.dumper.DumpCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
@@ -58,6 +60,9 @@ public class OI {
 	
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
+
+	public Button dumpButton = new JoystickButton(manipulatorJoystick, AXIS_RIGHT_TRIGGER);
+	public Button quickDumpTrigger = new JoystickButton(manipulatorJoystick, BUTTON_B);
 	
 //	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
 	
@@ -70,6 +75,10 @@ public class OI {
 		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));
 
+		dumpButton.whileHeld(new DumpCube(dumper));
+		quickDumpTrigger.whenPressed(new BurpCube(dumper));
+		
+		
 		shootButton.whenPressed(new ShootCube(shooter));
 //		shootWhileMove.whenPressed(new ShootWhileMoving(driveTrain, shooter));
 		
