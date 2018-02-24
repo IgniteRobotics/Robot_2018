@@ -39,7 +39,8 @@ public class MoveIntakeLiftToPosition extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	intake.resetLift();
+    	//intake.resetLift();
+    	intake.stopLift(); // TODO: Hopefully this holds
     }
 
     // Called when another command which requires one or more of the same

@@ -10,6 +10,9 @@ package org.usfirst.frc.team6829.robot;
 import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
 import org.usfirst.frc.team6829.robot.commands.dumper.DumpCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
+import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToFullDown;
+import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToFullUp;
+import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToLaunchPos;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerOut;
@@ -54,15 +57,20 @@ public class OI {
 
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
 	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
+
+	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
+	public Button dumpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
+	public Button quickDumpTrigger = new JoystickButton(manipulatorJoystick, BUTTON_B);
 	
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
 	
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
-	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
-
-	public Button dumpButton = new JoystickButton(manipulatorJoystick, AXIS_RIGHT_TRIGGER);
-	public Button quickDumpTrigger = new JoystickButton(manipulatorJoystick, BUTTON_B);
+	
+	public Button moveIntakeToFullDownButton = new JoystickButton(manipulatorJoystick, BUTTON_B);
+	public Button moveIntakeToFullUpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
+	public Button moveIntakeToLaunchButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
+	
 	
 //	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
 	
@@ -78,9 +86,12 @@ public class OI {
 		dumpButton.whileHeld(new DumpCube(dumper));
 		quickDumpTrigger.whenPressed(new BurpCube(dumper));
 		
-		
 		shootButton.whenPressed(new ShootCube(shooter));
 //		shootWhileMove.whenPressed(new ShootWhileMoving(driveTrain, shooter));
+		
+		moveIntakeToFullDownButton.whenPressed(new MoveIntakeLiftToFullDown(intake));
+		moveIntakeToFullUpButton.whenPressed(new MoveIntakeLiftToFullUp(intake));
+		moveIntakeToLaunchButton.whenPressed(new MoveIntakeLiftToLaunchPos(intake));
 		
 	}
 }
