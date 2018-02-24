@@ -61,7 +61,7 @@ public class OI {
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 
-	public Button dumpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
+	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
 	public Button quickDumpTrigger = new JoystickButton(manipulatorJoystick, BUTTON_Y);
 	
 //	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
