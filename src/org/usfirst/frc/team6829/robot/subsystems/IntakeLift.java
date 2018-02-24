@@ -2,9 +2,11 @@ package org.usfirst.frc.team6829.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -29,10 +31,13 @@ public class IntakeLift extends Subsystem {
 	private static final int MAX_ACCELERATION = 0;
 	
 	
+	private DigitalInput limitSensor;
+	
 	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
 	
-	public IntakeLift(int intakeLiftID) {
+	public IntakeLift(int intakeLiftID, int limitSensorID) {
 		
+		limitSensor = new DigitalInput(limitSensorID);
 		
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
 		
@@ -59,6 +64,8 @@ public class IntakeLift extends Subsystem {
 		intakeLift.setInverted(false); //must verify
 		
 		intakeLift.setSensorPhase(false); //must verify
+		
+		intakeLift.setNeutralMode(NeutralMode.Brake); // This should set it so it holds pos
 		
 	}
 	
@@ -92,8 +99,17 @@ public class IntakeLift extends Subsystem {
     	intakeLift.set(ControlMode.MotionMagic, defaultPosition);
     }
     
+    public boolean isLimitSensorTripperd() {
+    	return !limitSensor.get(); // return true if limit tripped (hall effect)
+    }
+    
     public double getIntakePosition() {
     	return intakeLift.getSensorCollection().getQuadraturePosition() / 4;
+    }
+    
+    public void zeroLift() {
+    	int sensorPos = 0;
+    	intakeLift.setSelectedSensorPosition(sensorPos, 0, 10);
     }
 }
 

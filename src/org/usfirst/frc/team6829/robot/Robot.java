@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
 		
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new IntakeLift(robotMap.intakeLiftMotor);
+		intake = new IntakeLift(robotMap.intakeLiftMotor, robotMap.hallEffectSensorID);
 		
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
