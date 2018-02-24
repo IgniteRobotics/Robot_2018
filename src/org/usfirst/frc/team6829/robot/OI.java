@@ -59,18 +59,17 @@ public class OI {
 	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
-	public Button dumpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
-	public Button quickDumpTrigger = new JoystickButton(manipulatorJoystick, BUTTON_B);
+	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
+	public Button quickDumpTrigger = new JoystickButton(driverJoystick, BUTTON_Y);
 	
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
 	
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
-	
+
 	public Button moveIntakeToFullDownButton = new JoystickButton(manipulatorJoystick, BUTTON_B);
 	public Button moveIntakeToFullUpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
 	public Button moveIntakeToLaunchButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
-	
 	
 //	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
 	
