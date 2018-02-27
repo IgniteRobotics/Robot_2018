@@ -2,7 +2,7 @@ package team6829.common.transforms;
 
 public class SlowTransform implements ITransform{
 	
-	private double DAMPEN_VALUE = 0.75;
+	private double DAMPEN_VALUE = 0.65;
 
 	@Override
 	public double transform(double input) {

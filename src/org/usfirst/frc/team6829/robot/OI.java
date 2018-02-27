@@ -17,6 +17,8 @@ import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerOut;
 import org.usfirst.frc.team6829.robot.commands.shooter.ShootCube;
+import org.usfirst.frc.team6829.robot.commands.shooter.ShootLeft;
+import org.usfirst.frc.team6829.robot.commands.shooter.ShootRight;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
@@ -60,7 +62,10 @@ public class OI {
 
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
-	public Button quickDumpTrigger = new JoystickButton(driverJoystick, BUTTON_Y);
+//	public Button quickDumpTrigger = new JoystickButton(driverJoystick, BUTTON_Y);
+	
+	public Button shootLeft = new JoystickButton(driverJoystick, BUTTON_Y);
+	public Button shootRight = new JoystickButton(driverJoystick, BUTTON_X);
 	
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
@@ -82,8 +87,11 @@ public class OI {
 		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));
 
+		shootLeft.whenPressed(new ShootLeft(shooter));
+		shootRight.whenPressed(new ShootRight(shooter));
+		
 		dumpButton.whileHeld(new DumpCube(dumper));
-		quickDumpTrigger.whenPressed(new BurpCube(dumper));
+//		quickDumpTrigger.whenPressed(new BurpCube(dumper));
 		
 		shootButton.whenPressed(new ShootCube(shooter));
 //		shootWhileMove.whenPressed(new ShootWhileMoving(driveTrain, shooter));

@@ -167,7 +167,7 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
-		intializePathCommands();
+		//intializePathCommands();
 
 		gameStateReader = new GameStateReader();		
 		
@@ -190,7 +190,7 @@ public class Robot extends TimedRobot {
 		logger = new Logger();
 		
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.BUTTON_RIGHT_BUMPER, oi.BUTTON_LEFT_BUMPER ,slowTransform);
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.BUTTON_LEFT_BUMPER ,slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
 		
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
@@ -210,14 +210,14 @@ public class Robot extends TimedRobot {
 
 	}
 
-	private File R_GoStraightAuton;
-	private File L_GoStraightAuton;	
+//	private File R_GoStraightAuton;
+//	private File L_GoStraightAuton;	
 
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
 
-		R_GoStraightAuton = new File("/home/lvuser/GoStraight_right_detailed.csv");
-		L_GoStraightAuton = new File("/home/lvuser/GoStraight_left_detailed.csv");
+//		R_GoStraightAuton = new File("/home/lvuser/GoStraight_right_detailed.csv");
+//		L_GoStraightAuton = new File("/home/lvuser/GoStraight_left_detailed.csv");
 
 	}
 
@@ -229,14 +229,15 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
  
+	/*
 	public void intializePathCommands(){
 
 		try {
 
-			importTrajectories();
+			//importTrajectories();
 
 			//assign paths to commands here
-			goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton);
+			//goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton);
 
 		} catch (FileNotFoundException e) {
 
@@ -244,5 +245,6 @@ public class Robot extends TimedRobot {
 
 		}
 	}
+	*/
 
 }

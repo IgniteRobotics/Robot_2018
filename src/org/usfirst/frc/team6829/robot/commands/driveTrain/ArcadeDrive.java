@@ -50,20 +50,21 @@ public class ArcadeDrive extends Command {
 		double throttlePower = driverJoystickThrottleAxis; 
 		double turnPower = -driverJoystickTurnAxis;
 
-		if (driverJoystick.getRawButton(SLOW_BUTTON)) {
+		//if (driverJoystick.getRawButton(SLOW_BUTTON)) {
+		if (driverJoystick.getRawAxis(SLOW_BUTTON) > 0.25) {
 			
 			throttlePower = slowTransform.transform(throttlePower);
 			turnPower = slowTransform.transform(turnPower);
 		}
-		
-		if (!driverJoystick.getRawButton(FAST_BUTTON)) {
-			
-			throttlePower = slowTransform.transform(throttlePower);
-			turnPower = slowTransform.transform(turnPower);
-			
-		}
+//		
+//		if (!driverJoystick.getRawButton(FAST_BUTTON)) {
+//			
+//			throttlePower = slowTransform.transform(throttlePower);
+//			turnPower = slowTransform.transform(turnPower);
+//			
+//		}
 
-		driveTrain.arcadeDrive(throttlePower, turnPower, DEADBAND, squaredTransform);
+		driveTrain.arcadeDrive(0.8*throttlePower, 0.8*turnPower, DEADBAND, squaredTransform);
 
 	}
 

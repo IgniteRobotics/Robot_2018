@@ -68,12 +68,45 @@ public class Shooter extends Subsystem {
     	return true;
     }
     
+    public boolean isLeftRetracted() {
+    	if (solenoid_0Enabled) {
+    		return false;
+    	}
+    	if (solenoid_1Enabled) {
+    		return false;
+    	}
+    	return true;
+
+    }
+    
+    public boolean isRightRetracted() {
+    	if (solenoid_2Enabled) {
+    		return false;
+    	}
+    	if (solenoid_3Enabled) {
+    		return false;
+    	}
+    	return true;
+
+    }
+    
     public void shoot() {
     	solenoid_0.set(true);
     	solenoid_1.set(true);
     	solenoid_2.set(true);
     	solenoid_3.set(true);
     }
+    
+    public void shootLeft() {
+    	solenoid_0.set(true);
+    	solenoid_3.set(true);
+    }
+    
+    public void shootRight() {
+    	solenoid_1.set(true);
+    	solenoid_2.set(true);
+    }
+    
     
     public void retract() {
     	solenoid_0.set(false);
