@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem {
 		rightFollower.follow(rightMaster);
 
 		leftMaster.setSensorPhase(false);
-		rightMaster.setSensorPhase(true);
+		rightMaster.setSensorPhase(false);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
@@ -114,7 +114,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public int getLeftEncoderPosition() {
-		return leftMaster.getSensorCollection().getQuadraturePosition() / 4;
+		return leftMaster.getSensorCollection().getQuadraturePosition();
 	}
 	
 	public void driveToEncoderSetpoint(double power, double setpoint, double tolerance) {
@@ -131,15 +131,15 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public int getRightEncoderPosition() {
-		return rightMaster.getSensorCollection().getQuadraturePosition() / 4;
+		return rightMaster.getSensorCollection().getQuadraturePosition();
 	}
 
 	public int getLeftEncoderVelocity() {
-		return leftMaster.getSensorCollection().getQuadratureVelocity() / 4;
+		return leftMaster.getSensorCollection().getQuadratureVelocity();
 	}
 
 	public int getRightEncoderVelocity() {
-		return rightMaster.getSensorCollection().getQuadratureVelocity() / 4;
+		return rightMaster.getSensorCollection().getQuadratureVelocity();
 	}
 
 	public double getLeftVoltage() {
@@ -172,7 +172,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getAngle() {
-		return navX.getAngle();
+		return navX.getYaw();
 	}
 
 	public void zeroAngle() {

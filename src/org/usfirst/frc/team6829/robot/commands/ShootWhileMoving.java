@@ -20,7 +20,7 @@ public class ShootWhileMoving extends CommandGroup {
 
     public ShootWhileMoving(DriveTrain driveTrain, Shooter shooter) {
     	
-    	addParallel(new DriveToEncoderSetpoint(driveTrain, encoderSetpoint, tolerance, power));
+    	addParallel(new DriveToEncoderSetpoint(driveTrain, encoderSetpoint, tolerance, power, 10));
     	addSequential(new WaitThenShoot(shooter, waitTime));
     	
     }

@@ -60,6 +60,10 @@ public class Dumper extends Subsystem {
 	public int getEncoderPosition() {
 		return dumperMotor.getSensorCollection().getQuadraturePosition();
 	}
+	
+	public void zeroEncoder() {
+		dumperMotor.getSensorCollection().setQuadraturePosition(0, 10);
+	}
 
 	public void stop() {
 		dumperMotor.stopMotor();

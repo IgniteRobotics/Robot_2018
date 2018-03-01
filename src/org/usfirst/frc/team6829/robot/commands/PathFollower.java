@@ -5,6 +5,7 @@ import java.io.File;
 import edu.wpi.first.wpilibj.command.Command;
 import team6829.common.DriveTrain;
 import team6829.motion_profiling.TrajectoryController;
+import team6829.motion_profiling.TrajectoryController.Direction;
 
 /**
  *
@@ -14,10 +15,11 @@ public class PathFollower extends Command {
 	private DriveTrain driveTrain;
 	private TrajectoryController trajectoryController;
 
-	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight) {
+	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight, Direction direction) {
 
 		this.driveTrain = driveTrain;
-		trajectoryController = new TrajectoryController(driveTrain, csvLeft, csvRight);
+		
+		trajectoryController = new TrajectoryController(driveTrain, csvLeft, csvRight, direction);
 
 	}
 
@@ -34,6 +36,8 @@ public class PathFollower extends Command {
 	protected void execute() {
 		
 		trajectoryController.followTrajectory();
+		
+		System.out.println(driveTrain.getAngle());
 
 	}
 

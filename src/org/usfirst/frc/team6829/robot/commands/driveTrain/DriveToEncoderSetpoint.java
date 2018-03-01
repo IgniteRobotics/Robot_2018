@@ -15,13 +15,14 @@ public class DriveToEncoderSetpoint extends Command {
 	private double power;
 	private double currentPosition;
 	
-    public DriveToEncoderSetpoint(DriveTrain driveTrain, double encoderSetpoint, double tolerance, double power) {
+    public DriveToEncoderSetpoint(DriveTrain driveTrain, double encoderSetpoint, double tolerance, double power, double timeout) {
 
     	this.driveTrain = driveTrain;
     	this.encoderSetpoint = encoderSetpoint;
     	this.tolerance = tolerance;
     	this.power = power;
     	
+    	setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
@@ -34,15 +35,16 @@ public class DriveToEncoderSetpoint extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
+    	driveTrain.setLeftRightDrivePower(power, power);
+    	
     	currentPosition = driveTrain.getLeftEncoderPosition();
-    	driveTrain.driveToEncoderSetpoint(power, encoderSetpoint, tolerance);
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	
-        return Math.abs(currentPosition-encoderSetpoint) <= tolerance;
+        return (currentPosition >= encoderSetpoint || isTimedOut() );
     }
 
     // Called once after isFinished returns true

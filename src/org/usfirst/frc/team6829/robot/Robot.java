@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.PathFollower;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
@@ -29,9 +30,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 import team6829.common.Logger;
 import team6829.common.LoggerParameters;
+import team6829.common.Util;
 import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
+import team6829.motion_profiling.TrajectoryController.Direction;
 
 
 /**
@@ -61,6 +64,8 @@ public class Robot extends TimedRobot {
 	public static Command arcadeDrive;
 	public static Command goStraightAuton;
 	
+	public static Command driveToEncoderSetpoint;
+	
 	public static Command joystickLift;
 	
 	public static Command autonCommandToRun;
@@ -85,6 +90,8 @@ public class Robot extends TimedRobot {
 
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
+//		dumper.zeroEncoder();
+		
 		logger.close();
 	}
 
@@ -92,6 +99,7 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		checkNavX();
 
+		
 		Scheduler.getInstance().run();
 
 	}
@@ -99,14 +107,19 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		checkNavX();
-
-		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-		try {
-			autonCommandToRun.start();	
-		} catch (NullPointerException e) {
-			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-		}
-		System.out.println("Starting autonomous");
+		
+//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		
+		driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(464+20), 10, 0.3, 2.5);
+		driveToEncoderSetpoint.start();
+		
+//		goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
+//		try {
+//			goStraightAuton.start();	
+//		} catch (NullPointerException e) {
+//			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
+//		}
+//		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -120,6 +133,8 @@ public class Robot extends TimedRobot {
 		checkNavX();
 
 		logger.writeData(loggerParameters.returnValues());
+		
+		System.out.println(driveTrain.getLeftEncoderPosition());
 
 		Scheduler.getInstance().run();
 
@@ -167,7 +182,7 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
-		//intializePathCommands();
+		intializePathCommands();
 
 		gameStateReader = new GameStateReader();		
 		
@@ -205,19 +220,18 @@ public class Robot extends TimedRobot {
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
 		autonCommands.put("Go Straight", goStraightAuton);
-
 		return autonCommands;
 
 	}
 
-//	private File R_GoStraightAuton;
-//	private File L_GoStraightAuton;	
+	private File R_GoStraightAuton;
+	private File L_GoStraightAuton;	
 
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
 
-//		R_GoStraightAuton = new File("/home/lvuser/GoStraight_right_detailed.csv");
-//		L_GoStraightAuton = new File("/home/lvuser/GoStraight_left_detailed.csv");
+		R_GoStraightAuton = new File("/home/lvuser/testForward_right_detailed.csv");
+		L_GoStraightAuton = new File("/home/lvuser/testForward_left_detailed.csv");
 
 	}
 
@@ -229,22 +243,22 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
  
-	/*
+	
 	public void intializePathCommands(){
 
 		try {
 
-			//importTrajectories();
+			importTrajectories();
 
 			//assign paths to commands here
-			//goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton);
-
+			goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
+			
 		} catch (FileNotFoundException e) {
 
 			DriverStation.reportError("Could not find trajectory!!! " + e.getMessage(), true);
 
 		}
 	}
-	*/
+	
 
 }
