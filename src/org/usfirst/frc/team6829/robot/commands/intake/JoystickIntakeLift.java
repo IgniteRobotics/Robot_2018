@@ -13,7 +13,7 @@ public class JoystickIntakeLift extends Command {
 
 	
 	private IntakeLift intake;
-	private double maxPow = 0.5;
+	private double maxPow = -0.5;
 	
 
 	private final int ARM_AXIS;
@@ -35,7 +35,7 @@ public class JoystickIntakeLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	intake.setLiftPower(-maxPow * manipulatorJoystick.getRawAxis(ARM_AXIS));
+    	intake.setLiftPower(maxPow * manipulatorJoystick.getRawAxis(ARM_AXIS));
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team6829.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 
 /**
@@ -29,6 +30,7 @@ public class DriveToEncoderSetpoint extends Command {
     protected void initialize() {
     	
     	driveTrain.zeroEncoders();
+    	SmartDashboard.putNumber("Encoder target", encoderSetpoint);
     	
     }
 
@@ -36,15 +38,17 @@ public class DriveToEncoderSetpoint extends Command {
     protected void execute() {
     	
     	driveTrain.setLeftRightDrivePower(power, power);
-    	
-    	currentPosition = driveTrain.getLeftEncoderPosition();
+    	double right = Math.abs( driveTrain.getRightEncoderPosition());
+    	double left = Math.abs(driveTrain.getLeftEncoderPosition());
+    	currentPosition = (left + right) / 2;
+    	SmartDashboard.putNumber("Encoder value", currentPosition);
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	
-        return (currentPosition >= encoderSetpoint || isTimedOut() );
+        return (/*Math.abs(currentPosition) >= encoderSetpoint ||*/ isTimedOut() );
     }
 
     // Called once after isFinished returns true

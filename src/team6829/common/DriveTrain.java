@@ -120,7 +120,7 @@ public class DriveTrain extends Subsystem {
 	public void driveToEncoderSetpoint(double power, double setpoint, double tolerance) {
 
 		double currentEncoderPosition = getLeftEncoderPosition();
-		if (currentEncoderPosition < setpoint) {
+		if (Math.abs(currentEncoderPosition) < setpoint) {             // fixed to be absolute value
 			setLeftRightDrivePower(power, power);
 		} else if (currentEncoderPosition > setpoint){
 			setLeftRightDrivePower(-power, -power); 
@@ -148,6 +148,14 @@ public class DriveTrain extends Subsystem {
 
 	public double getRightVoltage() {
 		return rightMaster.getMotorOutputVoltage();
+	}
+	
+	public double getLeftPercentOutput() {
+		return leftMaster.getMotorOutputPercent();
+	}
+	
+	public double getRightPercentOutput() {
+		return rightMaster.getMotorOutputPercent();
 	}
 
 	public void stop() {

@@ -14,9 +14,12 @@ public class Dumper extends Subsystem {
 	private Command defaultCommand;
 
 	private WPI_TalonSRX dumperMotor;
+	
+	private double lowerEncoderLimit = 0;
+	private double upperEncoderLimit = -1200;
 
 	public Dumper(int dumperMotorID) {
-
+		dumperMotor = new WPI_TalonSRX(dumperMotorID);
 	}
 
 	public void setCommandDefault(Command defaultCommand) {
@@ -43,9 +46,10 @@ public class Dumper extends Subsystem {
 	}
 
 	public void setPercentOutput(double power) {
+		power = limitDumperMotion(power);
 		dumperMotor.set(ControlMode.PercentOutput, power);
 	}
-	
+ 	
 	public boolean isAtSetpoint(double setpoint, double tolerance) {
 		
 		double currentEncoderPosition = getEncoderPosition();
@@ -63,6 +67,21 @@ public class Dumper extends Subsystem {
 	
 	public void zeroEncoder() {
 		dumperMotor.getSensorCollection().setQuadraturePosition(0, 10);
+	}
+	
+	public double limitDumperMotion(double input) {
+		System.out.println(input);
+		if (getEncoderPosition() < upperEncoderLimit) {
+			if (input > 0) {
+				return 0;
+			}
+		} else if (getEncoderPosition() > lowerEncoderLimit) {
+			if (input < 0) {
+				return 0;
+			}
+		}
+		
+		return input;
 	}
 
 	public void stop() {

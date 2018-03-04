@@ -16,6 +16,6 @@ public class Util {
 		
 		double ticks = (input*ENCODER_TICKS_PER_REV)/(WHEEL_CIRCUMFERENCE*Math.PI);
 		
-		return ticks;
+		return ticks * 4; //Talons return 4x sampling of ticks, resulting in encoder values 4x larger than normal.
 	}
 }

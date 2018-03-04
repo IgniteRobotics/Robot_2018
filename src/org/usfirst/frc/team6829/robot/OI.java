@@ -90,7 +90,7 @@ public class OI {
 		shootLeft.whenPressed(new ShootLeft(shooter));
 		shootRight.whenPressed(new ShootRight(shooter));
 		
-		dumpButton.whileHeld(new DumpCube(dumper));
+		//dumpButton.whileHeld(new DumpCube(dumper));
 //		quickDumpTrigger.whenPressed(new BurpCube(dumper));
 		
 		shootButton.whenPressed(new ShootCube(shooter));

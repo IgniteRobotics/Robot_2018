@@ -34,7 +34,6 @@ public class RobotMap {
 	// Pneumatics
 	public int[] solenoidIDs = new int[] {0, 1, 2, 3};
 	
-	public int hallEffectSensorID = 0; // TODO: Set this
 	
 	
 }

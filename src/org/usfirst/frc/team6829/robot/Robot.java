@@ -14,7 +14,10 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.PathFollower;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveShootAuton;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngle;
+import org.usfirst.frc.team6829.robot.commands.dumper.JoystickDumper;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
@@ -41,7 +44,7 @@ import team6829.motion_profiling.TrajectoryController.Direction;
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
+* creating this project, you must also update the build.properties file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -67,6 +70,7 @@ public class Robot extends TimedRobot {
 	public static Command driveToEncoderSetpoint;
 	
 	public static Command joystickLift;
+	public static Command joystickDumper;
 	
 	public static Command autonCommandToRun;
 
@@ -108,18 +112,25 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		checkNavX();
 		
-//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-		
-		driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(464+20), 10, 0.3, 2.5);
-		driveToEncoderSetpoint.start();
+		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		//autonCommandToRun = autonMap().get("Turn to angle");
+		//driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(106), 10, 0.3, 10);
+		//driveToEncoderSetpoint.start();
 		
 //		goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
 //		try {
-//			goStraightAuton.start();	
+//			autonCommandToRun.start();	
 //		} catch (NullPointerException e) {
 //			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
 //		}
 //		System.out.println("Starting autonomous");
+		
+		Command GoStraight = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(115),
+				10, .3, 3.5);
+		
+//		Command GoStraightTurn = new CenterRightAuto(driveTrain); 
+		
+		GoStraight.start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -134,7 +145,7 @@ public class Robot extends TimedRobot {
 
 		logger.writeData(loggerParameters.returnValues());
 		
-		System.out.println(driveTrain.getLeftEncoderPosition());
+//		System.out.println(driveTrain.getLeftEncoderPosition());
 
 		Scheduler.getInstance().run();
 
@@ -165,8 +176,7 @@ public class Robot extends TimedRobot {
 		logger.writeData(loggerParameters.returnValues());
 
 		checkNavX();
-		display.displaySmartDashboard();
-		
+		display.displaySmartDashboard();		
 		
 	}
 
@@ -190,7 +200,7 @@ public class Robot extends TimedRobot {
 		
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new IntakeLift(robotMap.intakeLiftMotor, robotMap.hallEffectSensorID);
+		intake = new IntakeLift(robotMap.intakeLiftMotor);
 		
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
@@ -205,8 +215,11 @@ public class Robot extends TimedRobot {
 		logger = new Logger();
 		
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.BUTTON_LEFT_BUMPER ,slowTransform);
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.AXIS_RIGHT_TRIGGER ,slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
+		
+		//joystickDumper = new JoystickDumper(dumper, oi.manipulatorJoystick, oi.AXIS_RIGHT_STICK_Y);
+		//dumper.setCommandDefault(joystickDumper);
 		
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
 		intake.setCommandDefault(joystickLift);
@@ -219,7 +232,21 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("Go Straight", goStraightAuton);
+//		double encoderPositionMid = Util.inchesToNative(106); // CHECK
+//		double encoderPositionSide = Util.inchesToNative(106); // CHECK
+//		
+//		//driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(106), 10, 0.3, 10);
+//		
+//		
+//		autonCommands.put("Go Straight Motion Profile", goStraightAuton);
+//		autonCommands.put("Go Straight Middle", new DriveToEncoderSetpoint(driveTrain, encoderPositionMid,
+//				10, .3, 10));
+//		autonCommands.put("Go Straight Sides", new DriveToEncoderSetpoint(driveTrain, encoderPositionSide,
+//				10, .3, 10));
+//		autonCommands.put("Turn to angle", new TurnToAngle(driveTrain, 90, 5));
+		autonCommands.put("Drive then shoot", new DriveShootAuton(driveTrain, shooter));
+		autonCommands.put("Drive forward", new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(115),
+				10, .3, 3.5));
 		return autonCommands;
 
 	}

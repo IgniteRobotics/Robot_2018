@@ -31,13 +31,9 @@ public class IntakeLift extends Subsystem {
 	private static final int MAX_ACCELERATION = 0;
 	
 	
-	private DigitalInput limitSensor;
-	
 	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
 	
-	public IntakeLift(int intakeLiftID, int limitSensorID) {
-		
-		limitSensor = new DigitalInput(limitSensorID);
+	public IntakeLift(int intakeLiftID) {
 		
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
 		
@@ -80,6 +76,7 @@ public class IntakeLift extends Subsystem {
     }
 
     public void setLiftPower(double power) {
+    	power = limitIntakeLift(power);
     	intakeLift.set(ControlMode.PercentOutput, power);
     }
     
@@ -99,13 +96,33 @@ public class IntakeLift extends Subsystem {
     	intakeLift.set(ControlMode.MotionMagic, defaultPosition);
     }
     
-    public boolean isLimitSensorTripperd() {
-    	return !limitSensor.get(); // return true if limit tripped (hall effect)
+    public double limitIntakeLift(double input) {
+    	if (isArmDown()) {
+    		if (input > 0) {
+    			return 0;
+    		}
+    	} else if (isArmUp()) {
+    		if (input < 0) {
+    			return 0;
+    		}
+    	}
+    	
+    	return input;
+    }
+    
+    public boolean isArmDown() {
+    	return intakeLift.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+    
+    public boolean isArmUp() {
+    	return intakeLift.getSensorCollection().isRevLimitSwitchClosed();
     }
     
     public double getIntakePosition() {
     	return intakeLift.getSensorCollection().getQuadraturePosition() / 4;
     }
+    
+    
     
     public void zeroLift() {
     	int sensorPos = 0;
