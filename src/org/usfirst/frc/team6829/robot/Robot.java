@@ -144,7 +144,10 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		checkNavX();
-
+		
+//		driveTrain.defaultLeftRight();
+//		driveTrain.defaultDirection();
+		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 		if (autonCommandToRun != null) {
@@ -233,7 +236,6 @@ public class Robot extends TimedRobot {
 //		R_RS_LS = new File("/home/lvuser/RS-LS_right_detailed.csv");
 //		L_RS_LS = new File("/home/lvuser/RS-LS_left_detailed.csv");
 
-		
 		R_RS_LS = new File("/home/lvuser/asdf_right_detailed.csv");
 		L_RS_LS = new File("/home/lvuser/asdf_left_detailed.csv");
 

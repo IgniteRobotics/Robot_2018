@@ -25,19 +25,22 @@ public class DriveTrain extends Subsystem {
 	private WPI_VictorSPX rightFollower;
 
 	private AHRS navX;
+	
+	private int leftMasterCanId;
+	private int leftFollowerCanId;
+	private int rightMasterCanId;
+	private int rightFollowerCanId;
 
 	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId) {
 
-		leftMaster = new WPI_TalonSRX(leftMasterCanId);
-		leftFollower = new WPI_VictorSPX(leftFollowerCanId);
-		rightMaster = new WPI_TalonSRX(rightMasterCanId);
-		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
-
-		leftMaster.setInverted(true);
-		leftFollower.setInverted(true);
-		rightMaster.setInverted(false);
-		rightFollower.setInverted(false);
-
+		this.leftMasterCanId = leftMasterCanId;
+		this.leftFollowerCanId = leftFollowerCanId;
+		this.rightMasterCanId = rightMasterCanId;
+		this.rightFollowerCanId = rightFollowerCanId;
+		
+		defaultDirection();
+		defaultLeftRight(); //Talons instantiated here
+		
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 
@@ -110,7 +113,21 @@ public class DriveTrain extends Subsystem {
 		rightMaster.setInverted(false);
 		rightFollower.setInverted(false);
 	}
+	
+	public void defaultLeftRight() {
+		leftMaster = new WPI_TalonSRX(leftMasterCanId);
+		leftFollower = new WPI_VictorSPX(leftFollowerCanId);
+		rightMaster = new WPI_TalonSRX(rightMasterCanId);
+		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
+		
+	}
 
+	public void reverseLeftRight() {
+		rightMaster = new WPI_TalonSRX(leftMasterCanId);
+		rightFollower = new WPI_VictorSPX(leftFollowerCanId);
+		leftMaster = new WPI_TalonSRX(rightMasterCanId);
+		leftFollower = new WPI_VictorSPX(rightFollowerCanId);
+	}
 
 	public void setLeftDrivePower(double power) {
 		leftMaster.set(ControlMode.PercentOutput, limit(power));

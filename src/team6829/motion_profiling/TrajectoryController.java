@@ -36,18 +36,29 @@ public class TrajectoryController {
 		FORWARDS, BACKWARDS
 	}
 		
-	private Direction direction;
-
 	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight, Direction direction) {
 
 		this.driveTrain = driveTrain;
-		this.direction = direction;
 
 		leftTrajectory = Pathfinder.readFromCSV(csvLeft);
 		rightTrajectory = Pathfinder.readFromCSV(csvRight);
 
 		left = new EncoderFollower(leftTrajectory);
 		right = new EncoderFollower(rightTrajectory);
+		
+		switch (direction) {
+			case FORWARDS:
+				driveTrain.defaultDirection();
+				driveTrain.defaultLeftRight();
+				
+				break;
+				
+			case BACKWARDS:
+				driveTrain.reverseDirection();
+				driveTrain.reverseLeftRight();
+
+				break;
+		}
 
 	}
 
@@ -63,11 +74,10 @@ public class TrajectoryController {
 	}
 
 	public void followTrajectory() {
-		
+
 		double l = left.calculate(Math.abs(driveTrain.getLeftEncoderPosition()));
 		double r = right.calculate(Math.abs(driveTrain.getRightEncoderPosition()));
 		
-
 		double currentHeading = driveTrain.getAngle();
 
 		double desiredHeading = Pathfinder.r2d(left.getHeading());
