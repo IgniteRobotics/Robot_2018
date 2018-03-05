@@ -41,9 +41,6 @@ public class DriveTrain extends Subsystem {
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 
-		leftMaster.setSensorPhase(false);
-		rightMaster.setSensorPhase(false);
-
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 
@@ -66,7 +63,7 @@ public class DriveTrain extends Subsystem {
 
 		throttlePower = transform.transform(throttlePower);
 		turnPower = transform.transform(turnPower);
-
+	
 		double maxInput = Math.copySign(Math.max(Math.abs(throttlePower), Math.abs(turnPower)), throttlePower);
 
 		if (throttlePower >= 0.0) {
@@ -94,11 +91,26 @@ public class DriveTrain extends Subsystem {
 
 		turnPower = limit(turnPower);
 		turnPower = applyDeadband(turnPower, deadband); // set rotate deadband here
-
+		
 		leftMaster.set(ControlMode.PercentOutput, leftMotorOutput);
 		rightMaster.set(ControlMode.PercentOutput, rightMotorOutput);
 
 	}
+
+	public void reverseDirection() {
+		leftMaster.setInverted(false);
+		leftFollower.setInverted(false);
+		rightMaster.setInverted(true);
+		rightFollower.setInverted(true);
+	}
+	
+	public void defaultDirection() {
+		leftMaster.setInverted(true);
+		leftFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
+	}
+
 
 	public void setLeftDrivePower(double power) {
 		leftMaster.set(ControlMode.PercentOutput, limit(power));
@@ -117,19 +129,6 @@ public class DriveTrain extends Subsystem {
 		return leftMaster.getSensorCollection().getQuadraturePosition();
 	}
 	
-	public void driveToEncoderSetpoint(double power, double setpoint, double tolerance) {
-
-		double currentEncoderPosition = getLeftEncoderPosition();
-		if (currentEncoderPosition < setpoint) {
-			setLeftRightDrivePower(power, power);
-		} else if (currentEncoderPosition > setpoint){
-			setLeftRightDrivePower(-power, -power); 
-		} else if (Math.abs(currentEncoderPosition-setpoint) <= tolerance) {
-			stop();
-		}
-
-	}
-
 	public int getRightEncoderPosition() {
 		return rightMaster.getSensorCollection().getQuadraturePosition();
 	}
@@ -150,6 +149,14 @@ public class DriveTrain extends Subsystem {
 		return rightMaster.getMotorOutputVoltage();
 	}
 
+	public double getLeftPercentOutput() {
+		return leftMaster.getMotorOutputPercent();
+	}
+	
+	public double getRightPercentOutput() {
+		return rightMaster.getMotorOutputPercent();
+	}
+	
 	public void stop() {
 
 		leftMaster.stopMotor();
@@ -172,7 +179,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getAngle() {
-		return navX.getYaw();
+		return navX.getAngle();
 	}
 
 	public void zeroAngle() {

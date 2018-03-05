@@ -37,8 +37,6 @@ public class PathFollower extends Command {
 		
 		trajectoryController.followTrajectory();
 		
-		System.out.println(driveTrain.getAngle());
-
 	}
 
 	protected boolean isFinished() {

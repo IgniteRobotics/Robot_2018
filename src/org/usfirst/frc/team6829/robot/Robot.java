@@ -62,7 +62,8 @@ public class Robot extends TimedRobot {
 	public static ITransform slowTransform;
 
 	public static Command arcadeDrive;
-	public static Command goStraightAuton;
+	
+	public static Command RS_LS;
 	
 	public static Command driveToEncoderSetpoint;
 	
@@ -90,7 +91,6 @@ public class Robot extends TimedRobot {
 
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-//		dumper.zeroEncoder();
 		
 		logger.close();
 	}
@@ -110,8 +110,8 @@ public class Robot extends TimedRobot {
 		
 //		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
-		driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(464+20), 10, 0.3, 2.5);
-		driveToEncoderSetpoint.start();
+//		driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(464+20), 10, 0.3, 2.5);
+//		driveToEncoderSetpoint.start();
 		
 //		goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
 //		try {
@@ -121,6 +121,8 @@ public class Robot extends TimedRobot {
 //		}
 //		System.out.println("Starting autonomous");
 
+		RS_LS.start();
+		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 	}
@@ -134,8 +136,6 @@ public class Robot extends TimedRobot {
 
 		logger.writeData(loggerParameters.returnValues());
 		
-		System.out.println(driveTrain.getLeftEncoderPosition());
-
 		Scheduler.getInstance().run();
 
 	}
@@ -219,20 +219,25 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("Go Straight", goStraightAuton);
+		autonCommands.put("RS LS", RS_LS);
 		return autonCommands;
 
 	}
 
-	private File R_GoStraightAuton;
-	private File L_GoStraightAuton;	
-
+	private File R_RS_LS;
+	private File L_RS_LS;	
+	
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
+		
+//		R_RS_LS = new File("/home/lvuser/RS-LS_right_detailed.csv");
+//		L_RS_LS = new File("/home/lvuser/RS-LS_left_detailed.csv");
 
-		R_GoStraightAuton = new File("/home/lvuser/testForward_right_detailed.csv");
-		L_GoStraightAuton = new File("/home/lvuser/testForward_left_detailed.csv");
+		
+		R_RS_LS = new File("/home/lvuser/asdf_right_detailed.csv");
+		L_RS_LS = new File("/home/lvuser/asdf_left_detailed.csv");
 
+		
 	}
 
 	private void checkNavX() {
@@ -251,11 +256,11 @@ public class Robot extends TimedRobot {
 			importTrajectories();
 
 			//assign paths to commands here
-			goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
+			RS_LS = new PathFollower(driveTrain, L_RS_LS, R_RS_LS, Direction.BACKWARDS);
 			
 		} catch (FileNotFoundException e) {
 
-			DriverStation.reportError("Could not find trajectory!!! " + e.getMessage(), true);
+			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
 
 		}
 	}

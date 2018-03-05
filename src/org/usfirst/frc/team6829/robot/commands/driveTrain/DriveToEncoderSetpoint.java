@@ -11,7 +11,6 @@ public class DriveToEncoderSetpoint extends Command {
 	private DriveTrain driveTrain;
 	
 	private double encoderSetpoint;
-	private double tolerance;
 	private double power;
 	private double currentPosition;
 	
@@ -19,7 +18,6 @@ public class DriveToEncoderSetpoint extends Command {
 
     	this.driveTrain = driveTrain;
     	this.encoderSetpoint = encoderSetpoint;
-    	this.tolerance = tolerance;
     	this.power = power;
     	
     	setTimeout(timeout);

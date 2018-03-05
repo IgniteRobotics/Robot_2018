@@ -38,12 +38,14 @@ public class ArcadeDrive extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
+		
+		driveTrain.defaultDirection();
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-
+		
 		double driverJoystickThrottleAxis = driverJoystick.getRawAxis(THROTTLE_AXIS);
 		double driverJoystickTurnAxis = driverJoystick.getRawAxis(TURN_AXIS);
 		
@@ -56,6 +58,10 @@ public class ArcadeDrive extends Command {
 			throttlePower = slowTransform.transform(throttlePower);
 			turnPower = slowTransform.transform(turnPower);
 		}
+		
+		System.out.println("left:" + driveTrain.getLeftEncoderPosition() + "right:" + driveTrain.getRightEncoderPosition());
+
+		
 //		
 //		if (!driverJoystick.getRawButton(FAST_BUTTON)) {
 //			
@@ -63,7 +69,7 @@ public class ArcadeDrive extends Command {
 //			turnPower = slowTransform.transform(turnPower);
 //			
 //		}
-
+		
 		driveTrain.arcadeDrive(0.8*throttlePower, 0.8*turnPower, DEADBAND, squaredTransform);
 
 	}
