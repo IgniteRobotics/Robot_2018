@@ -99,7 +99,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		checkNavX();
 
-		
 		Scheduler.getInstance().run();
 
 	}
@@ -117,7 +116,9 @@ public class Robot extends TimedRobot {
 //		}
 //		System.out.println("Starting autonomous");
 
-		RS_LS.start();
+
+		Command driveTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 5);
+		driveTwoFeet.start();
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 

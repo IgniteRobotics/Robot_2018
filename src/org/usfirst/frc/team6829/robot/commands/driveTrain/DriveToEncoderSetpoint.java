@@ -2,6 +2,7 @@ package org.usfirst.frc.team6829.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import team6829.common.DriveTrain;
+import team6829.common.Util;
 
 /**
  *
@@ -9,14 +10,14 @@ import team6829.common.DriveTrain;
 public class DriveToEncoderSetpoint extends Command {
 
 	private DriveTrain driveTrain;
-	private double kP = 0.01;
+	private double kP = 0.001;
 	private double encoderSetpoint;
 	private double tolerance = 10;
 	private double currentPosition;
 	
-    public DriveToEncoderSetpoint(DriveTrain driveTrain, double encoderSetpoint, double tolerance, double timeout) {
+    public DriveToEncoderSetpoint(DriveTrain driveTrain, double distance_inches, double timeout) {
 
-    	this.encoderSetpoint = encoderSetpoint;
+    	this.encoderSetpoint = Util.getEncoderTicksFromInches(distance_inches);
 
     	this.driveTrain = driveTrain;
     	requires(this.driveTrain);
@@ -45,9 +46,9 @@ public class DriveToEncoderSetpoint extends Command {
     	System.out.println(power);
     	System.out.println("LeftPower:" + driveTrain.getLeftPercentOutput() + "RightPower: " + driveTrain.getRightPercentOutput());
     
-    	driveTrain.setLeftRightDrivePower(power, power);
+    	driveTrain.setLeftRightDrivePower(power, -power);
     	
-    	if (power <= 0.1) {
+    	if (power <= 0.2) {
     		power = 0.2;
     	}
     	    	

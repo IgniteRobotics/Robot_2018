@@ -37,7 +37,7 @@ public class TurnToAngle extends Command {
     	
     	driveTrain.setLeftRightDrivePower(-power, power);
     	
-    	if (power <= 0.1) {
+    	if (power <= 0.2) {
     		power = 0.2;
     	}
     
