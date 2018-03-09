@@ -45,20 +45,20 @@ public class TrajectoryController {
 
 		left = new EncoderFollower(leftTrajectory);
 		right = new EncoderFollower(rightTrajectory);
-		
-		switch (direction) {
-			case FORWARDS:
-				driveTrain.defaultDirection();
-				driveTrain.defaultLeftRight();
-				
-				break;
-				
-			case BACKWARDS:
-				driveTrain.reverseDirection();
-				driveTrain.reverseLeftRight();
-
-				break;
-		}
+//		
+//		switch (direction) {
+//			case FORWARDS:
+//				driveTrain.defaultDirection();
+//				driveTrain.defaultLeftRight();
+//				
+//				break;
+//				
+//			case BACKWARDS:
+//				driveTrain.reverseDirection();
+//				driveTrain.reverseLeftRight();
+//
+//				break;
+//		}
 
 	}
 

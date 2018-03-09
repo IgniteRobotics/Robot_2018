@@ -15,9 +15,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class IntakeLift extends Subsystem {
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
 	private Command defaultCommand;
 	
 	private WPI_TalonSRX intakeLift;
@@ -29,7 +26,6 @@ public class IntakeLift extends Subsystem {
 	
 	private static final int CRUISE_VELOCITY = 0;
 	private static final int MAX_ACCELERATION = 0;
-	
 	
 	private DigitalInput limitSensor;
 	
@@ -91,20 +87,33 @@ public class IntakeLift extends Subsystem {
     	intakeLift.set(ControlMode.MotionMagic, position);
     }
     
-    public double getIntakeLiftPosition() {
-    	return intakeLift.getActiveTrajectoryPosition();
-    }
-    
     public void resetLift() {
     	intakeLift.set(ControlMode.MotionMagic, defaultPosition);
     }
     
-    public boolean isLimitSensorTripperd() {
-    	return !limitSensor.get(); // return true if limit tripped (hall effect)
+    public double limitIntakeLift(double input) {
+    	if (isArmDown()) {
+    		if (input > 0) {
+    			return 0;
+    		}
+    	} else if (isArmUp()) {
+    		if (input < 0) {
+    			return 0;
+    		}
+    	}
+    	
+    	return input;
     }
     
-    public double getIntakePosition() {
-    	return intakeLift.getSensorCollection().getQuadraturePosition() / 4;
+    public boolean isArmDown() {
+    	return intakeLift.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+    
+    public boolean isArmUp() {
+    	return intakeLift.getSensorCollection().isRevLimitSwitchClosed();
+    }
+    public double getEncoderPosition() {
+    	return intakeLift.getSensorCollection().getQuadraturePosition();
     }
     
     public void zeroLift() {

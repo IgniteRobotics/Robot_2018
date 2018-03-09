@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.usfirst.frc.team6829.robot.commands.PathFollower;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
@@ -34,6 +33,7 @@ import team6829.common.Util;
 import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
+import team6829.motion_profiling.PathFollower;
 import team6829.motion_profiling.TrajectoryController.Direction;
 
 
@@ -110,12 +110,8 @@ public class Robot extends TimedRobot {
 		
 //		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
-//		driveToEncoderSetpoint = new DriveToEncoderSetpoint(driveTrain, Util.inchesToNative(464+20), 10, 0.3, 2.5);
-//		driveToEncoderSetpoint.start();
-		
-//		goStraightAuton = new PathFollower(driveTrain, L_GoStraightAuton, R_GoStraightAuton, Direction.BACKWARDS);
 //		try {
-//			goStraightAuton.start();	
+//			autonCommandToRun.start();	
 //		} catch (NullPointerException e) {
 //			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
 //		}
@@ -185,7 +181,7 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
-		intializePathCommands();
+		intializePathFollowers();
 
 		gameStateReader = new GameStateReader();		
 		
@@ -197,18 +193,17 @@ public class Robot extends TimedRobot {
 		
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
-		display = new SmartdashboardOut(intake);
+		display = new SmartdashboardOut(intake, dumper);
 		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
 		
 		arcadeDriveTransform = new SquaredInputTransform();
 		slowTransform = new SlowTransform();
 
-
 		loggerParameters = new LoggerParameters(driveTrain);
 		logger = new Logger();
 		
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
-				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.BUTTON_LEFT_BUMPER ,slowTransform);
+				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.AXIS_RIGHT_TRIGGER ,slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
 		
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
@@ -251,7 +246,7 @@ public class Robot extends TimedRobot {
 	}
  
 	
-	public void intializePathCommands(){
+	public void intializePathFollowers(){
 
 		try {
 

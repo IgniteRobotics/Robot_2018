@@ -20,7 +20,7 @@ public class ArcadeDrive extends Command {
 	private Joystick driverJoystick;
 	private final ITransform squaredTransform;
 	private final ITransform slowTransform;
-	
+
 	public ArcadeDrive(DriveTrain driveTrain, ITransform squaredTransform, Joystick driverJoystick,  int throttleId, int turnId, int slowId, int fastId, ITransform slowTransform) {
 
 		this.THROTTLE_AXIS = throttleId;
@@ -31,46 +31,41 @@ public class ArcadeDrive extends Command {
 		this.driverJoystick = driverJoystick;
 		this.squaredTransform = squaredTransform;
 		this.slowTransform = slowTransform;
-		
+
 		requires(this.driveTrain);
 
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		
-		driveTrain.defaultDirection();
-		
+
+//		driveTrain.defaultDirection();
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		
+
 		double driverJoystickThrottleAxis = driverJoystick.getRawAxis(THROTTLE_AXIS);
 		double driverJoystickTurnAxis = driverJoystick.getRawAxis(TURN_AXIS);
-		
+
 		double throttlePower = driverJoystickThrottleAxis; 
 		double turnPower = -driverJoystickTurnAxis;
 
-		//if (driverJoystick.getRawButton(SLOW_BUTTON)) {
 		if (driverJoystick.getRawAxis(SLOW_BUTTON) > 0.25) {
-			
+
 			throttlePower = slowTransform.transform(throttlePower);
 			turnPower = slowTransform.transform(turnPower);
 		}
-		
-		System.out.println("left:" + driveTrain.getLeftEncoderPosition() + "right:" + driveTrain.getRightEncoderPosition());
 
-		
-//		
-//		if (!driverJoystick.getRawButton(FAST_BUTTON)) {
-//			
-//			throttlePower = slowTransform.transform(throttlePower);
-//			turnPower = slowTransform.transform(turnPower);
-//			
-//		}
-		
-		driveTrain.arcadeDrive(0.8*throttlePower, 0.8*turnPower, DEADBAND, squaredTransform);
+		if (!(driverJoystick.getRawAxis(FAST_BUTTON) > 0.25)) {
+
+			throttlePower = 0.8*throttlePower;
+			turnPower = 0.8*turnPower;
+
+		}
+
+		driveTrain.arcadeDrive(throttlePower, turnPower, DEADBAND, squaredTransform);
 
 	}
 

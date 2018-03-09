@@ -1,10 +1,9 @@
-package org.usfirst.frc.team6829.robot.commands;
+package team6829.motion_profiling;
 
 import java.io.File;
 
 import edu.wpi.first.wpilibj.command.Command;
 import team6829.common.DriveTrain;
-import team6829.motion_profiling.TrajectoryController;
 import team6829.motion_profiling.TrajectoryController.Direction;
 
 /**

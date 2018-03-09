@@ -1,29 +1,28 @@
-package org.usfirst.frc.team6829.robot.commands.intake;
-
-import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
+package org.usfirst.frc.team6829.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import team6829.common.DriveTrain;
 
 /**
  *
  */
-public class MoveIntakeLiftToPosition extends Command {
+public class DriveToMotionMagicSetpoint extends Command {
 
-	private IntakeLift intake;
+	private DriveTrain driveTrain;
 	private double position;
 	private double tolerance = 0.1;
 	
-    public MoveIntakeLiftToPosition(IntakeLift intake, double pos) {
-
+    public DriveToMotionMagicSetpoint(DriveTrain driveTrain, double pos) {
+    	
     	position = pos;
     	
-    	this.intake = intake;
-    	requires(this.intake);
+    	this.driveTrain = driveTrain;
+    	requires(this.driveTrain);
+    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	intake.moveIntakeLiftToSetpoint(position);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,18 +31,15 @@ public class MoveIntakeLiftToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Math.abs(intake.getEncoderPosition() - position) <= tolerance);
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	//intake.resetLift();
-    	intake.stopLift(); // TODO: Hopefully this holds
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

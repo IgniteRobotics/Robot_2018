@@ -62,7 +62,6 @@ public class OI {
 
 	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
-//	public Button quickDumpTrigger = new JoystickButton(driverJoystick, BUTTON_Y);
 	
 	public Button shootLeft = new JoystickButton(driverJoystick, BUTTON_Y);
 	public Button shootRight = new JoystickButton(driverJoystick, BUTTON_X);
@@ -76,7 +75,6 @@ public class OI {
 	public Button moveIntakeToFullUpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
 	public Button moveIntakeToLaunchButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
 	
-//	public Button shootWhileMove = new JoystickButton(driverJoystick, BUTTON_A);
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, IntakeLift intake, Shooter shooter, 
 			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw) {
@@ -90,15 +88,14 @@ public class OI {
 		shootLeft.whenPressed(new ShootLeft(shooter));
 		shootRight.whenPressed(new ShootRight(shooter));
 		
-		dumpButton.whileHeld(new DumpCube(dumper));
+//		dumpButton.whileHeld(new DumpCube(dumper));
 //		quickDumpTrigger.whenPressed(new BurpCube(dumper));
 		
 		shootButton.whenPressed(new ShootCube(shooter));
-//		shootWhileMove.whenPressed(new ShootWhileMoving(driveTrain, shooter));
-		
-		moveIntakeToFullDownButton.whenPressed(new MoveIntakeLiftToFullDown(intake));
-		moveIntakeToFullUpButton.whenPressed(new MoveIntakeLiftToFullUp(intake));
-		moveIntakeToLaunchButton.whenPressed(new MoveIntakeLiftToLaunchPos(intake));
+//		
+//		moveIntakeToFullDownButton.whenPressed(new MoveIntakeLiftToFullDown(intake));
+//		moveIntakeToFullUpButton.whenPressed(new MoveIntakeLiftToFullUp(intake));
+//		moveIntakeToLaunchButton.whenPressed(new MoveIntakeLiftToLaunchPos(intake));
 		
 	}
 }

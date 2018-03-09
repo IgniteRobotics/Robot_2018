@@ -6,56 +6,46 @@ import team6829.common.DriveTrain;
 /**
  *
  */
-public class DriveToEncoderSetpoint extends Command {
+public class TurnToAngle extends Command {
 
 	private DriveTrain driveTrain;
-	private double kP = 0.01;
-	private double encoderSetpoint;
-	private double tolerance = 10;
-	private double currentPosition;
+	private double kP = 0.00555;
+	private double angle;
+	private double tolerance = 2;
 	
-    public DriveToEncoderSetpoint(DriveTrain driveTrain, double encoderSetpoint, double tolerance, double timeout) {
+	public TurnToAngle(DriveTrain driveTrain, double angle) {
 
-    	this.encoderSetpoint = encoderSetpoint;
-
+		this.angle = angle;
+		
     	this.driveTrain = driveTrain;
     	requires(this.driveTrain);
-    	
-    	setTimeout(timeout);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
-    	driveTrain.zeroEncoders();
-    	
+    	driveTrain.zeroAngle();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	double right = Math.abs(driveTrain.getRightEncoderPosition());
-    	double left = Math.abs(driveTrain.getLeftEncoderPosition());
-    	currentPosition = (left + right) / 2;
-    	
-    	double power = kP * (encoderSetpoint - currentPosition);
-
-    	System.out.println("Drivetrain position:" + currentPosition);
-    	System.out.println("Position error:" + (encoderSetpoint - currentPosition));
+    	double power = kP * (angle - driveTrain.getAngle());
+    	System.out.println("Drivetrain angle:" + driveTrain.getAngle());
+    	System.out.println("Angle error:" + (angle - driveTrain.getAngle()));
     	System.out.println(power);
     	System.out.println("LeftPower:" + driveTrain.getLeftPercentOutput() + "RightPower: " + driveTrain.getRightPercentOutput());
-    
-    	driveTrain.setLeftRightDrivePower(power, power);
+    	
+    	driveTrain.setLeftRightDrivePower(-power, power);
     	
     	if (power <= 0.1) {
     		power = 0.2;
     	}
-    	    	
+    
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return (Math.abs(encoderSetpoint - currentPosition)) < tolerance;
+        return (Math.abs(angle - driveTrain.getAngle()) < tolerance);
     }
 
     // Called once after isFinished returns true
@@ -66,6 +56,5 @@ public class DriveToEncoderSetpoint extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

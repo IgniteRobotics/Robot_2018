@@ -25,57 +25,62 @@ public class GameStateReader {
 		MiddlePositionAuto = SmartDashboard.getBoolean("Middle Position Auto", false);
 		RightPositionAuto = SmartDashboard.getBoolean("Right Position Auto", false);
 
-		Command foo = null;
+		Command toRun = null;
 
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println(gameData);
 
 		if (LeftPositionAuto) {
-			System.out.println("Left Auto");  
+			System.out.println("Positioned Left");  
 		}
 		if (MiddlePositionAuto) {
-			System.out.println("Middle Auto");  
+			System.out.println("Positioned Middle");  
 		} 
 		if (RightPositionAuto) {
-			System.out.println("Right Auto");  
+			System.out.println("Positioned Right");  
 		}
 
 		if(gameData.charAt(0) == 'L') {
-			System.out.println("Left");
+			System.out.println("Left Switch");
 		} else {
-			System.out.println("Right");
+			System.out.println("Right Right");
 		}
 
 		// Left Switch && Positioned Left 
 		if(gameData.charAt(0) == 'L' && LeftPositionAuto) {			
-
-			// TODO: Put leftswitch auto code here
-
-			foo = autonCommands.get("Go Straight");
-			System.out.println("Forwards (sleft)");
-			return foo;
+			
+			toRun = autonCommands.get("Go Straight");
+			System.out.println("Left Switch & Positioned Left");
+			return toRun;
 		}
 
 		// Right Switch && Positioned Left
 		if (gameData.charAt(0) == 'R' && LeftPositionAuto) { 
-			// TODO: Put rightswitch auto code here
-			System.out.println("Either Turn and go forwards or Loop around switch (sright)");
+			System.out.println("Right Switch & Positioned Left");
 		}
-
+		
 		// Left Switch && Positioned Right
 		if (gameData.charAt(0) == 'L' && RightPositionAuto) {
-			// TODO: Put rightswitch auto code here
-			System.out.println("Either Turn and go forwards or Loop around switch (sleft)");
+			System.out.println("Left Switch & Positioned Right");
 		}
 
 		// Right Switch && Positioned Right
 		if (gameData.charAt(0) == 'R' && RightPositionAuto) {
-			// TODO: Put rightswitch auto code here
-			System.out.println("Forwards (sright)");
+			System.out.println("Right Switch & Positioned Right");
+		}
+		
+		// Left Switch && Positioned Middle
+		if (gameData.charAt(0) == 'L' && MiddlePositionAuto) { 
+			System.out.println("Left Switch & Positioned Middle");
+		}
+		
+		// Right Switch && Positioned Middle
+		if (gameData.charAt(0) == 'R' && MiddlePositionAuto) {
+			System.out.println("Right Switch & Positioned Middle");
 		}
 
-		return foo;
+		return toRun;
 	}
 
 }

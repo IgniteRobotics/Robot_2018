@@ -7,28 +7,24 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class MoveToEncoderSetpoint extends Command {
+public class MoveDumperToPosition extends Command {
 
 	private Dumper dumper;
-
-	private double power;
-	private double setpoint;
-	private double tolerance;
+	private double position;
+	private double tolerance = 0.1;
 	
-    public MoveToEncoderSetpoint(Dumper dumper, double power, double setpoint, double tolerance) {
+    public MoveDumperToPosition(Dumper dumper, double pos) {
     	
+    	position = pos;
+
     	this.dumper = dumper;
-		this.power = power;
-		this.setpoint = setpoint;
-		this.tolerance = tolerance;
-		
 		requires(this.dumper);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-		dumper.moveToEncoderSetpoint(power, setpoint, tolerance);
+		dumper.moveDumperToSetpoint(position);
 		
     }
 
@@ -40,7 +36,7 @@ public class MoveToEncoderSetpoint extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	
-		return dumper.isAtSetpoint(setpoint, tolerance);
+		return Math.abs(dumper.getEncoderPosition() - position) <= tolerance;
     }
 
     // Called once after isFinished returns true

@@ -2,20 +2,35 @@ package team6829.common;
 
 public class Util {
 
-	private static int WHEEL_CIRCUMFERENCE = 6;
-	private static int ENCODER_TICKS_PER_REV = 2048;
-	
-	public static double nativeToInches(double input) {
-		
-		double inches = (input*WHEEL_CIRCUMFERENCE*Math.PI)/ENCODER_TICKS_PER_REV; 
-		
-		return inches;
+	private static int ENCODER_TICKS_PER_REVOLUTION = 8192;
+	private static int WHEEL_DIAMETER = 6;
+
+	public static double getEncoderTicksFromInches(double inches) {         
+		return getEncoderTicksFromInches(WHEEL_DIAMETER, inches);
+	}
+
+	private static double getEncoderTicksFromInches(int wheel_diameter, double inches)	{
+
+		double inchesPerRevolution = Math.PI * wheel_diameter;
+
+		double revolutions = inches / inchesPerRevolution;
+		double ticks = revolutions * ENCODER_TICKS_PER_REVOLUTION;
+
+		return ticks;
 	}
 	
-	public static double inchesToNative(double input) {
+
+	public static double getInchesFromEncoderTicks(double encoder_ticks) {
+		return getInchesFromEncoderTicks(WHEEL_DIAMETER, encoder_ticks);
+	}
+	
+	private static double getInchesFromEncoderTicks(int wheel_diameter, double encoder_ticks) {
 		
-		double ticks = (input*ENCODER_TICKS_PER_REV)/(WHEEL_CIRCUMFERENCE*Math.PI);
+		double inchesPerRevolution = Math.PI * wheel_diameter;
+		double revolutions = encoder_ticks*ENCODER_TICKS_PER_REVOLUTION;
 		
-		return ticks;
+		double inches = (revolutions)/(inchesPerRevolution);
+
+		return inches;
 	}
 }
