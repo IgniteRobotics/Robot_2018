@@ -50,34 +50,44 @@ public class GameStateReader {
 		// Left Switch && Positioned Left 
 		if(gameData.charAt(0) == 'L' && LeftPositionAuto) {			
 			
-			toRun = autonCommands.get("Go Straight");
+			toRun = autonCommands.get("GoStraight");
 			System.out.println("Left Switch & Positioned Left");
 			return toRun;
 		}
 
 		// Right Switch && Positioned Left
 		if (gameData.charAt(0) == 'R' && LeftPositionAuto) { 
+			toRun = autonCommands.get("GoStraight");
 			System.out.println("Right Switch & Positioned Left");
+			return toRun;
 		}
 		
 		// Left Switch && Positioned Right
 		if (gameData.charAt(0) == 'L' && RightPositionAuto) {
+			toRun = autonCommands.get("GoStraight");
 			System.out.println("Left Switch & Positioned Right");
+			return toRun;
 		}
 
 		// Right Switch && Positioned Right
 		if (gameData.charAt(0) == 'R' && RightPositionAuto) {
+			toRun = autonCommands.get("GoStraight");
 			System.out.println("Right Switch & Positioned Right");
+			return toRun;
 		}
 		
 		// Left Switch && Positioned Middle
 		if (gameData.charAt(0) == 'L' && MiddlePositionAuto) { 
+			toRun = autonCommands.get("MiddleStartLeftSwitch");
 			System.out.println("Left Switch & Positioned Middle");
+			return toRun;
 		}
 		
 		// Right Switch && Positioned Middle
 		if (gameData.charAt(0) == 'R' && MiddlePositionAuto) {
+			toRun = autonCommands.get("MiddleStartRightSwitch");
 			System.out.println("Right Switch & Positioned Middle");
+			return toRun;
 		}
 
 		return toRun;

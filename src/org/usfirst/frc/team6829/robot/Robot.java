@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
+import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngle;
@@ -107,27 +109,15 @@ public class Robot extends TimedRobot {
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 		
-//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
-//		try {
-//			autonCommandToRun.start();	
-//		} catch (NullPointerException e) {
-//			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-//		}
-//		System.out.println("Starting autonomous");
+		try {
+			autonCommandToRun.start();	
+		} catch (NullPointerException e) {
+			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
+		}
+		System.out.println("Starting autonomous");
 
-
-//		Command driveTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 5);
-//		driveTwoFeet.start();
-		
-		Command turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
-		Command turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
-		
-		Command turn90 = new TurnToAngle(driveTrain, 90);
-		Command goTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 10);
-		
-		turn90.start();
-		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 	}
@@ -224,6 +214,10 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
+		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain));
+		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain));
+		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 60, 10));
+		
 		return autonCommands;
 
 	}
@@ -236,9 +230,6 @@ public class Robot extends TimedRobot {
 	
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
-		
-//		R_RS_LS = new File("/home/lvuser/RS-LS_right_detailed.csv");
-//		L_RS_LS = new File("/home/lvuser/RS-LS_left_detailed.csv");
 
 		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
 		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
@@ -255,16 +246,19 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
- 
+ 	
+	private Command turnLeft;
+	private Command turnRight; 
 	
-	public void intializePathFollowers(){
+	private void intializePathFollowers(){
 
 		try {
 
 			importTrajectories();
-
-			//assign paths to commands here
 			
+			turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
+			turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
+	
 		} catch (FileNotFoundException e) {
 
 			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
