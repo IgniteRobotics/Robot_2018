@@ -10,7 +10,7 @@ import team6829.common.Util;
 public class DriveToEncoderSetpoint extends Command {
 
 	private DriveTrain driveTrain;
-	private double kP = 0.001;
+	private double kP = 0.0001;
 	private double encoderSetpoint;
 	private double tolerance = 10;
 	private double currentPosition;
@@ -46,11 +46,12 @@ public class DriveToEncoderSetpoint extends Command {
     	System.out.println(power);
     	System.out.println("LeftPower:" + driveTrain.getLeftPercentOutput() + "RightPower: " + driveTrain.getRightPercentOutput());
     
-    	driveTrain.setLeftRightDrivePower(power, -power);
-    	
-    	if (power <= 0.2) {
-    		power = 0.2;
+    	if (power <= 0.35) {
+    		power = 0.35;
     	}
+    	
+    	driveTrain.setLeftRightDrivePower(power, power);
+
     	    	
     }
 

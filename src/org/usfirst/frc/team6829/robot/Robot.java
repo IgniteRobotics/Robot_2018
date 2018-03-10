@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngle;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
@@ -34,8 +35,6 @@ import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
 import team6829.motion_profiling.PathFollower;
-import team6829.motion_profiling.TrajectoryController.Direction;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,9 +61,7 @@ public class Robot extends TimedRobot {
 	public static ITransform slowTransform;
 
 	public static Command arcadeDrive;
-	
-	public static Command RS_LS;
-	
+		
 	public static Command driveToEncoderSetpoint;
 	
 	public static Command joystickLift;
@@ -98,6 +95,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		checkNavX();
+		display.displaySmartDashboard();
 
 		Scheduler.getInstance().run();
 
@@ -106,6 +104,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		checkNavX();
+		driveTrain.zeroAngle();
+		driveTrain.zeroEncoders();
 		
 //		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
@@ -117,8 +117,16 @@ public class Robot extends TimedRobot {
 //		System.out.println("Starting autonomous");
 
 
-		Command driveTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 5);
-		driveTwoFeet.start();
+//		Command driveTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 5);
+//		driveTwoFeet.start();
+		
+		Command turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
+		Command turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
+		
+		Command turn90 = new TurnToAngle(driveTrain, 90);
+		Command goTwoFeet = new DriveToEncoderSetpoint(driveTrain, 24, 10);
+		
+		turn90.start();
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -132,7 +140,8 @@ public class Robot extends TimedRobot {
 		checkNavX();
 
 		logger.writeData(loggerParameters.returnValues());
-		
+		display.displaySmartDashboard();
+
 		Scheduler.getInstance().run();
 
 	}
@@ -141,9 +150,6 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		checkNavX();
-		
-//		driveTrain.defaultLeftRight();
-//		driveTrain.defaultDirection();
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -194,7 +200,7 @@ public class Robot extends TimedRobot {
 		
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
-		display = new SmartdashboardOut(intake, dumper);
+		display = new SmartdashboardOut(intake, dumper, driveTrain);
 		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
 		
 		arcadeDriveTransform = new SquaredInputTransform();
@@ -218,13 +224,15 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("RS LS", RS_LS);
 		return autonCommands;
 
 	}
 
-	private File R_RS_LS;
-	private File L_RS_LS;	
+	private File R_turnLeft;
+	private File L_turnLeft;
+	
+	private File R_turnRight;
+	private File L_turnRight;
 	
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
@@ -232,9 +240,11 @@ public class Robot extends TimedRobot {
 //		R_RS_LS = new File("/home/lvuser/RS-LS_right_detailed.csv");
 //		L_RS_LS = new File("/home/lvuser/RS-LS_left_detailed.csv");
 
-		R_RS_LS = new File("/home/lvuser/asdf_right_detailed.csv");
-		L_RS_LS = new File("/home/lvuser/asdf_left_detailed.csv");
+		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
+		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
 
+		R_turnRight = new File("/home/lvuser/turnRight_right_detailed.csv");
+		L_turnRight = new File("/home/lvuser/turnRight_left_detailed.csv");
 		
 	}
 
@@ -254,7 +264,6 @@ public class Robot extends TimedRobot {
 			importTrajectories();
 
 			//assign paths to commands here
-			RS_LS = new PathFollower(driveTrain, L_RS_LS, R_RS_LS, Direction.BACKWARDS);
 			
 		} catch (FileNotFoundException e) {
 

@@ -35,11 +35,11 @@ public class TurnToAngle extends Command {
     	System.out.println(power);
     	System.out.println("LeftPower:" + driveTrain.getLeftPercentOutput() + "RightPower: " + driveTrain.getRightPercentOutput());
     	
-    	driveTrain.setLeftRightDrivePower(-power, power);
-    	
-    	if (power <= 0.2) {
-    		power = 0.2;
+    	if (power <= 0.35) {
+    		power = 0.35;
     	}
+    	
+    	driveTrain.setLeftRightDrivePower(-power, power);
     
     }
 

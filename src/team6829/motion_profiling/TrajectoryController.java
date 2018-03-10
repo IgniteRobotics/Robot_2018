@@ -32,11 +32,7 @@ public class TrajectoryController {
 	private EncoderFollower left;
 	private EncoderFollower right;
 	
-	public enum Direction {
-		FORWARDS, BACKWARDS
-	}
-		
-	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight, Direction direction) {
+	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight) {
 
 		this.driveTrain = driveTrain;
 
@@ -45,20 +41,6 @@ public class TrajectoryController {
 
 		left = new EncoderFollower(leftTrajectory);
 		right = new EncoderFollower(rightTrajectory);
-//		
-//		switch (direction) {
-//			case FORWARDS:
-//				driveTrain.defaultDirection();
-//				driveTrain.defaultLeftRight();
-//				
-//				break;
-//				
-//			case BACKWARDS:
-//				driveTrain.reverseDirection();
-//				driveTrain.reverseLeftRight();
-//
-//				break;
-//		}
 
 	}
 

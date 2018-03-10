@@ -35,6 +35,11 @@ public class DriveTrain extends Subsystem {
 		
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
+		
+		leftMaster.setInverted(true);
+		leftFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
@@ -91,21 +96,6 @@ public class DriveTrain extends Subsystem {
 		rightMaster.set(ControlMode.PercentOutput, rightMotorOutput);
 
 	}
-
-//	public void reverseDirection() {
-//		leftMaster.setInverted(false);
-//		leftFollower.setInverted(false);
-//		rightMaster.setInverted(true);
-//		rightFollower.setInverted(true);
-//	}
-//	
-//	public void defaultDirection() {
-//		leftMaster.setInverted(true);
-//		leftFollower.setInverted(true);
-//		rightMaster.setInverted(false);
-//		rightFollower.setInverted(false);
-//	}
-
 
 	public void setLeftDrivePower(double power) {
 		leftMaster.set(ControlMode.PercentOutput, limit(power));
