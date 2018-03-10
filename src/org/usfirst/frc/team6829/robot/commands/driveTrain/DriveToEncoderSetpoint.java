@@ -46,11 +46,11 @@ public class DriveToEncoderSetpoint extends Command {
     	System.out.println(power);
     	System.out.println("LeftPower:" + driveTrain.getLeftPercentOutput() + "RightPower: " + driveTrain.getRightPercentOutput());
     
-    	driveTrain.setLeftRightDrivePower(power, -power);
-    	
     	if (power <= 0.2) {
     		power = 0.2;
     	}
+    	
+    	driveTrain.setLeftRightDrivePower(power, -power);
     	    	
     }
 
