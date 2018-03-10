@@ -17,6 +17,8 @@ public class MiddleStartLeftSwitch extends CommandGroup {
 	private double turnTwo = 0;
 	private double distanceThree = 0;
 	
+	//TODO: set all parameters, finish delivery 
+	
     public MiddleStartLeftSwitch(DriveTrain driveTrain) {
 
     	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceOne, 5));

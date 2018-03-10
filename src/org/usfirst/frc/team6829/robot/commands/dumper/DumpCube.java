@@ -14,6 +14,8 @@ public class DumpCube extends CommandGroup {
 	private double home_setpoint = 0;
 	private double setpoint = 0;
 
+	//TODO: set all parameters
+	
 	public DumpCube(Dumper dumper) {
 
 		this.dumper = dumper;

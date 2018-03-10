@@ -6,7 +6,6 @@ public class PreDefinedPowerTransform implements ITransform {
 
 	@Override
 	public double transform(double input) {
-		// TODO Auto-generated method stub
 		return PREDEFINED_POWER;
 	}
 

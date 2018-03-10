@@ -17,6 +17,7 @@ public class MiddleStartRightSwitch extends CommandGroup {
 	private double turnTwo = 0;
 	private double distanceThree = 0;
 	
+	//TODO: set all parameters, finish delivery 
 	
     public MiddleStartRightSwitch(DriveTrain driveTrain) {
     	

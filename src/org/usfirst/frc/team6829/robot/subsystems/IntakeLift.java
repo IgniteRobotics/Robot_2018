@@ -26,15 +26,11 @@ public class IntakeLift extends Subsystem {
 	
 	private static final int CRUISE_VELOCITY = 0;
 	private static final int MAX_ACCELERATION = 0;
-	
-	private DigitalInput limitSensor;
-	
+		
 	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
 	
 	public IntakeLift(int intakeLiftID, int limitSensorID) {
-		
-		limitSensor = new DigitalInput(limitSensorID);
-		
+				
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
 		
 		intakeLift.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
