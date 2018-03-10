@@ -30,7 +30,7 @@ public class DriveToEncoderSetpoint extends Command {
     	
     	driveTrain.zeroEncoders();
     	
-    }
+    } 
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
