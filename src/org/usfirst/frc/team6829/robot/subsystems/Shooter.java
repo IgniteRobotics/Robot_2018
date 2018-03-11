@@ -69,6 +69,8 @@ public class Shooter extends Subsystem {
     }
     
     public boolean isLeftRetracted() {
+    	pollSolenoids();
+    	
     	if (solenoid_0Enabled) {
     		return false;
     	}
@@ -80,6 +82,8 @@ public class Shooter extends Subsystem {
     }
     
     public boolean isRightRetracted() {
+    	pollSolenoids();
+    	
     	if (solenoid_2Enabled) {
     		return false;
     	}

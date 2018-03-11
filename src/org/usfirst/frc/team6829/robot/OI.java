@@ -7,12 +7,7 @@
 
 package org.usfirst.frc.team6829.robot;
 
-import org.usfirst.frc.team6829.robot.commands.dumper.BurpCube;
-import org.usfirst.frc.team6829.robot.commands.dumper.DumpCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
-import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToFullDown;
-import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToFullUp;
-import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToLaunchPos;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerOut;

@@ -14,9 +14,9 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
+import org.usfirst.frc.team6829.robot.commands.ZeroIntakeWhileGo;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
-import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngle;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 import team6829.common.Logger;
 import team6829.common.LoggerParameters;
-import team6829.common.Util;
 import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
@@ -112,7 +111,8 @@ public class Robot extends TimedRobot {
 		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
 		try {
-			autonCommandToRun.start();	
+			new ZeroIntakeWhileGo(autonCommandToRun, intake).start();
+			
 		} catch (NullPointerException e) {
 			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
 		}
@@ -121,9 +121,11 @@ public class Robot extends TimedRobot {
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 	}
+
 	/**
 	 * This function is called periodically during autonomous.
 	 */
+	
 	@Override
 	public void autonomousPeriodic() {
 
@@ -214,8 +216,8 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain));
-		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain));
+		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
+		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
 		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 60, 10));
 		
 		return autonCommands;

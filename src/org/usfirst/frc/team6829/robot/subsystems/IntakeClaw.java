@@ -14,12 +14,14 @@ public class IntakeClaw extends Subsystem {
 
 	private Command defaultCommand;
 	
+	private boolean solenoidEnabled;
+	
 	private Solenoid intakeArm;
 	
 	public IntakeClaw(int pcmID, int intakeArmID) {
 		
 		intakeArm = new Solenoid(pcmID, intakeArmID);
-		
+		pollSolenoid();
 	}
 	
 	public void setCommandDefault(Command command) {
@@ -27,10 +29,27 @@ public class IntakeClaw extends Subsystem {
 		initDefaultCommand();
 	}
 	
+	public void pollSolenoid() {
+		solenoidEnabled = intakeArm.get();
+	}
+	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(this.defaultCommand);
     }
+    
+    public boolean isOpen() {
+    	pollSolenoid();
+
+		return solenoidEnabled;
+    }
+    
+    public boolean isClosed() {
+    	pollSolenoid();
+
+    	return !solenoidEnabled;
+    }
+    
     
     public void openClaw() {
     	intakeArm.set(true);
@@ -41,7 +60,7 @@ public class IntakeClaw extends Subsystem {
     }
     
     public void stopClaw() {
-    	intakeArm.set(false);
+    	closeClaw();
     }
 
 }
