@@ -22,7 +22,7 @@ public class ShootWhileMove extends CommandGroup {
     	
     	currentPosition = (driveTrain.getLeftEncoderPosition() + driveTrain.getRightEncoderPosition())/2;
     	
-    	if (currentPosition == distanceToShoot) {
+    	if (currentPosition >= distanceToShoot) {
     		addSequential(new ShootCube(shooter));
     	}
     	
