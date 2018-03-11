@@ -18,6 +18,8 @@ public class IntakeLift extends Subsystem {
 	
 	private WPI_TalonSRX intakeLift;
 
+	//TODO: set all parameters
+	
 	private static final double kF  = 0;
 	private static final double kP = 0;
 	private static final double kI = 0;
@@ -26,9 +28,9 @@ public class IntakeLift extends Subsystem {
 	private static final int CRUISE_VELOCITY = 0;
 	private static final int MAX_ACCELERATION = 0;
 		
-	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
+	private double defaultPosition = 0.0; 
 	
-	public IntakeLift(int intakeLiftID, int limitSensorID) {
+	public IntakeLift(int intakeLiftID) {
 				
 		intakeLift = new WPI_TalonSRX(intakeLiftID);
 		

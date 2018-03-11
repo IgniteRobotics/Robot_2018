@@ -25,7 +25,7 @@ public class MiddleStartLeftSwitch extends CommandGroup {
 	private double distanceThree = 0;
 	private double cubeEjectTime = 0;
 	
-	//TODO: set all parameters, finish delivery 
+	//TODO: set all parameters
 	
     public MiddleStartLeftSwitch(DriveTrain driveTrain, IntakeLift intakeLift, IntakeClaw intakeClaw, IntakeFlywheel intakeFlywheel) {
 

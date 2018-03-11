@@ -111,8 +111,7 @@ public class Robot extends TimedRobot {
 		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
 		try {
-			new ZeroIntakeWhileGo(autonCommandToRun, intake).start();
-			
+			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
 		} catch (NullPointerException e) {
 			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
 		}
@@ -188,7 +187,7 @@ public class Robot extends TimedRobot {
 		
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
 		
-		intake = new IntakeLift(robotMap.intakeLiftMotor, robotMap.hallEffectSensorID);
+		intake = new IntakeLift(robotMap.intakeLiftMotor);
 		
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);

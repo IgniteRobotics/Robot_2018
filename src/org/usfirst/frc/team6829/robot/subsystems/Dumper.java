@@ -18,6 +18,8 @@ public class Dumper extends Subsystem {
 
 	private WPI_TalonSRX dumperMotor;
 	
+	//TODO: set all parameters
+	
 	private static final double kF  = 0;
 	private static final double kP = 0;
 	private static final double kI = 0;
@@ -26,7 +28,7 @@ public class Dumper extends Subsystem {
 	private static final int CRUISE_VELOCITY = 0;
 	private static final int MAX_ACCELERATION = 0;
 	
-	private double defaultPosition = 0.0; // TODO: PLEASE SET THIS
+	private double defaultPosition = 0.0;
 
 	public Dumper(int dumperMotorID) {
 		

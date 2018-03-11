@@ -11,7 +11,7 @@ public class ZeroIntake extends Command {
 
 	private IntakeLift intake;
 	
-	private double power = 0.2; // TODO: Make sure the sign is right
+	private double power = 0.2; // TODO: VERIFY SIGN
 	
     public ZeroIntake(IntakeLift intake) {
         // Use requires() here to declare subsystem dependencies

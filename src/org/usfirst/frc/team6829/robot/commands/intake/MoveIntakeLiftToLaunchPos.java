@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class MoveIntakeLiftToLaunchPos extends CommandGroup {
 
 	private IntakeLift intake;
-	private double launchPosition = 0.0; // TODO: Set this (This is the 45 degree one)
+	private double launchPosition = 0.0; // TODO: set parameter (45 degree configuration)
 	
     public MoveIntakeLiftToLaunchPos(IntakeLift intake) {
         

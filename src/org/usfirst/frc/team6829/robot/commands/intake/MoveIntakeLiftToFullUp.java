@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class MoveIntakeLiftToFullUp extends CommandGroup {
 
 	private IntakeLift intake;
-	private double fullUpPosition = 0.0; // TODO: Set this
+	private double fullUpPosition = 0.0; // TODO: set parameter
 	
     public MoveIntakeLiftToFullUp(IntakeLift intake) {
         
