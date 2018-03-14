@@ -44,9 +44,19 @@ public class IntakeFlywheel extends Subsystem {
     	rightRoller.set(ControlMode.PercentOutput, -flywheelSpeed);
     }
     
+    public void rollIn(double speed) {
+    	leftRoller.set(ControlMode.PercentOutput, -speed);
+    	rightRoller.set(ControlMode.PercentOutput, -speed);
+    }
+    
     public void rollOut() {
     	leftRoller.set(ControlMode.PercentOutput, flywheelSpeed);
     	rightRoller.set(ControlMode.PercentOutput, flywheelSpeed);
+    }
+    
+    public void rollOut(double speed){
+    	leftRoller.set(ControlMode.PercentOutput, speed);
+    	rightRoller.set(ControlMode.PercentOutput, speed);
     }
     
     public void stopRollers() {

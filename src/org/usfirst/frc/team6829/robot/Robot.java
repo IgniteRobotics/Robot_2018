@@ -14,10 +14,12 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
+import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
 import org.usfirst.frc.team6829.robot.commands.ZeroIntakeWhileGo;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
+import org.usfirst.frc.team6829.robot.commands.intake.RollerOutTime;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
@@ -104,17 +106,23 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		System.out.println("Autonomous Init");
 		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 		
-		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		//autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+//		Command middleTest = new ShootWhileMove(driveTrain, shooter, intake, intakeClaw);//new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
+//		middleTest.start();
 		
-		try {
+		
+		middleStartLeftSwitch.start();
+//		middleStartRightSwitch.start();
+		/*try {
 			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
 		} catch (NullPointerException e) {
 			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-		}
+		}*/
 		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
@@ -217,7 +225,7 @@ public class Robot extends TimedRobot {
 
 		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
 		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
-		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 60, 10));
+		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 60, -.5, 10));
 		
 		return autonCommands;
 
@@ -229,14 +237,31 @@ public class Robot extends TimedRobot {
 	private File R_turnRight;
 	private File L_turnRight;
 	
+	private File R_scurve;
+	private File L_scurve;
+	
+	private File R_middleStartLeftSwitch;
+	private File L_middleStartLeftSwitch;
+	private File R_middleStartRightSwitch;
+	private File L_middleStartRightSwitch;
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
 
-		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
-		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
+		R_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_right_detailed.csv");
+		L_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_left_detailed.csv");
 
-		R_turnRight = new File("/home/lvuser/turnRight_right_detailed.csv");
-		L_turnRight = new File("/home/lvuser/turnRight_left_detailed.csv");
+		R_middleStartRightSwitch = new File("/home/lvuser/MiddleStartRightSwitch_right_detailed.csv");
+		L_middleStartRightSwitch = new File("/home/lvuser/MiddleStartRightSwitch_left_detailed.csv");
+//		
+//		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
+//		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
+//
+//		R_turnRight = new File("/home/lvuser/turnRight_right_detailed.csv");
+//		L_turnRight = new File("/home/lvuser/turnRight_left_detailed.csv");
+//		
+//		R_scurve = new File ("/home/lvuser/curve_right_detailed.csv");
+//		L_scurve = new File ("/home/lvuser/curve_left_detailed.csv");
+//		
 		
 	}
 
@@ -249,7 +274,11 @@ public class Robot extends TimedRobot {
 	}
  	
 	private Command turnLeft;
-	private Command turnRight; 
+	private Command turnRight;
+	private Command scurve;
+	
+	private Command middleStartLeftSwitch;
+	private Command middleStartRightSwitch;
 	
 	private void intializePathFollowers(){
 
@@ -257,15 +286,20 @@ public class Robot extends TimedRobot {
 
 			importTrajectories();
 			
-			turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
-			turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
-	
+			//TODO: THESE ARE REFLECTED ABOUT THE Y-AXIS, MUST FIX!!!!!!!!!!!!
+			
+			middleStartLeftSwitch = new PathFollower(driveTrain, L_middleStartLeftSwitch, R_middleStartLeftSwitch);
+			middleStartRightSwitch = new PathFollower(driveTrain, L_middleStartRightSwitch, R_middleStartRightSwitch);
+//					
+//			scurve = new PathFollower(driveTrain, L_scurve, R_scurve);
+//			
+//			turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
+//			turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
+//	
 		} catch (FileNotFoundException e) {
 
 			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
 
 		}
 	}
-	
-
 }

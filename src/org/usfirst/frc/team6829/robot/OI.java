@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
@@ -55,14 +56,17 @@ public class OI {
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
 	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 
-	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
+	//public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
 	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
 	
 	public Button shootLeft = new JoystickButton(driverJoystick, BUTTON_Y);
 	public Button shootRight = new JoystickButton(driverJoystick, BUTTON_X);
 	
+	public Button autoShoot = new JoystickButton(driverJoystick, BUTTON_A);
+	
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
+	
 	
 	public Button openIntakeButton = new JoystickButton(manipulatorJoystick, BUTTON_A);
 
@@ -80,13 +84,14 @@ public class OI {
 		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));
 
-		shootLeft.whenPressed(new ShootLeft(shooter));
-		shootRight.whenPressed(new ShootRight(shooter));
+		shootRight.whenPressed(new ShootLeft(shooter));
+		shootLeft.whenPressed(new ShootRight(shooter));
 		
 //		dumpButton.whileHeld(new DumpCube(dumper));
 //		quickDumpTrigger.whenPressed(new BurpCube(dumper));
 		
-		shootButton.whenPressed(new ShootCube(shooter));
+		//shootButton.whenPressed(new ShootCube(shooter));
+		autoShoot.whenPressed(new ShootWhileMove(driveTrain, shooter, intake, intakeClaw));
 //		
 //		moveIntakeToFullDownButton.whenPressed(new MoveIntakeLiftToFullDown(intake));
 //		moveIntakeToFullUpButton.whenPressed(new MoveIntakeLiftToFullUp(intake));

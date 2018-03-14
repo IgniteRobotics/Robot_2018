@@ -106,6 +106,8 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void setLeftRightDrivePower(double leftPower, double rightPower) {
+		//System.out.println("Drivetrain left = " + leftPower);
+		//System.out.println("Drivetrain right = " + rightPower);
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}
@@ -166,9 +168,13 @@ public class DriveTrain extends Subsystem {
 	public double getAngle() {
 		return navX.getAngle();
 	}
-
+	
+	public double getYaw() {
+		return navX.getYaw();
+	}
+	
 	public void zeroAngle() {
-		navX.zeroYaw();
+		navX.reset();
 	}
 
 	public boolean isCalibrating() {

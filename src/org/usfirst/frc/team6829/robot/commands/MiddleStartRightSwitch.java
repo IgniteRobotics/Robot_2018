@@ -29,15 +29,15 @@ public class MiddleStartRightSwitch extends CommandGroup {
 	
     public MiddleStartRightSwitch(DriveTrain driveTrain, IntakeLift intakeLift, IntakeClaw intakeClaw, IntakeFlywheel intakeFlywheel) {
     	
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceOne, 5));
-    	addSequential(new TurnToAngle(driveTrain, turnOne));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceTwo, 5));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceOne, -.5, 5));
+    	/*addSequential(new TurnToAngle(driveTrain, turnOne));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceTwo, -.5, 5));
     	addSequential(new TurnToAngle(driveTrain, turnTwo));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceThree, 5));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceThree, -.5, 5));
     	addSequential(new OpenIntake(intakeClaw));
     	addSequential(new MoveIntakeLiftToFullUp(intakeLift));
     	addSequential(new CloseIntake(intakeClaw));
-    	addSequential(new RollerOutTime(intakeFlywheel, cubeEjectTime));
+    	addSequential(new RollerOutTime(intakeFlywheel, cubeEjectTime));*/
 
     	
     }
