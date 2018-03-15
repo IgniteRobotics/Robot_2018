@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		System.out.println("Autonomous Init");
+		/*System.out.println("Autonomous Init");
 		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
@@ -118,14 +118,14 @@ public class Robot extends TimedRobot {
 		
 		middleStartLeftSwitch.start();
 //		middleStartRightSwitch.start();
-		/*try {
+		try {
 			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
 		} catch (NullPointerException e) {
 			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-		}*/
+		}
 		System.out.println("Starting autonomous");
 
-		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
+		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);*/
 
 	}
 
@@ -282,7 +282,7 @@ public class Robot extends TimedRobot {
 	
 	private void intializePathFollowers(){
 
-		try {
+		/*try {
 
 			importTrajectories();
 			
@@ -300,6 +300,6 @@ public class Robot extends TimedRobot {
 
 			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
 
-		}
+		}*/
 	}
 }

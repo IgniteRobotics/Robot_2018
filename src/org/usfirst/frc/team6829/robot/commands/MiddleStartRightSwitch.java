@@ -2,6 +2,7 @@ package org.usfirst.frc.team6829.robot.commands;
 
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngle;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToAngleYaw;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.MoveIntakeLiftToFullUp;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
@@ -18,6 +19,7 @@ import team6829.common.DriveTrain;
  */
 public class MiddleStartRightSwitch extends CommandGroup {
 
+	private double maxPower = .3;
 	private double distanceOne = 0;
 	private double turnOne = 0;
 	private double distanceTwo = 0;
@@ -29,15 +31,13 @@ public class MiddleStartRightSwitch extends CommandGroup {
 	
     public MiddleStartRightSwitch(DriveTrain driveTrain, IntakeLift intakeLift, IntakeClaw intakeClaw, IntakeFlywheel intakeFlywheel) {
     	
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceOne, -.5, 5));
-    	/*addSequential(new TurnToAngle(driveTrain, turnOne));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceTwo, -.5, 5));
-    	addSequential(new TurnToAngle(driveTrain, turnTwo));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, distanceThree, -.5, 5));
-    	addSequential(new OpenIntake(intakeClaw));
     	addSequential(new MoveIntakeLiftToFullUp(intakeLift));
-    	addSequential(new CloseIntake(intakeClaw));
-    	addSequential(new RollerOutTime(intakeFlywheel, cubeEjectTime));*/
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 43, maxPower, 10));
+    	addSequential(new TurnToAngleYaw(driveTrain, 75));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 59, maxPower, 10));    
+    	addSequential(new TurnToAngleYaw(driveTrain, -75));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 63+6, maxPower, 10)); 
+    	addSequential(new RollerOutTime(intakeFlywheel, 3));
 
     	
     }
