@@ -16,8 +16,8 @@ import team6829.common.Util;
  */
 public class ShootWhileMove extends Command {
 
-	private double distanceToShoot = Util.getEncoderTicksFromInches(21+3);
-	private double distanceTotal = Util.getEncoderTicksFromInches(42); //TODO: set all parameters
+	private double distanceToShoot = Util.getEncoderTicksFromInches(6);
+	private double distanceTotal = Util.getEncoderTicksFromInches(30); //TODO: set all parameters
 	private double currentPosition;
 	private double power = -0.5;
 	
