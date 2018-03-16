@@ -106,15 +106,25 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		/*System.out.println("Autonomous Init");
+		System.out.println("Autonomous Init");
 		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 		
-		//autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		
+		try { 
+			new autonCommandToRun.start(); // TODO: fix error
+		} catch (NullPointerException e) {
+			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
+		}
+		
+		System.out.println("Starting autonomous");
+		
+		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 //		Command middleTest = new ShootWhileMove(driveTrain, shooter, intake, intakeClaw);//new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
 //		middleTest.start();
-		
+/*		
 		
 		middleStartLeftSwitch.start();
 //		middleStartRightSwitch.start();
