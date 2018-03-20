@@ -34,9 +34,9 @@ public class MiddleStartRightSwitch extends CommandGroup {
     	addSequential(new MoveIntakeLiftToFullUp(intakeLift));
     	addSequential(new DriveToEncoderSetpoint(driveTrain, 43, maxPower, 10));
     	addSequential(new TurnToAngleYaw(driveTrain, 75));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, 59, maxPower, 10));    
-    	addSequential(new TurnToAngleYaw(driveTrain, -75));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, 63+6, maxPower, 10)); 
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 59-12-6-4, maxPower, 10));    
+    	addSequential(new TurnToAngleYaw(driveTrain, -70));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 63+8, maxPower, 2)); 
     	addSequential(new RollerOutTime(intakeFlywheel, 3));
 
     	

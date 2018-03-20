@@ -35,9 +35,9 @@ public class MiddleStartLeftSwitch extends CommandGroup {
     	addSequential(new MoveIntakeLiftToFullUp(intakeLift));
     	addSequential(new DriveToEncoderSetpoint(driveTrain, 43, maxPower, 10));
     	addSequential(new TurnToAngleYaw(driveTrain, -75));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, 59, maxPower, 10));    // 5Ft to the side
-    	addSequential(new TurnToAngleYaw(driveTrain, 75));
-    	addSequential(new DriveToEncoderSetpoint(driveTrain, 63+6, maxPower, 10));  //63" + an additional 6" in case we are off due to turns.
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 59-12-6-4, maxPower, 10));    // 5Ft to the side
+    	addSequential(new TurnToAngleYaw(driveTrain, 70));
+    	addSequential(new DriveToEncoderSetpoint(driveTrain, 63+8, maxPower, 2));  //63" + an additional 6" in case we are off due to turns.
     	addSequential(new RollerOutTime(intakeFlywheel, 3));
     	
 //    	addSequential(new TurnToAngleYaw(driveTrain, 90));

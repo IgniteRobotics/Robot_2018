@@ -13,7 +13,7 @@ public class JoystickIntakeLift extends Command {
 
 	
 	private IntakeLift intake;
-	private double maxPow = 0.5;
+	private double maxPow = 0.4;
 	
 
 	private final int ARM_AXIS;

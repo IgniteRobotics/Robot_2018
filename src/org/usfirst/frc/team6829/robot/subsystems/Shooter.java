@@ -68,6 +68,25 @@ public class Shooter extends Subsystem {
     	return true;
     }
     
+    public boolean isExtended() {
+    	pollSolenoids();
+    	
+    	if (!solenoid_0Enabled) {
+    		return false;
+    	}
+    	if (!solenoid_1Enabled) {
+    		return false;
+    	}
+    	if (!solenoid_2Enabled) {
+    		return false;
+    	}
+    	if (!solenoid_3Enabled) {
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
     public boolean isLeftRetracted() {
     	pollSolenoids();
     	

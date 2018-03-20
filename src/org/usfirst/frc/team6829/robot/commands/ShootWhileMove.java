@@ -16,9 +16,10 @@ import team6829.common.Util;
  */
 public class ShootWhileMove extends Command {
 
-	private double distanceToShoot = Util.getEncoderTicksFromInches(6);
+	private double distanceToShoot = Util.getEncoderTicksFromInches(8);
 	private double distanceTotal = Util.getEncoderTicksFromInches(30); //TODO: set all parameters
 	private double currentPosition;
+	private double initialPosition;
 	private double power = -0.5;
 	
 	private DriveTrain driveTrain;
@@ -41,15 +42,16 @@ public class ShootWhileMove extends Command {
     }
     
     protected void initialize() {
-    	driveTrain.zeroEncoders();
+//    	driveTrain.zeroEncoders();
     	intakeClaw.openClaw();
+    	initialPosition = (Math.abs(driveTrain.getLeftEncoderPosition())+Math.abs(driveTrain.getRightEncoderPosition()))/2;
     	//intakeLift.setLiftPower(liftSpeed);
     }
     
     protected void execute() {
     	currentPosition = (Math.abs(driveTrain.getLeftEncoderPosition())+Math.abs(driveTrain.getRightEncoderPosition()))/2;
     	
-    	if (currentPosition >= distanceToShoot) {
+    	if (currentPosition >= initialPosition+distanceToShoot) {
     		shooter.shoot();
     	}
     	
@@ -61,7 +63,7 @@ public class ShootWhileMove extends Command {
     }
     
   	protected boolean isFinished() {
-		return currentPosition >= distanceTotal;
+		return currentPosition >= distanceTotal+initialPosition;
 	}
 	
 	protected void end() {

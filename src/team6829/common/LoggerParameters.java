@@ -1,26 +1,30 @@
 package team6829.common;
 
+import org.usfirst.frc.team6829.robot.subsystems.Shooter;
+
 public class LoggerParameters {
 
 	private DriveTrain driveTrain;
-
-	public LoggerParameters(DriveTrain driveTrain) {
+	private Shooter shooter;
+	
+	public LoggerParameters(DriveTrain driveTrain, Shooter shooter) {
 
 		this.driveTrain = driveTrain;
+		this.shooter = shooter;
 
 	}
 
 	public String[] data_fields = 
 
 		{
-			"left enc vel", "right enc vel", "left enc pos", "right enc pos", "left enc volt", "right enc volt", "heading"
+			"left enc vel", "right enc vel", "left enc pos", "right enc pos", "left enc volt", "right enc volt", "heading", "shoot?"
 		};
 
 
 	public String[] units_fields = 
 
 		{
-			"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "volts", "volts", "degrees"
+			"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "volts", "volts", "degrees", "1: yes, 2: no"
 		};
 
 	public double boolToDouble(boolean val) {
@@ -40,9 +44,10 @@ public class LoggerParameters {
 		double leftVoltage = (double)driveTrain.getLeftVoltage();
 		double rightVoltage = (double)driveTrain.getRightVoltage();
 		double heading = driveTrain.getAngle();
+		double shoot = boolToDouble(shooter.isExtended());
 
 
-		double[] values = {leftVel, rightVel, leftEnc, rightEnc, leftVoltage, rightVoltage, heading};
+		double[] values = {leftVel, rightVel, leftEnc, rightEnc, leftVoltage, rightVoltage, heading, shoot};
 
 		return values;
 

@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
 		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 		
 		try { 
-			new autonCommandToRun.start(); // TODO: fix error
+			autonCommandToRun.start();
 		} catch (NullPointerException e) {
 			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
 		}
@@ -196,7 +196,7 @@ public class Robot extends TimedRobot {
 
 	private void initializeAll() {
 
-		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor);
+		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
 		intializePathFollowers();
 
 		gameStateReader = new GameStateReader();		
@@ -215,7 +215,7 @@ public class Robot extends TimedRobot {
 		arcadeDriveTransform = new SquaredInputTransform();
 		slowTransform = new SlowTransform();
 
-		loggerParameters = new LoggerParameters(driveTrain);
+		loggerParameters = new LoggerParameters(driveTrain, shooter);
 		logger = new Logger();
 		
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
@@ -235,7 +235,7 @@ public class Robot extends TimedRobot {
 
 		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
 		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
-		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 60, -.5, 10));
+		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 100, .5, 10));
 		
 		return autonCommands;
 

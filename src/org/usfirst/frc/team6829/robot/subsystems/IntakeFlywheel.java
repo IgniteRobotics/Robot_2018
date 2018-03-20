@@ -60,8 +60,8 @@ public class IntakeFlywheel extends Subsystem {
     }
     
     public void stopRollers() {
-    	leftRoller.set(ControlMode.PercentOutput, -.1);
-    	rightRoller.set(ControlMode.PercentOutput, -.1);
+    	leftRoller.set(ControlMode.PercentOutput, -.15);
+    	rightRoller.set(ControlMode.PercentOutput, -.15);
     }
 }
 

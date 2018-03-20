@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class MoveIntakeLiftToFullUp extends Command {
 
 	private IntakeLift intake;
-	private double maxSpeed = 0.3; // TODO: set parameter
+	private double maxSpeed = -0.3; // TODO: PLEASE REVERSE THIS ON B
 	private double timeOut = 0.5;
 	
     public MoveIntakeLiftToFullUp(IntakeLift intake) {

@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,13 +26,17 @@ public class DriveTrain extends Subsystem {
 	private WPI_VictorSPX rightFollower;
 
 	private AHRS navX;
+	
+	private AnalogInput pressureSensor;
 
-	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId) {
+	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId, int pressureSensorID) {
 		
 		leftMaster = new WPI_TalonSRX(leftMasterCanId);
 		leftFollower = new WPI_VictorSPX(leftFollowerCanId);
 		rightMaster = new WPI_TalonSRX(rightMasterCanId);
 		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
+		
+		pressureSensor = new AnalogInput(pressureSensorID);
 		
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
@@ -142,6 +147,12 @@ public class DriveTrain extends Subsystem {
 	
 	public double getRightPercentOutput() {
 		return rightMaster.getMotorOutputPercent();
+	}
+	
+	public double getPressure() {
+
+		int pressure = (int)(250*pressureSensor.getVoltage()/5.0-25);
+		return pressure;
 	}
 	
 	public void stop() {

@@ -77,7 +77,7 @@ public class DriveToEncoderSetpoint extends Command {
     	System.out.println("IsFinished :" + isFinished);
     	*/
     	
-    	return isFinished;
+    	return isFinished || isTimedOut();
     }
 
     // Called once after isFinished returns true

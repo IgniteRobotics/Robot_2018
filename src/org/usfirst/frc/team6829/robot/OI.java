@@ -56,10 +56,10 @@ public class OI {
 	public Joystick driverJoystick = new Joystick(DRIVER_JOYSTICK);
 	public Joystick manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK);
 
-	//public Button shootButton = new JoystickButton(driverJoystick, BUTTON_A);
-	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
+	public Button shootButton = new JoystickButton(driverJoystick, BUTTON_Y);
+//	public Button dumpButton = new JoystickButton(driverJoystick, BUTTON_B);
 	
-	public Button shootLeft = new JoystickButton(driverJoystick, BUTTON_Y);
+	public Button shootLeft = new JoystickButton(driverJoystick, BUTTON_B);
 	public Button shootRight = new JoystickButton(driverJoystick, BUTTON_X);
 	
 	public Button autoShoot = new JoystickButton(driverJoystick, BUTTON_A);
@@ -92,6 +92,7 @@ public class OI {
 		
 		//shootButton.whenPressed(new ShootCube(shooter));
 		autoShoot.whenPressed(new ShootWhileMove(driveTrain, shooter, intake, intakeClaw));
+		shootButton.whenPressed(new ShootCube(shooter));
 //		
 //		moveIntakeToFullDownButton.whenPressed(new MoveIntakeLiftToFullDown(intake));
 //		moveIntakeToFullUpButton.whenPressed(new MoveIntakeLiftToFullUp(intake));
