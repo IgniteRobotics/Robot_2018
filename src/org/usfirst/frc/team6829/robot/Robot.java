@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
 		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
-//		
+
 //		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 //		
 //		try { 
@@ -121,26 +121,17 @@ public class Robot extends TimedRobot {
 //		}
 		
 		System.out.println("Starting autonomous");
-		Command asdf = new MPthenShoot(driveTrain, intakeFlywheel);
-		asdf.start();
+		
+		s_curve.start();
+//		two.start();
+//		three.start();
+//		four.start();
+		
+//		Command asdf = new MPthenShoot(driveTrain, intakeFlywheel);
+//		asdf.start();
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-//		Command middleTest = new ShootWhileMove(driveTrain, shooter, intake, intakeClaw);//new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
-//		middleTest.start();
 		
-		
-//		middleStartLeftSwitch.start();
-//		middleStartRightSwitch.start();
-		
-//		try {
-//			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
-//		} catch (NullPointerException e) {
-//			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-//		}
-//		System.out.println("Starting autonomous");
-
-		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-
 	}
 
 	/**
@@ -245,38 +236,34 @@ public class Robot extends TimedRobot {
 
 	}
 
-	private File R_turnLeft;
-	private File L_turnLeft;
+	public static File R_1_2;
+	public static File L_1_2;
 	
-	private File R_turnRight;
-	private File L_turnRight;
+	private static File R_2;
+	private static File L_2;
 	
-	private File R_scurve;
-	private File L_scurve;
+	private static File R_3;
+	private static File L_3;
 	
-	private File R_middleStartLeftSwitch;
-	private File L_middleStartLeftSwitch;
-	public static File R_middleStartRightSwitch;
-	public static File L_middleStartRightSwitch;
+	private static File R_4;
+	private static File L_4;
+	
 	//Import all of our trajectories from the RoboRIO
+	
 	private void importTrajectories() throws FileNotFoundException {
-//
-//		R_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_right_detailed.csv");
-//		L_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_left_detailed.csv");
 
-		R_middleStartRightSwitch = new File("/home/lvuser/1-2_right_detailed.csv");
-		L_middleStartRightSwitch = new File("/home/lvuser/1-2_left_detailed.csv");
-//		
-//		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
-//		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
-//
-//		R_turnRight = new File("/home/lvuser/turnRight_right_detailed.csv");
-//		L_turnRight = new File("/home/lvuser/turnRight_left_detailed.csv");
-//		
-//		R_scurve = new File ("/home/lvuser/curve_right_detailed.csv");
-//		L_scurve = new File ("/home/lvuser/curve_left_detailed.csv");
-//		
-		
+		R_1_2 = new File("/home/lvuser/1-2_right_detailed.csv");
+		L_1_2 = new File("/home/lvuser/1-2_left_detailed.csv");
+
+		R_2 = new File("/home/lvuser/2_right_detailed.csv");
+		L_2 = new File("/home/lvuser/2_left_detailed.csv");
+
+		R_3 = new File("/home/lvuser/3_right_detailed.csv");
+		L_3 = new File("/home/lvuser/3_left_detailed.csv");
+
+		R_4 = new File("/home/lvuser/4_right_detailed.csv");
+		L_4 = new File("/home/lvuser/4_left_detailed.csv");
+
 	}
 
 	private void checkNavX() {
@@ -286,13 +273,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
- 	
-	private Command turnLeft;
-	private Command turnRight;
-	private Command scurve;
 	
-	private Command middleStartLeftSwitch;
-	private Command middleStartRightSwitch;
+	private Command s_curve;
+	private Command two;
+	private Command three;
+	private Command four;
 	
 	private void intializePathFollowers(){
 
@@ -300,16 +285,11 @@ public class Robot extends TimedRobot {
 
 			importTrajectories();
 			
-			//TODO: THESE ARE REFLECTED ABOUT THE Y-AXIS, MUST FIX!!!!!!!!!!!!
-			
-//			middleStartLeftSwitch = new PathFollower(driveTrain, L_middleStartLeftSwitch, R_middleStartLeftSwitch);
-			middleStartRightSwitch = new PathFollower(driveTrain, L_middleStartRightSwitch, R_middleStartRightSwitch);
-//					
-//			scurve = new PathFollower(driveTrain, L_scurve, R_scurve);
-//			
-//			turnLeft = new PathFollower(driveTrain, L_turnLeft, R_turnLeft);
-//			turnRight = new PathFollower(driveTrain, L_turnRight, R_turnRight);
-//	
+			s_curve = new PathFollower(driveTrain, L_1_2, R_1_2);
+			two = new PathFollower(driveTrain, L_2, R_2);
+			three = new PathFollower(driveTrain, L_3, R_3);
+			four = new PathFollower(driveTrain, L_3, R_3);
+
 		} catch (FileNotFoundException e) {
 
 			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
