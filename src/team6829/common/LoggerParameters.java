@@ -17,22 +17,23 @@ public class LoggerParameters {
 	public String[] data_fields = 
 
 		{
-			"left enc vel", "right enc vel", "left enc pos", "right enc pos", "left enc volt", "right enc volt", "heading", "shoot?"
+			"left enc vel", "right enc vel", "left enc pos", "right enc pos","left pow", "right pow", "left enc volt", "right enc volt", "heading", "shoot?"
 		};
 
 
 	public String[] units_fields = 
 
 		{
-			"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "volts", "volts", "degrees", "1: yes, 2: no"
+			"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "percent", "percent", "volts", "volts", "degrees", "1: yes, 0: no"
 		};
 
 	public double boolToDouble(boolean val) {
 		
 		if (val) {
 			return 1.0;
-		}
+		} else {
 		return 0.0;
+		}
 	}
 
 	public double[] returnValues() {
@@ -42,12 +43,14 @@ public class LoggerParameters {
 		double leftVel = (double) driveTrain.getLeftEncoderVelocity();
 		double rightVel = (double) driveTrain.getRightEncoderVelocity();
 		double leftVoltage = (double)driveTrain.getLeftVoltage();
+		double leftPower = driveTrain.getLeftPercentOutput();
+		double rightPower = driveTrain.getRightPercentOutput();
 		double rightVoltage = (double)driveTrain.getRightVoltage();
 		double heading = driveTrain.getAngle();
 		double shoot = boolToDouble(shooter.isExtended());
 
 
-		double[] values = {leftVel, rightVel, leftEnc, rightEnc, leftVoltage, rightVoltage, heading, shoot};
+		double[] values = {leftVel, rightVel, leftEnc, rightEnc, leftPower, rightPower, leftVoltage, rightVoltage, heading, shoot};
 
 		return values;
 

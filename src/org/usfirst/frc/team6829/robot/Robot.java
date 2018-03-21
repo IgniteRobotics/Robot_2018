@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team6829.robot.commands.MPthenShoot;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
 import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
@@ -110,32 +111,35 @@ public class Robot extends TimedRobot {
 		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
-		
-		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-		
-		try { 
-			autonCommandToRun.start();
-		} catch (NullPointerException e) {
-			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
-		}
+//		
+//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+//		
+//		try { 
+//			autonCommandToRun.start();
+//		} catch (NullPointerException e) {
+//			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
+//		}
 		
 		System.out.println("Starting autonomous");
+		Command asdf = new MPthenShoot(driveTrain, intakeFlywheel);
+		asdf.start();
 		
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 //		Command middleTest = new ShootWhileMove(driveTrain, shooter, intake, intakeClaw);//new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
 //		middleTest.start();
-/*		
 		
-		middleStartLeftSwitch.start();
+		
+//		middleStartLeftSwitch.start();
 //		middleStartRightSwitch.start();
-		try {
-			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
-		} catch (NullPointerException e) {
-			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
-		}
-		System.out.println("Starting autonomous");
+		
+//		try {
+//			new ZeroIntakeWhileGo(autonCommandToRun, intake).start(); //TODO: VERIFY FUNCTIONALITY
+//		} catch (NullPointerException e) {
+//			DriverStation.reportError("No Autonomous selected: " + e.getMessage(), true);
+//		}
+//		System.out.println("Starting autonomous");
 
-		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);*/
+		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 	}
 
@@ -252,16 +256,16 @@ public class Robot extends TimedRobot {
 	
 	private File R_middleStartLeftSwitch;
 	private File L_middleStartLeftSwitch;
-	private File R_middleStartRightSwitch;
-	private File L_middleStartRightSwitch;
+	public static File R_middleStartRightSwitch;
+	public static File L_middleStartRightSwitch;
 	//Import all of our trajectories from the RoboRIO
 	private void importTrajectories() throws FileNotFoundException {
+//
+//		R_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_right_detailed.csv");
+//		L_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_left_detailed.csv");
 
-		R_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_right_detailed.csv");
-		L_middleStartLeftSwitch = new File("/home/lvuser/MiddleStartLeftSwitch_left_detailed.csv");
-
-		R_middleStartRightSwitch = new File("/home/lvuser/MiddleStartRightSwitch_right_detailed.csv");
-		L_middleStartRightSwitch = new File("/home/lvuser/MiddleStartRightSwitch_left_detailed.csv");
+		R_middleStartRightSwitch = new File("/home/lvuser/1-2_right_detailed.csv");
+		L_middleStartRightSwitch = new File("/home/lvuser/1-2_left_detailed.csv");
 //		
 //		R_turnLeft = new File("/home/lvuser/turnLeft_right_detailed.csv");
 //		L_turnLeft = new File("/home/lvuser/turnLeft_left_detailed.csv");
@@ -292,13 +296,13 @@ public class Robot extends TimedRobot {
 	
 	private void intializePathFollowers(){
 
-		/*try {
+		try {
 
 			importTrajectories();
 			
 			//TODO: THESE ARE REFLECTED ABOUT THE Y-AXIS, MUST FIX!!!!!!!!!!!!
 			
-			middleStartLeftSwitch = new PathFollower(driveTrain, L_middleStartLeftSwitch, R_middleStartLeftSwitch);
+//			middleStartLeftSwitch = new PathFollower(driveTrain, L_middleStartLeftSwitch, R_middleStartLeftSwitch);
 			middleStartRightSwitch = new PathFollower(driveTrain, L_middleStartRightSwitch, R_middleStartRightSwitch);
 //					
 //			scurve = new PathFollower(driveTrain, L_scurve, R_scurve);
@@ -310,6 +314,6 @@ public class Robot extends TimedRobot {
 
 			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
 
-		}*/
+		}
 	}
 }
