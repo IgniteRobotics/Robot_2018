@@ -13,7 +13,7 @@ public class TurnToAngle extends Command {
 	private double turnAngle;
 	private double currentAngle;
 	private double startingAngle = 0;
-	private double turnPower = .4;
+	private double turnPower = -.4;
 	private double angleCompensation = 12.5;
 	private double angleError;
 	

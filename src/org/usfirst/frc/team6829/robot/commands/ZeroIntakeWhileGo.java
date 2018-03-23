@@ -13,8 +13,8 @@ public class ZeroIntakeWhileGo extends CommandGroup {
 
     public ZeroIntakeWhileGo(Command toRun, IntakeLift intakeLift) {
     	
-    	//addParallel(new ZeroIntake(intakeLift));
-    	//addSequential(toRun);
+    	addParallel(new ZeroIntake(intakeLift));
+    	addSequential(toRun);
     	
     }
 }

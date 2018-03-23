@@ -41,10 +41,10 @@ public class DriveTrain extends Subsystem {
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 		
-		leftMaster.setInverted(true);
-		leftFollower.setInverted(true);
-		rightMaster.setInverted(false);
-		rightFollower.setInverted(false);
+		leftMaster.setInverted(false);
+		leftFollower.setInverted(false);
+		rightMaster.setInverted(true);
+		rightFollower.setInverted(true);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);

@@ -11,7 +11,7 @@ public class TurnToAngleYaw extends Command {
 	private DriveTrain driveTrain;
 	private double angleTarget;
 	private double currentAngle;
-	private double turnPower = 0.4;
+	private double turnPower = -0.4;
 	private double tolerance = 5;
 //TODO: FIX OVERSHOOT
 	public TurnToAngleYaw(DriveTrain driveTrain, double angleTarget) {

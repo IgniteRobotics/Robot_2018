@@ -19,7 +19,7 @@ import team6829.common.DriveTrain;
  */
 public class MiddleStartRightSwitch extends CommandGroup {
 
-	private double maxPower = .3;
+	private double maxPower = -.3;
 	private double distanceOne = 0;
 	private double turnOne = 0;
 	private double distanceTwo = 0;

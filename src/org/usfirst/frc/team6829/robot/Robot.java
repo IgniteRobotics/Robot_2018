@@ -9,18 +9,15 @@ package org.usfirst.frc.team6829.robot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.usfirst.frc.team6829.robot.commands.MPthenShoot;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
-import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
-import org.usfirst.frc.team6829.robot.commands.ZeroIntakeWhileGo;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
-import org.usfirst.frc.team6829.robot.commands.intake.RollerOutTime;
 import org.usfirst.frc.team6829.robot.subsystems.Dumper;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
@@ -60,16 +57,16 @@ public class Robot extends TimedRobot {
 	public static IntakeLift intake;
 	public static IntakeFlywheel intakeFlywheel;
 	public static IntakeClaw intakeClaw;
-	
+
 	public static ITransform arcadeDriveTransform;
 	public static ITransform slowTransform;
 
 	public static Command arcadeDrive;
-		
+
 	public static Command driveToEncoderSetpoint;
-	
+
 	public static Command joystickLift;
-	
+
 	public static Command autonCommandToRun;
 
 	public static GameStateReader gameStateReader;
@@ -92,7 +89,7 @@ public class Robot extends TimedRobot {
 
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-		
+
 		logger.close();
 	}
 
@@ -112,32 +109,29 @@ public class Robot extends TimedRobot {
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 
-//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-//		
-//		try { 
-//			autonCommandToRun.start();
-//		} catch (NullPointerException e) {
-//			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
-//		}
-		
+		//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+		//		
+		//		try { 
+		//			autonCommandToRun.start();
+		//		} catch (NullPointerException e) {
+		//			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
+		//		}
+
 		System.out.println("Starting autonomous");
-		
-		s_curve.start();
-//		two.start();
-//		three.start();
-//		four.start();
-		
-//		Command asdf = new MPthenShoot(driveTrain, intakeFlywheel);
-//		asdf.start();
-		
+
+		pathFollowers.get("1_2").start();
+		pathFollowers.get("2").start();
+		pathFollowers.get("3").start();
+		pathFollowers.get("4").start();
+
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-		
+
 	}
 
 	/**
 	 * This function is called periodically during autonomous.
 	 */
-	
+
 	@Override
 	public void autonomousPeriodic() {
 
@@ -154,7 +148,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		checkNavX();
-		
+
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
 		if (autonCommandToRun != null) {
@@ -176,8 +170,8 @@ public class Robot extends TimedRobot {
 
 		checkNavX();
 		display.displaySmartDashboard();
-		
-		
+
+
 	}
 
 	/**
@@ -192,37 +186,71 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
-		intializePathFollowers();
+		loadTrajectories();
 
 		gameStateReader = new GameStateReader();		
-		
+
 		dumper = new Dumper(robotMap.dumperMotor);
-		
+
 		shooter = new Shooter(robotMap.PCMID, robotMap.solenoidIDs);
-		
+
 		intake = new IntakeLift(robotMap.intakeLiftMotor);
-		
+
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
 		display = new SmartdashboardOut(intake, dumper, driveTrain);
 		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
-		
+
 		arcadeDriveTransform = new SquaredInputTransform();
 		slowTransform = new SlowTransform();
 
 		loggerParameters = new LoggerParameters(driveTrain, shooter);
 		logger = new Logger();
-		
+
 		arcadeDrive = new ArcadeDrive(driveTrain, arcadeDriveTransform,
 				oi.driverJoystick, oi.AXIS_LEFT_STICK_Y, oi.AXIS_RIGHT_STICK_X, oi.AXIS_LEFT_TRIGGER, oi.AXIS_RIGHT_TRIGGER ,slowTransform);
 		driveTrain.setCommandDefault(arcadeDrive);
-		
+
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
 		intake.setCommandDefault(joystickLift);
-		
+
 	}
 
 
+	private static HashMap<String, PathFollower> pathFollowers = new HashMap<String, PathFollower>();
+	private ArrayList<String> pathNames = new ArrayList<String>();
+
+	private void loadTrajectories() {
+
+		pathNames.add("1_2");
+		pathNames.add("2");
+		pathNames.add("3");
+		pathNames.add("4");
+
+		try {
+
+			importTrajectories();
+
+		} catch (FileNotFoundException e) {
+
+			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
+
+		}
+
+	}
+
+	private void importTrajectories() throws FileNotFoundException {
+
+		for (int i = 0; i < pathNames.size(); i++) {
+
+			String pathName = pathNames.get(i);
+
+			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
+			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
+
+			pathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj));
+		}
+	}
 
 	public static Map<String, Command> autonMap() {
 
@@ -231,38 +259,8 @@ public class Robot extends TimedRobot {
 		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
 		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
 		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 100, .5, 10));
-		
+
 		return autonCommands;
-
-	}
-
-	public static File R_1_2;
-	public static File L_1_2;
-	
-	private static File R_2;
-	private static File L_2;
-	
-	private static File R_3;
-	private static File L_3;
-	
-	private static File R_4;
-	private static File L_4;
-	
-	//Import all of our trajectories from the RoboRIO
-	
-	private void importTrajectories() throws FileNotFoundException {
-
-		R_1_2 = new File("/home/lvuser/1-2_right_detailed.csv");
-		L_1_2 = new File("/home/lvuser/1-2_left_detailed.csv");
-
-		R_2 = new File("/home/lvuser/2_right_detailed.csv");
-		L_2 = new File("/home/lvuser/2_left_detailed.csv");
-
-		R_3 = new File("/home/lvuser/3_right_detailed.csv");
-		L_3 = new File("/home/lvuser/3_left_detailed.csv");
-
-		R_4 = new File("/home/lvuser/4_right_detailed.csv");
-		L_4 = new File("/home/lvuser/4_left_detailed.csv");
 
 	}
 
@@ -273,27 +271,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
 		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
 	}
-	
-	private Command s_curve;
-	private Command two;
-	private Command three;
-	private Command four;
-	
-	private void intializePathFollowers(){
 
-		try {
 
-			importTrajectories();
-			
-			s_curve = new PathFollower(driveTrain, L_1_2, R_1_2);
-			two = new PathFollower(driveTrain, L_2, R_2);
-			three = new PathFollower(driveTrain, L_3, R_3);
-			four = new PathFollower(driveTrain, L_3, R_3);
-
-		} catch (FileNotFoundException e) {
-
-			DriverStation.reportError("!!!!!!!!!!!!!!!!!!!!!!!!!!Could not find trajectory!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage(), true);
-
-		}
-	}
 }
