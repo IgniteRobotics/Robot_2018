@@ -223,7 +223,7 @@ public class Robot extends TimedRobot {
 	}
 
 
-	public static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();
+	public static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();	
 	public static HashMap<String, PathFollower> backwardsPathFollowers = new HashMap<String, PathFollower>();
 
 	private ArrayList<String> forwardsPathNames = new ArrayList<String>();
