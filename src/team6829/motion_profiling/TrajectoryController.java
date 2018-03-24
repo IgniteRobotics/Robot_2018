@@ -17,12 +17,12 @@ public class TrajectoryController {
 
 	private static final double LEFT_KP = 1.2;
 	private static final double LEFT_KI = 0; // not used
-	private static final double LEFT_KD = 0;
+	private static final double LEFT_KD = 0.0;
 	private static final double LEFT_KA = 0; // acceleration gain
 
 	private static final double RIGHT_KP = 1.2;
 	private static final double RIGHT_KI = 0; // not used
-	private static final double RIGHT_KD = 0;
+	private static final double RIGHT_KD = 0.0;
 	private static final double RIGHT_KA = 0; // acceleration gain
 
 	private static final double MAXIMUM_VELOCITY = 6; //placeholder

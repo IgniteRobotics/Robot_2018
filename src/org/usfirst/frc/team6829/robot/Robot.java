@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
+import org.usfirst.frc.team6829.robot.commands.RightStartSwitchShoot;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
@@ -124,7 +125,8 @@ public class Robot extends TimedRobot {
 //		forwardsPathFollowers.get("3").start();
 //		forwardsPathFollowers.get("4").start();
 
-		forwardsPathFollowers.get("rightShootSwitch").start();
+//		forwardsPathFollowers.get("rightShootSwitch").start();
+		new RightStartSwitchShoot(backwardsPathFollowers, shooter).start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -234,7 +236,9 @@ public class Robot extends TimedRobot {
 		forwardsPathNames.add("2");
 		forwardsPathNames.add("3");
 		forwardsPathNames.add("4");
-		forwardsPathNames.add("rightShootSwitch");
+//		forwardsPathNames.add("rightShootSwitch");
+		
+		backwardsPathNames.add("rightShootSwitchBack");
 
 		try {
 

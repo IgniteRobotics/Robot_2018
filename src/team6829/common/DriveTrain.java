@@ -45,8 +45,8 @@ public class DriveTrain extends Subsystem {
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 
-		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
-		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
+		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
+		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 
 		navX = new AHRS(SPI.Port.kMXP);
 
@@ -64,7 +64,7 @@ public class DriveTrain extends Subsystem {
 	public void defaultDirection() {
 		leftMaster.setSensorPhase(false);
 		rightMaster.setSensorPhase(false);
-
+		
 		leftMaster.setInverted(false);
 		leftFollower.setInverted(false);
 		rightMaster.setInverted(true);
