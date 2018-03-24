@@ -32,10 +32,20 @@ public class TrajectoryController {
 	private EncoderFollower left;
 	private EncoderFollower right;
 	
-	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight) {
+	private boolean defaultDirection;
+	
+	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight, boolean defaultDirection) {
 
 		this.driveTrain = driveTrain;
 
+		this.defaultDirection = defaultDirection;
+		
+		if (defaultDirection) {
+			this.driveTrain.defaultDirection();	
+		} else {
+			this.driveTrain.reverseDirection();
+		}
+		
 		leftTrajectory = Pathfinder.readFromCSV(csvLeft);
 		rightTrajectory = Pathfinder.readFromCSV(csvRight);
 
@@ -46,9 +56,9 @@ public class TrajectoryController {
 
 	public void configureFollow() {
 
-		left.configureEncoder(Math.abs(driveTrain.getLeftEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
+		left.configureEncoder((driveTrain.getLeftEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
 
-		right.configureEncoder(Math.abs(driveTrain.getRightEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
+		right.configureEncoder((driveTrain.getRightEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
 
 		left.configurePIDVA(LEFT_KP, LEFT_KI, LEFT_KD, 1 / MAXIMUM_VELOCITY, LEFT_KA);
 		right.configurePIDVA(RIGHT_KP, RIGHT_KI, RIGHT_KD, 1 / MAXIMUM_VELOCITY, RIGHT_KA);
@@ -56,12 +66,18 @@ public class TrajectoryController {
 	}
 
 	public void followTrajectory() {
-
-		double l = left.calculate(Math.abs(driveTrain.getLeftEncoderPosition()));
-		double r = right.calculate(Math.abs(driveTrain.getRightEncoderPosition()));
 		
-		double currentHeading = driveTrain.getAngle();
+		
+		
+		double l = left.calculate((driveTrain.getLeftEncoderPosition()));
+		double r = right.calculate((driveTrain.getRightEncoderPosition()));
+		
+		double currentHeading = -driveTrain.getAngle();
 
+		if (!defaultDirection) {
+			currentHeading *= -1;
+		}
+		
 		double desiredHeading = Pathfinder.r2d(left.getHeading());
 
 		double angleError =  Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);

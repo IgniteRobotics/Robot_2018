@@ -119,10 +119,12 @@ public class Robot extends TimedRobot {
 
 		System.out.println("Starting autonomous");
 
-		pathFollowers.get("1_2").start();
-		pathFollowers.get("2").start();
+//		pathFollowers.get("1-2").start();
+//		pathFollowers.get("2").start();
 		pathFollowers.get("3").start();
-		pathFollowers.get("4").start();
+//		pathFollowers.get("4").start();
+//		pathFollowers.get("backwards").start();
+//		pathFollowers.get("forwards").start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -150,7 +152,9 @@ public class Robot extends TimedRobot {
 		checkNavX();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-
+		
+		driveTrain.defaultDirection();
+		
 		if (autonCommandToRun != null) {
 			autonCommandToRun.cancel();
 
@@ -217,15 +221,17 @@ public class Robot extends TimedRobot {
 	}
 
 
-	private static HashMap<String, PathFollower> pathFollowers = new HashMap<String, PathFollower>();
+	public static HashMap<String, PathFollower> pathFollowers = new HashMap<String, PathFollower>();
 	private ArrayList<String> pathNames = new ArrayList<String>();
 
 	private void loadTrajectories() {
 
-		pathNames.add("1_2");
+		pathNames.add("1-2");
 		pathNames.add("2");
 		pathNames.add("3");
 		pathNames.add("4");
+		pathNames.add("backwards");
+		pathNames.add("forwards");
 
 		try {
 
@@ -240,15 +246,22 @@ public class Robot extends TimedRobot {
 	}
 
 	private void importTrajectories() throws FileNotFoundException {
-
+		// TODO: NOTE THAT THE FILE NAME ITSELF HAS TO START WITH A CAPITAL B IN ORDER FOR THE PATH TO BE TRAVERSED BACKWARDS
+		
 		for (int i = 0; i < pathNames.size(); i++) {
 
 			String pathName = pathNames.get(i);
 
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
+			
+			boolean defaultDir = true;
+			
+			if (pathName.charAt(0) == 'B') {
+				defaultDir = false;
+			}
 
-			pathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj));
+			pathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, defaultDir));
 		}
 	}
 

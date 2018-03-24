@@ -13,11 +13,11 @@ public class PathFollower extends Command {
 	private DriveTrain driveTrain;
 	private TrajectoryController trajectoryController;
 
-	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight) {
+	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight, boolean direction) {
 
 		this.driveTrain = driveTrain;
 		
-		trajectoryController = new TrajectoryController(driveTrain, csvLeft, csvRight);
+		trajectoryController = new TrajectoryController(driveTrain, csvLeft, csvRight, direction);
 
 	}
 
@@ -49,7 +49,6 @@ public class PathFollower extends Command {
 		trajectoryController.resetFollowers();
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
-
 	}
 
 	// Called when another command which requires one or more of the same

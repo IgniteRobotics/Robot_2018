@@ -50,8 +50,8 @@ public class ArcadeDrive extends Command {
 		double driverJoystickTurnAxis = driverJoystick.getRawAxis(TURN_AXIS);
 
 		double throttlePower = -driverJoystickThrottleAxis; 
-		double turnPower = -driverJoystickTurnAxis;
-
+		double turnPower = driverJoystickTurnAxis;
+		
 		if (driverJoystick.getRawAxis(SLOW_BUTTON) > 0.25) {
 
 			throttlePower = slowTransform.transform(throttlePower);

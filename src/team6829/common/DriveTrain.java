@@ -26,25 +26,24 @@ public class DriveTrain extends Subsystem {
 	private WPI_VictorSPX rightFollower;
 
 	private AHRS navX;
-	
+
 	private AnalogInput pressureSensor;
 
+	private boolean defaultDirection;
+
 	public DriveTrain(int leftMasterCanId, int leftFollowerCanId, int rightMasterCanId, int rightFollowerCanId, int pressureSensorID) {
-		
+
 		leftMaster = new WPI_TalonSRX(leftMasterCanId);
 		leftFollower = new WPI_VictorSPX(leftFollowerCanId);
 		rightMaster = new WPI_TalonSRX(rightMasterCanId);
 		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
-		
+
 		pressureSensor = new AnalogInput(pressureSensorID);
-		
+
+		reverseDirection();
+
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
-		
-		leftMaster.setInverted(false);
-		leftFollower.setInverted(false);
-		rightMaster.setInverted(true);
-		rightFollower.setInverted(true);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 20, 10);
@@ -62,13 +61,37 @@ public class DriveTrain extends Subsystem {
 		setDefaultCommand(this.defaultCommand);
 	}
 
+	public void defaultDirection() {
+		leftMaster.setSensorPhase(false);
+		rightMaster.setSensorPhase(false);
+
+		leftMaster.setInverted(false);
+		leftFollower.setInverted(false);
+		rightMaster.setInverted(true);
+		rightFollower.setInverted(true);
+
+		defaultDirection = true;
+	}
+
+	public void reverseDirection() {
+		leftMaster.setSensorPhase(true);
+		rightMaster.setSensorPhase(true);
+
+		leftMaster.setInverted(true);
+		leftFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
+
+		defaultDirection = false;
+	}
+
 	public void arcadeDrive(double throttlePower, double turnPower, double deadband, ITransform transform) {
 		double leftMotorOutput;
 		double rightMotorOutput;
 
 		throttlePower = transform.transform(throttlePower);
 		turnPower = transform.transform(turnPower);
-	
+
 		double maxInput = Math.copySign(Math.max(Math.abs(throttlePower), Math.abs(turnPower)), throttlePower);
 
 		if (throttlePower >= 0.0) {
@@ -96,7 +119,7 @@ public class DriveTrain extends Subsystem {
 
 		turnPower = limit(turnPower);
 		turnPower = applyDeadband(turnPower, deadband); // set rotate deadband here
-		
+
 		leftMaster.set(ControlMode.PercentOutput, leftMotorOutput);
 		rightMaster.set(ControlMode.PercentOutput, rightMotorOutput);
 
@@ -116,17 +139,30 @@ public class DriveTrain extends Subsystem {
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}
-	
+
 	public int getLeftEncoderPosition() {
+
+		if (defaultDirection) {
+			return -leftMaster.getSensorCollection().getQuadraturePosition();
+
+		}
+		
 		return leftMaster.getSensorCollection().getQuadraturePosition();
+
 	}
-	
+
 	public int getRightEncoderPosition() {
-		return rightMaster.getSensorCollection().getQuadraturePosition();
+		
+		if (defaultDirection) {
+			return rightMaster.getSensorCollection().getQuadraturePosition();
+
+		}
+		
+		return -rightMaster.getSensorCollection().getQuadraturePosition();
 	}
 
 	public int getLeftEncoderVelocity() {
-		return leftMaster.getSensorCollection().getQuadratureVelocity();
+		return -leftMaster.getSensorCollection().getQuadratureVelocity();
 	}
 
 	public int getRightEncoderVelocity() {
@@ -144,17 +180,17 @@ public class DriveTrain extends Subsystem {
 	public double getLeftPercentOutput() {
 		return leftMaster.getMotorOutputPercent();
 	}
-	
+
 	public double getRightPercentOutput() {
 		return rightMaster.getMotorOutputPercent();
 	}
-	
+
 	public double getPressure() {
 
 		int pressure = (int)(250*pressureSensor.getVoltage()/5.0-25);
 		return pressure;
 	}
-	
+
 	public void stop() {
 
 		leftMaster.stopMotor();
@@ -179,11 +215,11 @@ public class DriveTrain extends Subsystem {
 	public double getAngle() {
 		return navX.getAngle();
 	}
-	
+
 	public double getYaw() {
 		return navX.getYaw();
 	}
-	
+
 	public void zeroAngle() {
 		navX.reset();
 	}
