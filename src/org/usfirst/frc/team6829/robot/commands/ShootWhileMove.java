@@ -20,7 +20,7 @@ public class ShootWhileMove extends Command {
 	private double distanceTotal = Util.getEncoderTicksFromInches(30); //TODO: set all parameters
 	private double currentPosition;
 	private double initialPosition;
-	private double power = -0.5;
+	private double power = 0.5;
 	
 	private DriveTrain driveTrain;
 	private Shooter shooter;

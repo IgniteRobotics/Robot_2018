@@ -2,6 +2,7 @@ package team6829.motion_profiling;
 
 import java.io.File;
 
+import edu.wpi.first.wpilibj.Notifier;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -53,7 +54,18 @@ public class TrajectoryController {
 		right = new EncoderFollower(rightTrajectory);
 
 	}
+	
+	class PeriodicRunnable implements Runnable {
 
+		@Override
+		public void run() {
+			followTrajectory();
+		}
+		
+	}
+
+	public Notifier trajectoryNotifier = new Notifier(new PeriodicRunnable());
+	
 	public void configureFollow() {
 
 		left.configureEncoder((driveTrain.getLeftEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
@@ -65,9 +77,7 @@ public class TrajectoryController {
 
 	}
 
-	public void followTrajectory() {
-		
-		
+	private void followTrajectory() {
 		
 		double l = left.calculate((driveTrain.getLeftEncoderPosition()));
 		double r = right.calculate((driveTrain.getRightEncoderPosition()));
@@ -82,7 +92,7 @@ public class TrajectoryController {
 
 		double angleError =  Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);
 		double turn =  0.8 * (-1.0 / 80.0) * angleError;
-
+		
 		driveTrain.setLeftDrivePower(l + turn);
 		driveTrain.setRightDrivePower(r - turn);
 

@@ -119,12 +119,12 @@ public class Robot extends TimedRobot {
 
 		System.out.println("Starting autonomous");
 
-//		pathFollowers.get("1-2").start();
-//		pathFollowers.get("2").start();
-		pathFollowers.get("3").start();
-//		pathFollowers.get("4").start();
-//		pathFollowers.get("backwards").start();
-//		pathFollowers.get("forwards").start();
+//		forwardsPathFollowers.get("1-2").start();
+//		forwardsPathFollowers.get("2").start();
+//		forwardsPathFollowers.get("3").start();
+//		forwardsPathFollowers.get("4").start();
+
+		forwardsPathFollowers.get("rightShootSwitch").start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -221,17 +221,20 @@ public class Robot extends TimedRobot {
 	}
 
 
-	public static HashMap<String, PathFollower> pathFollowers = new HashMap<String, PathFollower>();
-	private ArrayList<String> pathNames = new ArrayList<String>();
+	public static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();
+	public static HashMap<String, PathFollower> backwardsPathFollowers = new HashMap<String, PathFollower>();
 
+	private ArrayList<String> forwardsPathNames = new ArrayList<String>();
+	private ArrayList<String> backwardsPathNames = new ArrayList<String>();
+
+	
 	private void loadTrajectories() {
 
-		pathNames.add("1-2");
-		pathNames.add("2");
-		pathNames.add("3");
-		pathNames.add("4");
-		pathNames.add("backwards");
-		pathNames.add("forwards");
+		forwardsPathNames.add("1-2");
+		forwardsPathNames.add("2");
+		forwardsPathNames.add("3");
+		forwardsPathNames.add("4");
+		forwardsPathNames.add("rightShootSwitch");
 
 		try {
 
@@ -246,22 +249,25 @@ public class Robot extends TimedRobot {
 	}
 
 	private void importTrajectories() throws FileNotFoundException {
-		// TODO: NOTE THAT THE FILE NAME ITSELF HAS TO START WITH A CAPITAL B IN ORDER FOR THE PATH TO BE TRAVERSED BACKWARDS
 		
-		for (int i = 0; i < pathNames.size(); i++) {
+		for (int i = 0; i < forwardsPathNames.size(); i++) {
 
-			String pathName = pathNames.get(i);
+			String pathName = forwardsPathNames.get(i);
 
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
 			
-			boolean defaultDir = true;
-			
-			if (pathName.charAt(0) == 'B') {
-				defaultDir = false;
-			}
+			forwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, true));
+		}
+		
+		for (int i = 0; i < backwardsPathNames.size(); i++) {
 
-			pathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, defaultDir));
+			String pathName = backwardsPathNames.get(i);
+
+			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
+			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
+			
+			backwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, false));
 		}
 	}
 

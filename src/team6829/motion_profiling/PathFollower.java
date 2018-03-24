@@ -12,6 +12,8 @@ public class PathFollower extends Command {
 
 	private DriveTrain driveTrain;
 	private TrajectoryController trajectoryController;
+	
+	private double timestep = 0.005;
 
 	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight, boolean direction) {
 
@@ -28,12 +30,12 @@ public class PathFollower extends Command {
 		driveTrain.zeroAngle();
 		trajectoryController.resetFollowers();
 		trajectoryController.configureFollow();
+		
+		trajectoryController.trajectoryNotifier.startPeriodic(timestep);
 
 	}
 
 	protected void execute() {
-		
-		trajectoryController.followTrajectory();
 		
 	}
 
@@ -45,6 +47,7 @@ public class PathFollower extends Command {
 	protected void end() {
 
 		driveTrain.stop();
+		trajectoryController.trajectoryNotifier.stop();
 
 		trajectoryController.resetFollowers();
 		driveTrain.zeroEncoders();

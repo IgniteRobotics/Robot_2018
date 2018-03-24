@@ -13,7 +13,7 @@ public class JoystickIntakeLift extends Command {
 
 	
 	private IntakeLift intake;
-	private double maxPow = 0.4;
+	private double maxPow = 0.6;  // TODO: was .4 for Bot A
 	
 
 	private final int ARM_AXIS;
