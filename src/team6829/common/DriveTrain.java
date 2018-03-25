@@ -40,8 +40,6 @@ public class DriveTrain extends Subsystem {
 
 		pressureSensor = new AnalogInput(pressureSensorID);
 
-		reverseDirection();
-
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 
@@ -134,8 +132,6 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void setLeftRightDrivePower(double leftPower, double rightPower) {
-		//System.out.println("Drivetrain left = " + leftPower);
-		//System.out.println("Drivetrain right = " + rightPower);
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}

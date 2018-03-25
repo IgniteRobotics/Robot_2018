@@ -1,8 +1,7 @@
-package org.usfirst.frc.team6829.robot.commands;
+package org.usfirst.frc.team6829.robot.commands.autons;
 
 import java.util.HashMap;
 
-import org.usfirst.frc.team6829.robot.commands.shooter.ShootLeft;
 import org.usfirst.frc.team6829.robot.commands.shooter.ShootRight;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 

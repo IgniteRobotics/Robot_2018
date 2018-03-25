@@ -10,9 +10,8 @@ import team6829.common.Util;
 public class DriveToEncoderSetpoint extends Command {
 
 	private DriveTrain driveTrain;
-	private double kP = 0.0001;
+	
 	private double targetDistance;
-	private double tolerance = 10;
 	private double currentDistance;
 	private double slowDownDistance;
 	private double cutoffDistance;

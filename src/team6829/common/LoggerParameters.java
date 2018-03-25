@@ -6,7 +6,7 @@ public class LoggerParameters {
 
 	private DriveTrain driveTrain;
 	private Shooter shooter;
-	
+
 	public LoggerParameters(DriveTrain driveTrain, Shooter shooter) {
 
 		this.driveTrain = driveTrain;
@@ -17,22 +17,22 @@ public class LoggerParameters {
 	public String[] data_fields = 
 
 		{
-			"left enc vel", "right enc vel", "left enc pos", "right enc pos","left pow", "right pow", "left enc volt", "right enc volt", "heading", "shoot?"
+				"left enc vel", "right enc vel", "left enc pos", "right enc pos","left pow", "right pow", "left enc volt", "right enc volt", "heading", "shoot?"
 		};
 
 
 	public String[] units_fields = 
 
 		{
-			"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "percent", "percent", "volts", "volts", "degrees", "1: yes, 0: no"
+				"ticks/decisecond", "ticks/decisecond", "ticks", "ticks", "percent", "percent", "volts", "volts", "degrees", "1: yes, 0: no"
 		};
 
 	public double boolToDouble(boolean val) {
-		
+
 		if (val) {
 			return 1.0;
 		} else {
-		return 0.0;
+			return 0.0;
 		}
 	}
 
