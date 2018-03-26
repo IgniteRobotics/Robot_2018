@@ -46,7 +46,7 @@ public class DriveTrain extends Subsystem {
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 
-		navX = new AHRS(SPI.Port.kMXP);
+		navX = new AHRS(SPI.Port.kMXP, (byte)200);
 
 	}
 
@@ -203,8 +203,8 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void zeroEncoders() {
-		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
-		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
+		rightMaster.getSensorCollection().setQuadraturePosition(0, 0);
+		leftMaster.getSensorCollection().setQuadraturePosition(0, 0);
 
 	}
 
