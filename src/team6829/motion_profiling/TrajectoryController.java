@@ -41,11 +41,8 @@ public class TrajectoryController {
 
 		this.defaultDirection = defaultDirection;
 		
-		if (defaultDirection) {
-			this.driveTrain.defaultDirection();	
-		} else {
-			this.driveTrain.reverseDirection();
-		}
+		//System.out.println("default direction?" + defaultDirection);
+
 		
 		leftTrajectory = Pathfinder.readFromCSV(csvLeft);
 		rightTrajectory = Pathfinder.readFromCSV(csvRight);
@@ -67,6 +64,15 @@ public class TrajectoryController {
 	public Notifier trajectoryNotifier = new Notifier(new PeriodicRunnable());
 	
 	public void configureFollow() {
+		
+		
+		if (defaultDirection) {
+			System.out.println("Going forwards");
+			this.driveTrain.defaultDirection();	
+		} else {
+			System.out.println("Going backwards");
+			this.driveTrain.reverseDirection();
+		}		
 
 		left.configureEncoder((driveTrain.getLeftEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
 

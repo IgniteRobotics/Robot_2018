@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
 	public static RobotMap robotMap = new RobotMap();
 
 	public static DriveTrain driveTrain;
-	public static DriveTrain flippedDriveTrain;
 	public static Dumper dumper;
 	public static Shooter shooter;
 
@@ -112,13 +111,14 @@ public class Robot extends TimedRobot {
 		//		}
 
 		System.out.println("Starting autonomous");
-
+		
 		//		forwardsPathFollowers.get("1-2").start();
 		//		forwardsPathFollowers.get("2").start();
 		//		forwardsPathFollowers.get("3").start();
 		//		forwardsPathFollowers.get("4").start();
+		forwardsPathFollowers.get("rightShootSwitch").start();
 
-		//		forwardsPathFollowers.get("rightShootSwitch").start();
+		//backwardsPathFollowers.get("rightShootSwitch").start();
 		//		new RightStartSwitchShoot(backwardsPathFollowers, shooter).start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
-		flippedDriveTrain = new DriveTrain(robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.pressureSensorID);
+		
 		loadTrajectories();
 
 		gameStateReader = new GameStateReader();		
@@ -224,9 +224,12 @@ public class Robot extends TimedRobot {
 		//		forwardsPathNames.add("2");
 		//		forwardsPathNames.add("3");
 		//		forwardsPathNames.add("4");
-		//		forwardsPathNames.add("rightShootSwitch");
+				forwardsPathNames.add("rightShootSwitch");
 
-		//		backwardsPathNames.add("rightShootSwitchBack");
+				backwardsPathNames.add("rightShootSwitch");
+		
+		//forwardsPathNames.add("3");
+		//backwardsPathNames.add("3");
 
 		try {
 
@@ -249,7 +252,7 @@ public class Robot extends TimedRobot {
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
 
-			forwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, true));
+			forwardsPathFollowers.put(pathName, new PathFollower(driveTrain, rightTraj, leftTraj, true));
 		}
 
 		for (int i = 0; i < backwardsPathNames.size(); i++) {
@@ -259,7 +262,7 @@ public class Robot extends TimedRobot {
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
 
-			backwardsPathFollowers.put(pathName, new PathFollower(flippedDriveTrain, leftTraj, rightTraj, false));
+			backwardsPathFollowers.put(pathName, new PathFollower(driveTrain,  rightTraj, leftTraj, false));
 		}
 	}
 

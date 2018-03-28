@@ -15,9 +15,11 @@ public class PathFollower extends Command {
 	
 	private double timestep = 0.005;
 
+	
 	public PathFollower(DriveTrain driveTrain, File csvLeft, File csvRight, boolean direction) {
 
 		this.driveTrain = driveTrain;
+
 		
 		trajectoryController = new TrajectoryController(driveTrain, csvLeft, csvRight, direction);
 
