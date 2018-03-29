@@ -46,7 +46,7 @@ public class DriveTrain extends Subsystem {
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 
-		navX = new AHRS(SPI.Port.kMXP, (byte)200);
+		navX = new AHRS(SPI.Port.kMXP);
 
 	}
 
