@@ -37,7 +37,6 @@ public class SmartdashboardOut {
 		SmartDashboard.putNumber("Right Drive Encoder", driveTrain.getRightEncoderPosition());
 		SmartDashboard.putNumber("Angle", driveTrain.getAngle());
 		SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
-		
 		SmartDashboard.putNumber("Pressure", driveTrain.getPressure());
 	}
 }

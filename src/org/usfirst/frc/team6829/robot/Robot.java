@@ -113,39 +113,19 @@ public class Robot extends TimedRobot {
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 
-		//		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-		//		
-		//		try { 
-		//			autonCommandToRun.start();
-		//		} catch (NullPointerException e) {
-		//			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
-		//		}
+				autonCommandToRun = gameStateReader.gameStateReader(autonMap());
+				
+				try { 
+					autonCommandToRun.start();
+				} catch (NullPointerException e) {
+					DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
+				}
 
 		System.out.println("Starting autonomous");
-
-//		forwardsPathFollowers.get("rightSwitch").start();
-		
-//		Command MiddleStartRightSwitch = new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
-//		MiddleStartRightSwitch.start();
-		
-//		forwardsPathFollowers.get("1-2").start();
-//		forwardsPathFollowers.get("2").start();
-//		forwardsPathFollowers.get("3").start();
-//		forwardsPathFollowers.get("4").start();
-		
-		//forwardsPathFollowers.get("centerRight").start();
-		
-		//forwardsPathFollowers.get("centerRight").start();
-
-		CommandGroup toRun = new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel);
-
-		toRun.start();
-		
-		//forwardsPathFollowers.get("rightSwitchBack").start();
-
-
-//		forwardsPathFollowers.get("rightShootSwitch").start();
-//		new RightStartSwitchShoot(backwardsPathFollowers, shooter).start();
+//
+//		CommandGroup toRun = new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel, intake);
+//
+//		toRun.start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -308,9 +288,9 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
-		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel));
-		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 100, .5, 10));
+		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitchMP(forwardsPathFollowers, intakeFlywheel, intake));
+		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel, intake));
+		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 100, -.5, 10));
 
 		return autonCommands;
 
