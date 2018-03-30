@@ -10,8 +10,9 @@ import team6829.common.Util;
 public class DriveToEncoderSetpoint extends Command {
 
 	private DriveTrain driveTrain;
-	
+	private double kP = 0.0001;
 	private double targetDistance;
+	private double tolerance = 10;
 	private double currentDistance;
 	private double slowDownDistance;
 	private double cutoffDistance;
@@ -34,6 +35,9 @@ public class DriveToEncoderSetpoint extends Command {
     protected void initialize() {
     	
     	driveTrain.zeroEncoders();
+    	System.out.println("initial:" + driveTrain.getLeftEncoderPosition());
+    	System.out.println("target:" + targetDistance);
+
     	
     } 
 
@@ -42,7 +46,7 @@ public class DriveToEncoderSetpoint extends Command {
     	
     	double right = Math.abs(driveTrain.getRightEncoderPosition());
     	double left = Math.abs(driveTrain.getLeftEncoderPosition());
-    	currentDistance = (left + right) / 2;
+    	currentDistance = left;
     	
     	//double actualPower = kP * power;
     	//System.out.println("Drivetrain position:" + currentPosition);
@@ -58,6 +62,13 @@ public class DriveToEncoderSetpoint extends Command {
     		else 
     			power = -.15;
     		
+    	}
+    	
+    	if (currentDistance> 15000) {
+    		System.out.println("average:" + currentDistance);
+    		System.out.println("left: " + driveTrain.getLeftEncoderPosition());
+    		System.out.println("right: " + driveTrain.getRightEncoderPosition());
+
     	}
     	
     	driveTrain.setLeftRightDrivePower(power, power);
@@ -76,14 +87,24 @@ public class DriveToEncoderSetpoint extends Command {
     	System.out.println("IsFinished :" + isFinished);
     	*/
     	
-    	return isFinished || isTimedOut();
+    	if (isFinished) {
+    		System.out.println("encoder setpoint reached");
+    		System.out.println("encoder at isFinished: " + currentDistance);
+    	}
+    	
+    	if(isTimedOut() ) {
+    		System.out.println("timed out");
+    	}
+    	
+    	return isFinished;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	driveTrain.stop();
+    	System.out.println("drive end: " +  currentDistance);
+
     	driveTrain.zeroEncoders();
-    	System.out.println("drive end");
     }
 
     // Called when another command which requires one or more of the same

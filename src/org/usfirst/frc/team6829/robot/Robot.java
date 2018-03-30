@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartLeftSwitch;
-import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartRightSwitch;
+import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
+import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitchMP;
+import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
+import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitchMP;
+import org.usfirst.frc.team6829.robot.commands.RightStartSwitchShoot;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
@@ -27,7 +30,9 @@ import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team6829.common.DriveTrain;
 import team6829.common.Logger;
 import team6829.common.LoggerParameters;
@@ -76,12 +81,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		initializeAll();
+		checkNavX();
+
 		gameStateReader.setRobotPosition();
 
 	}
 
 	@Override
 	public void disabledInit() {
+		checkNavX();
+
 		driveTrain.zeroEncoders();
 		driveTrain.zeroAngle();
 
@@ -90,6 +99,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		checkNavX();
 		display.displaySmartDashboard();
 
 		Scheduler.getInstance().run();
@@ -99,6 +109,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		System.out.println("Autonomous Init");
+		checkNavX();
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 
@@ -112,9 +123,29 @@ public class Robot extends TimedRobot {
 
 		System.out.println("Starting autonomous");
 
-		forwardsPathFollowers.get("rightSwitch").start();
-		//backwardsPathFollowers.get("leftSwitch").start();
+//		forwardsPathFollowers.get("rightSwitch").start();
+		
+//		Command MiddleStartRightSwitch = new MiddleStartRightSwitch(driveTrain, intake, intakeClaw, intakeFlywheel);
+//		MiddleStartRightSwitch.start();
+		
+//		forwardsPathFollowers.get("1-2").start();
+//		forwardsPathFollowers.get("2").start();
+//		forwardsPathFollowers.get("3").start();
+//		forwardsPathFollowers.get("4").start();
+		
+		//forwardsPathFollowers.get("centerRight").start();
+		
+		//forwardsPathFollowers.get("centerRight").start();
 
+		CommandGroup toRun = new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel);
+
+		toRun.start();
+		
+		//forwardsPathFollowers.get("rightSwitchBack").start();
+
+
+//		forwardsPathFollowers.get("rightShootSwitch").start();
+//		new RightStartSwitchShoot(backwardsPathFollowers, shooter).start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -127,6 +158,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
+		checkNavX();
+
 		logger.writeData(loggerParameters.returnValues());
 		display.displaySmartDashboard();
 
@@ -137,10 +170,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
+		checkNavX();
+
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-
+		
 		driveTrain.defaultDirection();
-
+		
 		if (autonCommandToRun != null) {
 			autonCommandToRun.cancel();
 
@@ -158,7 +193,9 @@ public class Robot extends TimedRobot {
 
 		logger.writeData(loggerParameters.returnValues());
 
+		checkNavX();
 		display.displaySmartDashboard();
+
 
 	}
 
@@ -174,7 +211,6 @@ public class Robot extends TimedRobot {
 	private void initializeAll() {
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
-
 		loadTrajectories();
 
 		gameStateReader = new GameStateReader();		
@@ -206,26 +242,32 @@ public class Robot extends TimedRobot {
 	}
 
 
-	public static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();	
-	public static HashMap<String, PathFollower> backwardsPathFollowers = new HashMap<String, PathFollower>();
+	private static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();
+	private static HashMap<String, PathFollower> backwardsPathFollowers = new HashMap<String, PathFollower>();
 
 	private ArrayList<String> forwardsPathNames = new ArrayList<String>();
 	private ArrayList<String> backwardsPathNames = new ArrayList<String>();
 
-
+	
 	private void loadTrajectories() {
 
-		//forwardsPathNames.add("1-2");
-		//forwardsPathNames.add("2");
-		//forwardsPathNames.add("3");
-		//forwardsPathNames.add("4");
-		//forwardsPathNames.add("rightShootSwitch");
+//		forwardsPathNames.add("1-2");
+//		forwardsPathNames.add("2");
+//		forwardsPathNames.add("3");
+//		forwardsPathNames.add("4");
+//		forwardsPathNames.add("rightShootSwitch");
+		
+//		backwardsPathNames.add("rightShootSwitchBack");
 
-		forwardsPathNames.add("rightSwitch");
-//		forwardsPathNames.add("leftSwitch");
+//		forwardsPathNames.add("rightSwitch");
+		
+		forwardsPathNames.add("centerRight");
+		forwardsPathNames.add("centerLeft");
+		forwardsPathNames.add("rightScale");
 
-		//forwardsPathNames.add("3");
-		//backwardsPathNames.add("3");
+
+		forwardsPathNames.add("rightSwitchBack");
+
 
 		try {
 
@@ -240,24 +282,24 @@ public class Robot extends TimedRobot {
 	}
 
 	private void importTrajectories() throws FileNotFoundException {
-
+		
 		for (int i = 0; i < forwardsPathNames.size(); i++) {
 
 			String pathName = forwardsPathNames.get(i);
 
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
-
+			
 			forwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, true));
 		}
-
+		
 		for (int i = 0; i < backwardsPathNames.size(); i++) {
 
 			String pathName = backwardsPathNames.get(i);
 
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
-
+			
 			backwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, false));
 		}
 	}
@@ -273,5 +315,14 @@ public class Robot extends TimedRobot {
 		return autonCommands;
 
 	}
+
+	private void checkNavX() {
+		boolean isNavXCalibrating = driveTrain.isCalibrating();
+		boolean isNavXConnected = driveTrain.isConnected();
+
+		SmartDashboard.putBoolean("Is navX Calibrating", isNavXCalibrating);
+		SmartDashboard.putBoolean("is navX Connected", isNavXConnected);
+	}
+
 
 }

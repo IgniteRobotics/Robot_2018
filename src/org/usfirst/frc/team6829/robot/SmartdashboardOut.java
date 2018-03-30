@@ -17,6 +17,7 @@ public class SmartdashboardOut {
 		this.dumper = dumper;
 		this.driveTrain = driveTrain;
 		
+		
 		SmartDashboard.putNumber("Intake Encoder", 0.0);
 		SmartDashboard.putNumber("Dumper Encoder", 0.0);
 		SmartDashboard.putNumber("Left Drive Encoder", 0.0);
@@ -24,9 +25,8 @@ public class SmartdashboardOut {
 		SmartDashboard.putNumber("Angle", 0.0);
 		SmartDashboard.putNumber("Yaw", 0.0);
 		SmartDashboard.putNumber("Pressure", 0.0);
-		SmartDashboard.putBoolean("Is navX Calibrating", driveTrain.isCalibrating());
-		SmartDashboard.putBoolean("is navX Connected", driveTrain.isConnected());
 
+		
 	}
 	
 	public void displaySmartDashboard() {
@@ -37,8 +37,7 @@ public class SmartdashboardOut {
 		SmartDashboard.putNumber("Right Drive Encoder", driveTrain.getRightEncoderPosition());
 		SmartDashboard.putNumber("Angle", driveTrain.getAngle());
 		SmartDashboard.putNumber("Yaw", driveTrain.getYaw());
+		
 		SmartDashboard.putNumber("Pressure", driveTrain.getPressure());
-		SmartDashboard.putBoolean("Is navX Calibrating", driveTrain.isCalibrating());
-		SmartDashboard.putBoolean("is navX Connected", driveTrain.isConnected());
 	}
 }

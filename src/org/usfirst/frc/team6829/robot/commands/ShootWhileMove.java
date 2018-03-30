@@ -1,10 +1,13 @@
 package org.usfirst.frc.team6829.robot.commands;
 
+import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
+import org.usfirst.frc.team6829.robot.commands.shooter.ShootCube;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeClaw;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import team6829.common.DriveTrain;
 import team6829.common.Util;
 
@@ -23,7 +26,9 @@ public class ShootWhileMove extends Command {
 	private Shooter shooter;
 	private IntakeLift intakeLift;
 	private IntakeClaw intakeClaw;
-		
+	
+	private double liftSpeed = 0.5;
+	
     public ShootWhileMove(DriveTrain driveTrain, Shooter shooter, IntakeLift intakeLift, IntakeClaw intakeClaw) {
     	
     	this.driveTrain = driveTrain;
@@ -37,12 +42,14 @@ public class ShootWhileMove extends Command {
     }
     
     protected void initialize() {
+//    	driveTrain.zeroEncoders();
     	intakeClaw.openClaw();
-    	initialPosition = (Math.abs(driveTrain.getLeftEncoderPosition())+Math.abs(driveTrain.getRightEncoderPosition()))/2;
+    	initialPosition = ((driveTrain.getLeftEncoderPosition())+(driveTrain.getRightEncoderPosition()))/2;
+    	//intakeLift.setLiftPower(liftSpeed);
     }
     
     protected void execute() {
-    	currentPosition = (Math.abs(driveTrain.getLeftEncoderPosition())+Math.abs(driveTrain.getRightEncoderPosition()))/2;
+    	currentPosition = ((driveTrain.getLeftEncoderPosition())+(driveTrain.getRightEncoderPosition()))/2;
     	
     	if (currentPosition >= initialPosition+distanceToShoot) {
     		shooter.shoot();

@@ -26,57 +26,49 @@ public class TrajectoryController {
 	private static final double RIGHT_KA = 0; // acceleration gain
 
 	private static final double MAXIMUM_VELOCITY = 6; //placeholder
-
+	
 	private Trajectory leftTrajectory ;
 	private Trajectory rightTrajectory;
 
 	private EncoderFollower left;
 	private EncoderFollower right;
-
+	
 	private boolean defaultDirection;
-
+	
 	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight, boolean defaultDirection) {
 
 		this.driveTrain = driveTrain;
 
 		this.defaultDirection = defaultDirection;
-
+		
+		this.driveTrain.defaultDirection();	
+		
+//		if (defaultDirection) {
+//			this.driveTrain.defaultDirection();	
+//		} else {
+//			this.driveTrain.reverseDirection();
+//		}
+		
 		leftTrajectory = Pathfinder.readFromCSV(csvLeft);
 		rightTrajectory = Pathfinder.readFromCSV(csvRight);
-
-		if (defaultDirection) {
-			System.out.println("Going forwards");
-			this.driveTrain.defaultDirection();	
-		} else {
-			System.out.println("Going backwards");
-			this.driveTrain.reverseDirection();
-		}		
 
 		left = new EncoderFollower(leftTrajectory);
 		right = new EncoderFollower(rightTrajectory);
 
 	}
-
+	
 	class PeriodicRunnable implements Runnable {
 
 		@Override
 		public void run() {
 			followTrajectory();
 		}
-
+		
 	}
 
 	public Notifier trajectoryNotifier = new Notifier(new PeriodicRunnable());
-
+	
 	public void configureFollow() {
-
-//		if (defaultDirection) {
-//			System.out.println("Going forwards");
-//			driveTrain.defaultDirection();	
-//		} else {
-//			System.out.println("Going backwards");
-//			driveTrain.reverseDirection();
-//		}		
 
 		left.configureEncoder((driveTrain.getLeftEncoderPosition()), TICKS_PER_REVOLUTION, WHEEL_DIAMETER);
 
@@ -88,23 +80,23 @@ public class TrajectoryController {
 	}
 
 	private void followTrajectory() {
-
+		
 		double l = left.calculate((driveTrain.getLeftEncoderPosition()));
 		double r = right.calculate((driveTrain.getRightEncoderPosition()));
-
-		double currentHeading = -driveTrain.getAngle();
-
-		if (!defaultDirection) {
-			currentHeading *= -1;
-		}
-
+		
+		double currentHeading = driveTrain.getYaw();
+//
+//		if (!defaultDirection) {
+//			currentHeading *= -1;
+//		}
+		
 		double desiredHeading = Pathfinder.r2d(left.getHeading());
 
 		double angleError =  Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);
 		double turn =  0.8 * (-1.0 / 80.0) * angleError;
-
-		driveTrain.setLeftDrivePower(l + turn);
-		driveTrain.setRightDrivePower(r - turn);
+		
+		driveTrain.setLeftDrivePower(l);
+		driveTrain.setRightDrivePower(r);
 
 	}
 

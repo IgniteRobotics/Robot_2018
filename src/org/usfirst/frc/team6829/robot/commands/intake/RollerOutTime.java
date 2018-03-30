@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RollerOutTime extends Command {
 
 	private IntakeFlywheel intake;
-	private double power = 0.5;
+	private double power = 0.7;
 	
     public RollerOutTime(IntakeFlywheel intake, double timeOut) {
         // Use requires() here to declare subsystem dependencies

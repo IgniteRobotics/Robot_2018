@@ -38,15 +38,15 @@ public class DriveTrain extends Subsystem {
 		rightMaster = new WPI_TalonSRX(rightMasterCanId);
 		rightFollower = new WPI_VictorSPX(rightFollowerCanId);
 
-		pressureSensor = new AnalogInput(pressureSensorID);
-
+//		pressureSensor = new AnalogInput(pressureSensorID);
+		
 		leftFollower.follow(leftMaster);
 		rightFollower.follow(rightMaster);
 
 		leftMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 		rightMaster.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5, 10);
 
-		navX = new AHRS(SPI.Port.kMXP);
+		navX = new AHRS(SPI.Port.kMXP.kMXP, (byte)200);
 
 	}
 
@@ -132,6 +132,8 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void setLeftRightDrivePower(double leftPower, double rightPower) {
+		//System.out.println("Drivetrain left = " + leftPower);
+		//System.out.println("Drivetrain right = " + rightPower);
 		setLeftDrivePower(leftPower);
 		setRightDrivePower(rightPower);
 	}
@@ -183,8 +185,8 @@ public class DriveTrain extends Subsystem {
 
 	public double getPressure() {
 
-		int pressure = (int)(250*pressureSensor.getVoltage()/5.0-25);
-		return pressure;
+//		int pressure = (int)(250*pressureSensor.getVoltage()/5.0-25);
+		return 0;
 	}
 
 	public void stop() {
@@ -203,8 +205,8 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void zeroEncoders() {
-		rightMaster.getSensorCollection().setQuadraturePosition(0, 0);
-		leftMaster.getSensorCollection().setQuadraturePosition(0, 0);
+		rightMaster.getSensorCollection().setQuadraturePosition(0, 10);
+		leftMaster.getSensorCollection().setQuadraturePosition(0, 10);
 
 	}
 
