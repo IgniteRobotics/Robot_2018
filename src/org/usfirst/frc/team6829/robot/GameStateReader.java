@@ -47,49 +47,29 @@ public class GameStateReader {
 			System.out.println("Right Right");
 		}
 
-		// Left Switch && Positioned Left 
-		if(gameData.charAt(0) == 'L' && LeftPositionAuto) {			
-			
-			toRun = autonCommands.get("GoStraight");
-			System.out.println("Left Switch & Positioned Left");
-			return toRun;
-		}
-
-		// Right Switch && Positioned Left
-		if (gameData.charAt(0) == 'R' && LeftPositionAuto) { 
-			toRun = autonCommands.get("GoStraight");
-			System.out.println("Right Switch & Positioned Left");
-			return toRun;
-		}
+		toRun = autonCommands.get("GoStraight");
 		
-		// Left Switch && Positioned Right
-		if (gameData.charAt(0) == 'L' && RightPositionAuto) {
-			toRun = autonCommands.get("GoStraight");
-			System.out.println("Left Switch & Positioned Right");
-			return toRun;
-		}
-
-		// Right Switch && Positioned Right
-		if (gameData.charAt(0) == 'R' && RightPositionAuto) {
-			toRun = autonCommands.get("GoStraight");
-			System.out.println("Right Switch & Positioned Right");
-			return toRun;
-		}
-		
-		// Left Switch && Positioned Middle
-		if (gameData.charAt(0) == 'L' && MiddlePositionAuto) { 
+		if(MiddlePositionAuto && gameData.charAt(0) == 'L') {
 			toRun = autonCommands.get("MiddleStartLeftSwitch");
-			System.out.println("Left Switch & Positioned Middle");
 			return toRun;
 		}
 		
-		// Right Switch && Positioned Middle
-		if (gameData.charAt(0) == 'R' && MiddlePositionAuto) {
+		if(MiddlePositionAuto && gameData.charAt(0) == 'R') {
 			toRun = autonCommands.get("MiddleStartRightSwitch");
-			System.out.println("Right Switch & Positioned Middle");
 			return toRun;
 		}
-
+		
+		
+		if(gameData.charAt(1) == 'L' && LeftPositionAuto) {			
+			toRun = autonCommands.get("LeftStartScaleShoot");
+			return toRun;
+		}
+		
+		if(gameData.charAt(1) == 'R' && RightPositionAuto) {
+			toRun = autonCommands.get("RightStartScaleShoot");
+			return toRun;
+		}
+		
 		return toRun;
 	}
 

@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team6829.robot.commands.LeftStartScaleShoot;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitchMP;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
 import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitchMP;
+import org.usfirst.frc.team6829.robot.commands.RightStartScaleShoot;
 import org.usfirst.frc.team6829.robot.commands.RightStartSwitchShoot;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
@@ -113,19 +115,20 @@ public class Robot extends TimedRobot {
 		driveTrain.zeroAngle();
 		driveTrain.zeroEncoders();
 
-				autonCommandToRun = gameStateReader.gameStateReader(autonMap());
-				
-				try { 
-					autonCommandToRun.start();
-				} catch (NullPointerException e) {
-					DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
-				}
+		autonCommandToRun = gameStateReader.gameStateReader(autonMap());
 
+		try { 
+			autonCommandToRun.start();
+		} catch (NullPointerException e) {
+			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
+		}
+
+		//CommandGroup asdf = new LeftStartScaleShoot(pathFollowers, driveTrain, shooter, intake, intakeClaw);
+		//asdf.start();
+		//pathFollowers.get("leftScaleFixed").start();
+		//pathFollowers.get("").start();
+		
 		System.out.println("Starting autonomous");
-//
-//		CommandGroup toRun = new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel, intake);
-//
-//		toRun.start();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
 
@@ -153,9 +156,9 @@ public class Robot extends TimedRobot {
 		checkNavX();
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
-		
+
 		driveTrain.defaultDirection();
-		
+
 		if (autonCommandToRun != null) {
 			autonCommandToRun.cancel();
 
@@ -222,32 +225,19 @@ public class Robot extends TimedRobot {
 	}
 
 
-	private static HashMap<String, PathFollower> forwardsPathFollowers = new HashMap<String, PathFollower>();
-	private static HashMap<String, PathFollower> backwardsPathFollowers = new HashMap<String, PathFollower>();
+	private static HashMap<String, PathFollower> pathFollowers = new HashMap<String, PathFollower>();
 
-	private ArrayList<String> forwardsPathNames = new ArrayList<String>();
-	private ArrayList<String> backwardsPathNames = new ArrayList<String>();
+	private ArrayList<String> pathNames = new ArrayList<String>();
 
-	
+
 	private void loadTrajectories() {
 
-//		forwardsPathNames.add("1-2");
-//		forwardsPathNames.add("2");
-//		forwardsPathNames.add("3");
-//		forwardsPathNames.add("4");
-//		forwardsPathNames.add("rightShootSwitch");
-		
-//		backwardsPathNames.add("rightShootSwitchBack");
-
-//		forwardsPathNames.add("rightSwitch");
-		
-		forwardsPathNames.add("centerRight");
-		forwardsPathNames.add("centerLeft");
-		forwardsPathNames.add("rightScale");
-
-
-		forwardsPathNames.add("rightSwitchBack");
-
+		pathNames.add("centerRight");
+		pathNames.add("centerLeft");
+		pathNames.add("rightScaleFixed");
+		pathNames.add("leftScaleFixed");
+//		pathNames.add("forwardTest");
+//		pathNames.add("backwardTest");
 
 		try {
 
@@ -262,25 +252,15 @@ public class Robot extends TimedRobot {
 	}
 
 	private void importTrajectories() throws FileNotFoundException {
-		
-		for (int i = 0; i < forwardsPathNames.size(); i++) {
 
-			String pathName = forwardsPathNames.get(i);
+		for (int i = 0; i < pathNames.size(); i++) {
 
-			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
-			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
-			
-			forwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, true));
-		}
-		
-		for (int i = 0; i < backwardsPathNames.size(); i++) {
-
-			String pathName = backwardsPathNames.get(i);
+			String pathName = pathNames.get(i);
 
 			File rightTraj = new File("/home/lvuser/" + pathName + "_right_detailed.csv");
 			File leftTraj = new File("/home/lvuser/" + pathName + "_left_detailed.csv");
-			
-			backwardsPathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj, false));
+
+			pathFollowers.put(pathName, new PathFollower(driveTrain, leftTraj, rightTraj));
 		}
 	}
 
@@ -288,10 +268,12 @@ public class Robot extends TimedRobot {
 
 		Map<String, Command> autonCommands = new HashMap<String, Command>();
 
-		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitchMP(forwardsPathFollowers, intakeFlywheel, intake));
-		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitchMP(forwardsPathFollowers, intakeFlywheel, intake));
+		autonCommands.put("MiddleStartLeftSwitch", new MiddleStartLeftSwitchMP(pathFollowers, intakeFlywheel, intake));
+		autonCommands.put("MiddleStartRightSwitch", new MiddleStartRightSwitchMP(pathFollowers, intakeFlywheel, intake));
 		autonCommands.put("GoStraight", new DriveToEncoderSetpoint(driveTrain, 100, -.5, 10));
-
+		autonCommands.put("RightStartScaleShoot", new RightStartScaleShoot(pathFollowers, driveTrain, shooter, intake, intakeClaw));
+		autonCommands.put("LeftStartScaleShoot", new LeftStartScaleShoot(pathFollowers, driveTrain, shooter, intake, intakeClaw));
+		
 		return autonCommands;
 
 	}

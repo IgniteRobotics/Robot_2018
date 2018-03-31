@@ -33,21 +33,12 @@ public class TrajectoryController {
 	private EncoderFollower left;
 	private EncoderFollower right;
 	
-	private boolean defaultDirection;
 	
-	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight, boolean defaultDirection) {
+	public TrajectoryController (DriveTrain driveTrain, File csvLeft, File csvRight) {
 
 		this.driveTrain = driveTrain;
 
-		this.defaultDirection = defaultDirection;
-		
 		this.driveTrain.defaultDirection();	
-		
-//		if (defaultDirection) {
-//			this.driveTrain.defaultDirection();	
-//		} else {
-//			this.driveTrain.reverseDirection();
-//		}
 		
 		leftTrajectory = Pathfinder.readFromCSV(csvLeft);
 		rightTrajectory = Pathfinder.readFromCSV(csvRight);
@@ -84,19 +75,15 @@ public class TrajectoryController {
 		double l = left.calculate((driveTrain.getLeftEncoderPosition()));
 		double r = right.calculate((driveTrain.getRightEncoderPosition()));
 		
-		double currentHeading = driveTrain.getYaw();
-//
-//		if (!defaultDirection) {
-//			currentHeading *= -1;
-//		}
-		
+		double currentHeading = -driveTrain.getYaw();
+
 		double desiredHeading = Pathfinder.r2d(left.getHeading());
 
 		double angleError =  Pathfinder.boundHalfDegrees(desiredHeading - currentHeading);
 		double turn =  0.8 * (-1.0 / 80.0) * angleError;
 		
-		driveTrain.setLeftDrivePower(l);
-		driveTrain.setRightDrivePower(r);
+		driveTrain.setLeftDrivePower(l + turn);
+		driveTrain.setRightDrivePower(r - turn);
 
 	}
 
