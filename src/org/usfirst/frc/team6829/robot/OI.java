@@ -8,6 +8,7 @@
 package org.usfirst.frc.team6829.robot;
 
 import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
+import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
@@ -25,13 +26,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import team6829.common.DriveTrain;
+import team6829.common.transforms.DummyTransform;
+import team6829.common.transforms.ITransform;
+import team6829.vision.RaspberryPiCommms;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
+	
 	private final int DRIVER_JOYSTICK = 0;
 	private final int MANIPULATOR_JOYSTICK = 1;
 
@@ -64,6 +68,8 @@ public class OI {
 	
 	public Button autoShoot = new JoystickButton(driverJoystick, BUTTON_A);
 	
+	public Button imafindathecubees = new JoystickButton(driverJoystick, BUTTON_RIGHT_BUMPER);
+	
 	public Button flywheelInButton = new JoystickButton(manipulatorJoystick, BUTTON_LEFT_BUMPER);
 	public Button flywheelOutButton = new JoystickButton(manipulatorJoystick, BUTTON_RIGHT_BUMPER);
 	
@@ -74,12 +80,15 @@ public class OI {
 	public Button moveIntakeToFullUpButton = new JoystickButton(manipulatorJoystick, BUTTON_X);
 	public Button moveIntakeToLaunchButton = new JoystickButton(manipulatorJoystick, BUTTON_Y);
 	
+	private static ITransform noTransform = new DummyTransform();
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, IntakeLift intake, Shooter shooter, 
-			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw) {
+			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw, RaspberryPiCommms vision) {
 		
 		flywheelInButton.whileHeld(new RollerIn(intakeFlywheel));
 		flywheelOutButton.whileHeld(new RollerOut(intakeFlywheel));
+		
+		imafindathecubees.whileHeld(new TurnToCube(driveTrain, vision, driverJoystick, AXIS_LEFT_STICK_Y, noTransform));
 		
 		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));

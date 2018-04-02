@@ -29,6 +29,7 @@ import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -42,6 +43,7 @@ import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
 import team6829.motion_profiling.PathFollower;
+import team6829.vision.RaspberryPiCommms;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -63,6 +65,8 @@ public class Robot extends TimedRobot {
 	public static IntakeLift intake;
 	public static IntakeFlywheel intakeFlywheel;
 	public static IntakeClaw intakeClaw;
+	
+	public static RaspberryPiCommms vision;
 
 	public static ITransform arcadeDriveTransform;
 	public static ITransform slowTransform;
@@ -84,7 +88,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		initializeAll();
 		checkNavX();
-
+	
 		gameStateReader.setRobotPosition();
 
 	}
@@ -192,6 +196,7 @@ public class Robot extends TimedRobot {
 
 
 	private void initializeAll() {
+		vision = new RaspberryPiCommms();
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
 		loadTrajectories();
@@ -207,7 +212,7 @@ public class Robot extends TimedRobot {
 		intakeFlywheel = new IntakeFlywheel(robotMap.intakeLeftRoller, robotMap.intakeRightRoller);
 		intakeClaw = new IntakeClaw(robotMap.PCMID, robotMap.intakeArm);
 		display = new SmartdashboardOut(intake, dumper, driveTrain);
-		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw);
+		oi = new OI(driveTrain, dumper, intake, shooter, intakeFlywheel, intakeClaw, vision);
 
 		arcadeDriveTransform = new SquaredInputTransform();
 		slowTransform = new SlowTransform();
@@ -221,6 +226,7 @@ public class Robot extends TimedRobot {
 
 		joystickLift = new JoystickIntakeLift(intake, oi.manipulatorJoystick, oi.AXIS_LEFT_STICK_Y);
 		intake.setCommandDefault(joystickLift);
+		
 
 	}
 
