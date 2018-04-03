@@ -7,8 +7,8 @@
 
 package org.usfirst.frc.team6829.robot;
 
+import org.usfirst.frc.team6829.robot.commands.AutoCubeRetrieval;
 import org.usfirst.frc.team6829.robot.commands.ShootWhileMove;
-import org.usfirst.frc.team6829.robot.commands.driveTrain.TurnToCube;
 import org.usfirst.frc.team6829.robot.commands.intake.CloseIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.OpenIntake;
 import org.usfirst.frc.team6829.robot.commands.intake.RollerIn;
@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import team6829.common.DriveTrain;
 import team6829.common.transforms.DummyTransform;
 import team6829.common.transforms.ITransform;
-import team6829.vision.RaspberryPiCommms;
+import team6829.vision.RaspberryPiComms;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -83,12 +83,12 @@ public class OI {
 	private static ITransform noTransform = new DummyTransform();
 	
 	public OI(DriveTrain driveTrain, Dumper dumper, IntakeLift intake, Shooter shooter, 
-			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw, RaspberryPiCommms vision) {
+			IntakeFlywheel intakeFlywheel, IntakeClaw intakeClaw, RaspberryPiComms vision) {
 		
 		flywheelInButton.whileHeld(new RollerIn(intakeFlywheel));
 		flywheelOutButton.whileHeld(new RollerOut(intakeFlywheel));
 		
-		imafindathecubees.whileHeld(new TurnToCube(driveTrain, vision, driverJoystick, AXIS_LEFT_STICK_Y, noTransform));
+		imafindathecubees.whileHeld(new AutoCubeRetrieval(driveTrain, intakeClaw, intakeFlywheel, vision));//PursueCube(driveTrain, vision, noTransform));
 		
 		openIntakeButton.whenPressed(new OpenIntake(intakeClaw));
 		openIntakeButton.whenReleased(new CloseIntake(intakeClaw));

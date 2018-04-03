@@ -13,13 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.usfirst.frc.team6829.robot.commands.LeftStartScaleShoot;
-import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitch;
-import org.usfirst.frc.team6829.robot.commands.MiddleStartLeftSwitchMP;
-import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitch;
-import org.usfirst.frc.team6829.robot.commands.MiddleStartRightSwitchMP;
-import org.usfirst.frc.team6829.robot.commands.RightStartScaleShoot;
-import org.usfirst.frc.team6829.robot.commands.RightStartSwitchShoot;
+import org.usfirst.frc.team6829.robot.commands.autons.LeftStartScaleShoot;
+import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartLeftSwitchMP;
+import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartLeftSwitchTwo;
+import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartRightSwitchMP;
+import org.usfirst.frc.team6829.robot.commands.autons.MiddleStartRightSwitchTwo;
+import org.usfirst.frc.team6829.robot.commands.autons.RightStartScaleShoot;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.ArcadeDrive;
 import org.usfirst.frc.team6829.robot.commands.driveTrain.DriveToEncoderSetpoint;
 import org.usfirst.frc.team6829.robot.commands.intake.JoystickIntakeLift;
@@ -29,7 +28,6 @@ import org.usfirst.frc.team6829.robot.subsystems.IntakeFlywheel;
 import org.usfirst.frc.team6829.robot.subsystems.IntakeLift;
 import org.usfirst.frc.team6829.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,7 +41,7 @@ import team6829.common.transforms.ITransform;
 import team6829.common.transforms.SlowTransform;
 import team6829.common.transforms.SquaredInputTransform;
 import team6829.motion_profiling.PathFollower;
-import team6829.vision.RaspberryPiCommms;
+import team6829.vision.RaspberryPiComms;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -66,7 +64,7 @@ public class Robot extends TimedRobot {
 	public static IntakeFlywheel intakeFlywheel;
 	public static IntakeClaw intakeClaw;
 	
-	public static RaspberryPiCommms vision;
+	public static RaspberryPiComms vision;
 
 	public static ITransform arcadeDriveTransform;
 	public static ITransform slowTransform;
@@ -107,7 +105,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		checkNavX();
 		display.displaySmartDashboard();
-
 		Scheduler.getInstance().run();
 
 	}
@@ -127,11 +124,6 @@ public class Robot extends TimedRobot {
 			DriverStation.reportError("No Autonomous selected: " +e.getMessage(), true);
 		}
 
-		//CommandGroup asdf = new LeftStartScaleShoot(pathFollowers, driveTrain, shooter, intake, intakeClaw);
-		//asdf.start();
-		//pathFollowers.get("leftScaleFixed").start();
-		//pathFollowers.get("").start();
-		
 		System.out.println("Starting autonomous");
 
 		logger.init(loggerParameters.data_fields, loggerParameters.units_fields);
@@ -196,7 +188,7 @@ public class Robot extends TimedRobot {
 
 
 	private void initializeAll() {
-		vision = new RaspberryPiCommms();
+		vision = new RaspberryPiComms();
 
 		driveTrain = new DriveTrain(robotMap.leftRearMotor, robotMap.leftFrontMotor, robotMap.rightRearMotor, robotMap.rightFrontMotor, robotMap.pressureSensorID);
 		loadTrajectories();
